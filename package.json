@@ -1,0 +1,48 @@
+{
+    "private": true,
+    "scripts": {
+        "dev": "npm run development",
+        "development": "mix",
+        "watch": "mix watch",
+        "watch-poll": "mix watch -- --watch-options-poll=1000",
+        "hot": "mix watch --hot",
+        "prod": "npm run production",
+        "production": "mix --production"
+    },
+    "devDependencies": {
+        "@fortawesome/fontawesome-free": "^5.15.1",
+        "@inertiajs/inertia": "^0.10.0",
+        "@inertiajs/inertia-vue3": "^0.5.1",
+        "@inertiajs/progress": "^0.2.6",
+        "@tailwindcss/forms": "^0.4.0",
+        "@tailwindcss/typography": "^0.5.0",
+        "@vue/compiler-sfc": "^3.0.5",
+        "admin-lte": "^3.1.0",
+        "axios": "^0.25",
+        "bootstrap": "^4.6.0",
+        "jquery": "^3.6.0",
+        "laravel-mix": "^6.0.6",
+        "lodash": "^4.17.19",
+        "overlayscrollbars": "^1.13.0",
+        "popper.js": "^1.16.1",
+        "postcss": "^8.1.14",
+        "postcss-import": "^12.0.1",
+        "resolve-url-loader": "^5.0.0",
+        "sass": "^1.49.8",
+        "sass-loader": "^12.6.0",
+        "tailwindcss": "^3.0.0",
+        "vue": "^3.0.5",
+        "vue-loader": "^16.1.2"
+    },
+    "dependencies": {
+        "@ckeditor/ckeditor5-build-classic": "^32.0.0",
+        "@ckeditor/ckeditor5-vue": "^2.0.1",
+        "@vueform/multiselect": "github:vueform/multiselect",
+        "mitt": "^3.0.0",
+        "vue-color-kit": "^1.0.5",
+        "vue-final-modal": "^3.4.3",
+        "vue-upload-component": "^3.1.2",
+        "vue3-colorpicker": "^2.0.4",
+        "vue3-date-time-picker": "^2.7.0"
+    }
+}
