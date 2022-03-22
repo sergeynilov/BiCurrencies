@@ -6,7 +6,7 @@
 
 <!--        rate_decimal_numbers::{{ rate_decimal_numbers}}-->
 
-        <TopCmsBlocks ></TopCmsBlocks>
+<!--        <TopCmsBlocks ></TopCmsBlocks>-->
 
 
 
@@ -99,7 +99,7 @@
         </section>
 
 
-        <TopCurrenciesBlock></TopCurrenciesBlock>
+<!--        <TopCurrenciesBlock></TopCurrenciesBlock>-->
 <!--        :rate_decimal_numbers="rate_decimal_numbers"-->
 
 

@@ -45,7 +45,7 @@ class CurrencyController extends Controller  //    http://127.0.0.1:8000/current
     {
         $request        = request();
         $items_per_page = Settings::getValue('items_per_page', CheckValueType::cvtInteger, 20);
-        \Log::info(varDump($items_per_page, ' -1 filter $items_per_page::'));
+//        \Log::info(varDump($items_per_page, ' -1 filter $items_per_page::'));
 
         $base_currency = Settings::getValue('base_currency', CheckValueType::cvtString, '');
         $baseCurrency  = Currency
@@ -53,7 +53,7 @@ class CurrencyController extends Controller  //    http://127.0.0.1:8000/current
             ->excludeCharCode($baseCurrency->char_code ?? '')
             ->first();
 
-        \Log::info(varDump($baseCurrency, ' -1 $baseCurrency::'));
+//        \Log::info(varDump($baseCurrency, ' -1 $baseCurrency::'));
         $show_only_top_currencies = $request->show_only_top_currencies ?? false;
         $page                     = $request->page ?? 1;
 
@@ -83,7 +83,7 @@ class CurrencyController extends Controller  //    http://127.0.0.1:8000/current
                 $currencies[$next_key]->media_image_url = '/images/default-currency.jpg';
             }
         }
-        \Log::info(varDump($currencies, ' -1 filter $currencies::'));
+//        \Log::info(varDump($currencies, ' -1 filter $currencies::'));
         return (CurrencyResource::collection($currencies));
     } // public function filter()
 

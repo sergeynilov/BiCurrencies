@@ -222,13 +222,13 @@ export default {
         }
 
         function loadActiveCurrencies() {
-            console.log('-2 loadActiveCurrencies ::')
+            console.log('-20 loadActiveCurrencies ::')
             // Route::post('current_rates/filter', [FrontendCurrencyController::class, 'filter'])->name('frontend.currencies_rates.filter');
 
             let filters = {page: current_page.value, show_only_top_currencies: show_only_top_currencies.value}
             axios.post(route('frontend.currencies_rates.filter'), filters)
                 .then(({data}) => {
-                    console.log('loadActiveCurrencies data::')
+                    console.log('-20 loadActiveCurrencies data::')
                     console.log(data)
                     activeCurrencyRows.value = data.data
                     paginationLinks.value = data.meta.links

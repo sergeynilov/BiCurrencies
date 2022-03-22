@@ -67,9 +67,11 @@ class HomeController extends Controller  //    http://127.0.0.1:8000/current_rat
             \Log::info(varDump($mediaImage, ' -1 $mediaImage::'));
             \Log::info(varDump($mediaImage->getPath(), ' -1 $mediaImage->getPath()::'));
             if (File::exists($mediaImage->getPath())) {
-                \Log::info(varDump($mediaImage, ' -10FOUBND ::'));
+                \Log::info(varDump($mediaImage, ' -10 FOUBND ::'));
+                \Log::info(varDump($mediaImage->getUrl(), ' -11 $mediaImage->getUrl() ::'));
                 $image['url']       = $mediaImage->getUrl();
                 $imageInstance      = Image::load($mediaImage->getUrl());
+                \Log::info(  varDump($imageInstance, ' -12 $imageInstance::') );
                 $image['width']     = $imageInstance->getWidth();
                 $image['height']    = $imageInstance->getHeight();
                 $image['size']      = $mediaImage->size;
