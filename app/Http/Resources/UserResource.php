@@ -2,9 +2,10 @@
 
 namespace App\Http\Resources;
 
+use App\Library\Services\DateFunctionality;
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Models\User;
-
+use App;
 
 class UserResource extends JsonResource
 {
@@ -17,6 +18,7 @@ class UserResource extends JsonResource
      */
     public function toArray($request)
     {
+        $dateFunctionality= App::make(DateFunctionality::class);
         return [
             'id'                   => $this->id,
             'name'                 => $this->name,
@@ -30,9 +32,9 @@ class UserResource extends JsonResource
             //            'user_histories_count' => $this->when( isset($this->user_histories_count), $this->user_histories_count),
             //            'latest_user_history'    => new UserHistoryResource($this->whenLoaded('latest_user_history')),
             'created_at'           => $this->created_at,
-            'created_at_formatted' => \App\Library\Services\DateFunctionality::getFormattedDateTime($this->created_at),
+            'created_at_formatted' => $dateFunctionality->getFormattedDateTime($this->created_at),
             'updated_at'           => $this->updated_at,
-            'updated_at_formatted' => \App\Library\Services\DateFunctionality::getFormattedDateTime($this->updated_at),
+            'updated_at_formatted' => $dateFunctionality->getFormattedDateTime($this->updated_at),
         ];
     }
 

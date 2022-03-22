@@ -1,5 +1,4 @@
 <template>
-    <div>
         <admin-layout>
 
             <vue-final-modal
@@ -190,9 +189,7 @@
                 </div>
             </section>
 
-
         </admin-layout>
-    </div>
 </template>
 
 

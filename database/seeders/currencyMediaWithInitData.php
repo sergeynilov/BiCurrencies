@@ -21,7 +21,7 @@ class currencyMediaWithInitData extends Seeder
                 'model_type'            => 'App\\Models\\Currency',
                 'model_id'              => 1,
                 'uuid'                  => '26592405-676e-4a8a-bacf-2635e385791e',
-                'collection_name'       => 'currency_app',
+                'collection_name'       => config('app.media_app_name'),
                 'name'                  => 'b22de6791bca17184093c285e1c4b4b5',
                 'file_name'             => 'canadian_dollar.png',
                 'mime_type'             => 'image/png',
@@ -39,7 +39,7 @@ class currencyMediaWithInitData extends Seeder
                 'model_type'            => 'App\\Models\\Currency',
                 'model_id'              => 2,
                 'uuid'                  => '26584405-676e-4a8a-bacf-2635e382191e',
-                'collection_name'       => 'currency_app',
+                'collection_name'       => config('app.media_app_name'),
                 'name'                  => 'b22de6762bca17184093c285e1c4a9b5',
                 'file_name'             => 'hong-kong-dollar.png',
                 'mime_type'             => 'image/png',
@@ -59,7 +59,7 @@ class currencyMediaWithInitData extends Seeder
                 'model_type'            => 'App\\Models\\Currency',
                 'model_id'              => 3,
                 'uuid'                  => '26519005-676e-4a8a-bacf-2635e351291e',
-                'collection_name'       => 'currency_app',
+                'collection_name'       => config('app.media_app_name'),
                 'name'                  => 'b22de1962bca17184093c745e1c4a9b5',
                 'file_name'             => 'icelandic-krona.png',
                 'mime_type'             => 'image/png',
@@ -72,6 +72,24 @@ class currencyMediaWithInitData extends Seeder
                 'responsive_images'     => '[]',
                 'order_column'          => 3,
             ),
+/*            array(
+                'id'                    => 8,
+                'model_type'            => 'App\\Models\\Currency',
+                'model_id'              => 4,     //  4  => 'Philippine peso'
+                'uuid'                  => '26519005-676e-4a8a-bacf-2635e351291e',
+                'collection_name'       => config('app.media_app_name'),
+                'name'                  => 'b22de1962bca17184093c745e1c4a9b5',
+                'file_name'             => 'icelandic-krona.png',
+                'mime_type'             => 'image/png',
+                'disk'                  => 'public',
+                'conversions_disk'      => 'public',
+                'size'                  => 19764,
+                'manipulations'         => '[]',
+                'custom_properties'     => '[]',
+                'generated_conversions' => '[]',
+                'responsive_images'     => '[]',
+                'order_column'          => 3,
+            ),*/
         ));
 
     }

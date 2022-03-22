@@ -4,6 +4,11 @@ export const settingsAppColors = {
     cancelButtonColor: '#d33'
 }
 
+export const settingsFilterOnlyUnreadNotificationsLabels = [
+    { code: '', label: 'Show all notifications' },
+    { code: '1', label: 'Show only unread notifications' }
+]
+
 export const settingsCurrencyActiveLabels = [
     { code: 0, label: 'Inactive' },
     { code: 1, label: 'Yes, active' }
@@ -37,6 +42,7 @@ export const settingsYesNoLabels = [
 
 
 
+
 export const settingsAwesomeFontLabels = [   // https://fontawesome.com/v5.15/icons?d=gallery&p=2&m=free
     { code: 'cancel', font: 'fa fa-window-close' },
     { code: 'save', font: 'fa fa-save' },
@@ -49,9 +55,19 @@ export const settingsAwesomeFontLabels = [   // https://fontawesome.com/v5.15/ic
     {code: 'currency', font: 'fa fa-list' },
     {code: 'refresh', font: 'fa fa-redo' },
     { code: 'users', font: 'fa fa-users' },
+    { code: 'user', font: 'fa fa-user' },
     { code: 'currencies_history', font: 'fa fa-history' },
     { code: 'color', font: 'fa fa-palette' },
     { code: 'upload', font: 'fa fa-upload' },
+    { code: 'status', font: 'fa fa-battery-half' },
+    { code: 'action', font: 'fa fa-exclamation-triangle' },
+    {code: 'notification', font: 'fa fa-bells'},
+    { code: 'settings', font: 'fa fa-cog' },
+    { code: 'results', font: 'fa fa-poll-h' },
+    { code: 'contact_us', font: 'fa fa-file-contract' },
+    { code: 'details', font: 'fa fa-calendar-week' },
+    { code: 'unmark', font: 'fa fa-broom' },
+
     // ABOVE VALID
 
 
@@ -76,12 +92,10 @@ export const settingsAwesomeFontLabels = [   // https://fontawesome.com/v5.15/ic
     { code: 'register', font: 'fa fa-registered' },
     { code: 'profile', font: 'fa fa-user-md' },
     { code: 'participants', font: 'fa fa-users' },
-    { code: 'user', font: 'fa fa-user' },
     { code: 'needs_reports', font: 'fa fa-flag' },
     { code: 'leader', font: 'fa fa-magnet' },
     { code: 'priority', font: 'fa fa-asterisk' },
     { code: 'priority_2x', font: 'fa fa-2x fa-asterisk' },
-    { code: 'status', font: 'fa fa-battery-half' },
     { code: 'status_2x', font: 'fa fa-2x fa-battery-half' },
     { code: 'event', font: 'fa fa-calendar' },
     { code: 'events', font: 'fa fa-calendar' },
@@ -99,14 +113,12 @@ export const settingsAwesomeFontLabels = [   // https://fontawesome.com/v5.15/ic
     { code: 'developer', font: 'fa fa-wheelchair-alt' },
     { code: 'has_no_access', font: 'fa fa-key' },
     { code: 'has_access', font: 'fa fa-unlock-alt' },
-    { code: 'action', font: 'fa fa-exclamation-triangle' },
     { code: 'remove2x', font: 'fa fa-2x fa-trash' },
     { code: 'unremove', font: 'fa fa-building-o' },
     { code: 'unremove2x', font: 'fa fa-2x fa-building-o' },
     { code: 'demo-info', font: 'fa fa-info-circle' },
     { code: 'skill', font: 'fa fa-grav' },
     { code: 'dashboard', font: 'fa fa-th-large' },
-    { code: 'settings', font: 'fa fa-cog' },
     { code: 'attach', font: 'fa fa-address-book' },
     { code: 'select', font: 'fa fa-mouse-pointer' },
     { code: 'toggle_on', font: 'fa fa-arrows-alt' },
@@ -124,7 +136,6 @@ export const settingsAwesomeFontLabels = [   // https://fontawesome.com/v5.15/ic
     {code: 'import', font: 'fa fa-database'},
 
     {code: 'maintenance', font: 'fa fa-truck'},
-    {code: 'notification', font: 'fa fa-sticky-note-o'},
     {code: 'tree_has_items', font: 'fa fa-angle-right'},
     {code: 'lat_lan', font: 'fa fa-arrows'},
     {code: 'test', font: 'fa fa-bug' },

@@ -6,6 +6,8 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
@@ -13,9 +15,10 @@ use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
 use DB;
 
-class User extends Authenticatable
+class User extends Authenticatable implements HasMedia
 {
-    use HasApiTokens;
+    use InteractsWithMedia;
+    use HasApiTokens, Notifiable;
     use HasFactory;
     use HasProfilePhoto;
     use Notifiable;
@@ -184,7 +187,7 @@ class User extends Authenticatable
     }
 
 
-    public static function getValidationRulesArray($user_id, array $skipFieldsArray= []) : array
+    public static function getUserValidationRulesArray($user_id, array $skipFieldsArray= []) : array
     {
 
         \Log::info(  varDump(with(new User)->getTable(), ' -1 with(new User)->getTable()::') );

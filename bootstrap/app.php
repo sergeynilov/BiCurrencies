@@ -49,6 +49,30 @@ if ( ! defined("HTTP_RESPONSE_NOT_IMPLEMENTED")) {
     define("HTTP_RESPONSE_NOT_IMPLEMENTED", 501);
 }
 
+if ( ! defined("ACCESS_APP_ADMIN")) {  // can do all
+    define("ACCESS_APP_ADMIN", 1);  // Admin
+}
+if ( ! defined("ACCESS_APP_ADMIN_LABEL")) {
+    define("ACCESS_APP_ADMIN_LABEL", 'Admin');
+}
+
+
+if ( ! defined("ACCESS_APP_SUPPORT_MANAGER")) {  // Support Manager - answer on contact us pages
+    define("ACCESS_APP_SUPPORT_MANAGER", 2);
+}
+if ( ! defined("ACCESS_APP_SUPPORT_MANAGER_LABEL")) {
+    define("ACCESS_APP_SUPPORT_MANAGER_LABEL", 'Support Manager');
+}
+
+
+if ( ! defined("ACCESS_APP_CONTENT_EDITOR")) {  // Content Editor - can  edit news/cms
+    define("ACCESS_APP_CONTENT_EDITOR", 3);
+}
+if ( ! defined("ACCESS_APP_CONTENT_EDITOR_LABEL")) {
+    define("ACCESS_APP_CONTENT_EDITOR_LABEL", 'Content Editor');
+}
+
+
 /*
 |--------------------------------------------------------------------------
 | Bind Important Interfaces

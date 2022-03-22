@@ -6,6 +6,17 @@ import {usePage} from '@inertiajs/inertia-vue3';
 import {settingsAwesomeFontLabels} from '@/app.settings'
 import moment from 'moment-timezone'
 
+
+export function formatValue(value, rateDecimalNumbers) {
+    let noLatestCurrencyHistoryLabel = 'Has no currency history yet'
+    if (isEmpty( value ) ) return noLatestCurrencyHistoryLabel
+    if ( typeof value === 'string' ) {
+        value = parseFloat(value)
+    }
+    return value.toFixed(rateDecimalNumbers)
+}
+
+
 export function checkUrlPrefix(url) {
     if (!/^(f|ht)tps?:\/\//i.test(url)) {
         url = 'http://' + url
@@ -14,6 +25,16 @@ export function checkUrlPrefix(url) {
 }
 
 
+export function dateIntoDbFormat(d) {
+    // console.log('dateIntoDbFormat d::')
+    // console.log(typeof d)
+    // console.log(d)
+    if (isEmpty(d))  {
+        d = new Date()
+    }
+    let ret = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
+    return ret;
+}
 export function showFlashMessage() {
     console.log('showFlashMessage  usePage().props::')
     console.log( usePage().props)

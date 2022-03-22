@@ -2,8 +2,8 @@
 $body-bg: #f8fafc;
 
 // Typography
-$font-family-sans-serif: 'Nunito', sans-serif;
-$font-size-base: 0.9rem;
+//$font-family-sans-serif: 'Nunito', sans-serif;
+$font-size-base: 1.2rem;
 $line-height-base: 1.6;
 
 
@@ -29,9 +29,13 @@ $navbar_font_size: 0.8rem;
 //$admin_background_color: #edf2ff;
 //$frontend_background_color: #edf2ff;
 
-$text-color: #a9bdc5;
+
+$frontend_text_color: #000000;
+$frontend_background_color: #DEFFFC;
+
+$admin_text_color: #a9bdc5;
 $text_color_reversed: white;
-$editable_input_color: $text-color;
+$editable_input_color: $admin_text_color;
 
 
 $debug_mode: false;

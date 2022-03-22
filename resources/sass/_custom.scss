@@ -127,10 +127,41 @@
 .main-header {
     //transition: margin-left .3s ease-in-out;
     //margin-left: 2px !important;
-    //margin-left: 250px !important;
+    margin-left: 228px !important;
+    //background-color: green !important;
+}
+
+.main-header-collapsed {
+    //transition: margin-left .3s ease-in-out;
+    //margin-left: 2px !important;
+    margin-left: 52px !important;
+    border-bottom: 1px solid #dee2e6;
+    z-index: 1034;
     //background-color: yellow !important;
 }
 
+.sidebar {
+    border: 2px dotted yellow !important;
+    height: 100% !important;
+}
+
+.main-footer {
+    width: 100% !important;
+    padding: 0.4rem !important;
+    //margin: 0 !important;
+
+    //padding: 0.8rem 0 0.8rem 0 !important;
+    //background-color: yellow !important;
+    //border: 2px dotted red !important;
+}
+.nav-link {
+    padding: 0.3rem !important;
+}
+.active-nav-link {
+    padding: 0.3rem !important;
+    color: white !important;
+    font-weight: bold;
+}
 // DIFFERENT DEVICES BLOCK START
 
 /* Big Media */
@@ -162,7 +193,16 @@
     padding :4px;
     margin :2px;
     border: $admin_border_separator_color;
-    max-width: 640px;
+    max-width: 340px;
+    height: auto;
+}
+
+.frontend_currency_image {
+    //border: 1px dotted gray;
+    border: 2px dotted red;
+    padding: 2px;
+    margin: 5px;
+    max-width: 460px;
     height: auto;
 }
 
@@ -401,7 +441,7 @@ input[type="text"]:disabled {
 
 .btn_remove_right_aligned {
     text-transform: uppercase;
-    border:1px double red !important;
+    //border:1px double red !important;
     color : $admin_btn_color !important;
     background-color: red !important;
     float: right;
@@ -455,9 +495,9 @@ input[type="text"]:disabled {
 
 .admin_listing_modal_header {
     background-color: #0f6d7c;
-    color: $text-color;
+    color: $admin_text_color;
     /*border-bottom: 2px solid rgba(123,123,123);*/
-    border-bottom: 1px solid $text-color;
+    border-bottom: 1px solid $admin_text_color;
     /*padding: 0;*/
     padding: 0.5rem 0.5rem;
     margin:0;
@@ -516,7 +556,7 @@ input[type="text"]:disabled {
 
 .admin_listing_modal_close {
     background-color: #0f6d7c;
-    color: $text-color !important;
+    color:  $admin_text_color !important;
     position: absolute;
     top: 0;
     right: 0;
@@ -530,7 +570,7 @@ input[type="text"]:disabled {
 }
 
 .admin_listing_modal_close::hover {
-    color: $text-color !important;
+    color:  $admin_text_color !important;
     background-color: #0f6d7c;
 }
 

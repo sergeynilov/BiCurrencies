@@ -21,6 +21,19 @@ use App\Models\News;
 use App\Models\Settings;
 use App\Models\Page;
 
+//             'notifiable_type' => convertNotificationIntoLabel($this->notifiable_type, 'type'),
+if ( ! function_exists('convertNotificationIntoLabel')) {
+    function convertNotificationIntoLabel($value, $field){
+        \Log::info(  varDump($field, ' -1 convertNotificationIntoLabel $field::') );
+        if($field == 'type') {
+            \Log::info(  varDump($value, ' -10 convertNotificationIntoLabel $value::') );
+            if($value == 'App\Notifications\CurrencyRatesImportRun') {
+                return 'Currency rates import';
+            }
+        }
+        return $value;
+    }
+} // if ( ! function_exists('convertNotificationIntoLabel')) {
 
 if ( ! function_exists('getRequestIp')) {
     function getRequestIp(){
@@ -746,7 +759,6 @@ if ( ! function_exists('getValueLabelKeys')) {
         foreach ($keys as $next_key) {
             $ret_str .= $next_key . ',';
         }
-                              \Log::info(  varDump($ret_str, ' -1 getValueLabelKeys $ret_str::') );
         return trimRightSubString($ret_str, ',');
     }
 

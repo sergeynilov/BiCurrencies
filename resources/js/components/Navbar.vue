@@ -1,12 +1,12 @@
 <template>
 
 <!--   main-header  custom_main_header-->
-    <nav class=" main-header navbar navbar-expand navbar-dark" id="nav_main_header">
+    <nav :class=" main_header_collapsed ? 'main-header-collapsed' : 'main-header' " class="navbar navbar-expand navbar-dark" id="nav_main_header">
         <!-- Left navbar links -->
         <ul class="navbar-nav">
             <li class="nav-item">
                 <a class="nav-link" data-widget="pushmenu" href="#" role="button" @click.prevent="leftAdminSidebarSwitcher">
-                    <i class="fas fa-bars"></i>987
+                    <i class="fas fa-bars" title="Collapse sidebar"></i>
                 </a>
             </li>
         </ul>
@@ -105,6 +105,7 @@
                     <a href="#" class="dropdown-item dropdown-footer">See All Messages</a>
                 </div>
             </li>
+
             <!-- Notifications Dropdown Menu -->
             <li class="nav-item dropdown">
                 <a class="nav-link" data-toggle="dropdown" href="#">
@@ -112,7 +113,17 @@
                     <span class="badge badge-warning navbar-badge">15</span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                    <span class="dropdown-item dropdown-header">15 Notifications</span>
+
+                    <span class="dropdown-item dropdown-header" v-show="$page.props.auth.unread_notifications_count > 0">
+                        <inertia-link :href="route('user.notifications.index')" class=" m-1 p-1">
+<!--                            <i :class="getHeaderIcon('edit')" class="mr-1" title="Edit"></i>-->
+                            <i :class="getHeaderIcon('notification')" class="mr-1"></i>
+                            {{ $page.props.auth.unread_notifications_count }}
+                            {{ pluralize($page.props.auth.unread_notifications_count, 'Notification', 'Notifications') }}
+                        </inertia-link>
+                    </span>
+<!--                    Route::get('user/notifications', [UserNotificationsController::class, 'index'])->name('notifications.index');-->
+
                     <div class="dropdown-divider"></div>
                     <a href="#" class="dropdown-item">
                         <i class="fas fa-envelope mr-2"></i> 4 new messages
@@ -153,7 +164,7 @@ import {ref, computed, onMounted} from 'vue'
 
 import {
     getHeaderIcon,
-    // getErrorMessage,
+    pluralize,
 } from '@/commonFuncs'
 // import {ref, computed, onMounted} from 'vue'
 
@@ -161,6 +172,7 @@ import {
 import {
     // settingsJsMomentDatetimeFormat,
 } from '@/app.settings.js'
+import {collapsed} from "./sidebar/state";
 
 // file:///mnt/_work_sdb8/wwwroot/lar/BiUsers/resources/js/Components/ListingHeader.vue
 
@@ -169,23 +181,29 @@ export default {
     components: {
     },
     setup() {
-
+        const main_header_collapsed = ref(false)
         const app_version= ref('D')
+
         function leftAdminSidebarSwitcher() {
             console.log('leftAdminSidebarSwitcher::')
-            window.emitter.emit('leftAdminSidebarSwitchEvent', {
+            main_header_collapsed.value= !main_header_collapsed.value
+            window.emitter.emit('AdminTopNavbarSwitchEvent', {
                 parentComponentKey: 'Navbar'
             })
-            // window.emitter.emit('listingFilterModifiedEvent', {
-            //     parentComponentKey: 'user',
-            //     filters: filters,
-            //     filters_count_text: filters_count_text
-            // })
         }
 
 
         const adminNavbarOnMounted = async () => {
             console.log('adminNavbarOnMounted::')
+            window.emitter.on('AdminSidebarCollapseSwitcherEvent', params => {
+                console.log('TARGET AdminSidebarCollapseSwitcherEvent params::')
+                console.log(params)
+                main_header_collapsed.value = !main_header_collapsed.value
+                // if (params.parentComponentKey === 'user') {
+                //     userRowsPaginationPageClicked(params.page)
+                // }
+            })
+
             // console.log(document.getElementById("nav_main_header").style.marginLeft)
             // document.getElementById("nav_main_header").style.marginLeft = "5px";
             // //        margin-left: 2px;
@@ -195,8 +213,10 @@ export default {
 
         return { // setup return
             // Common methods
+            main_header_collapsed,
             leftAdminSidebarSwitcher,
             getHeaderIcon,
+            pluralize,
             app_version
 
         }

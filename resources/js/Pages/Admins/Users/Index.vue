@@ -1,5 +1,4 @@
 <template>
-    <div>
         <admin-layout>
 
             <vue-final-modal
@@ -15,8 +14,8 @@
 
                     <!--                    orderDirectionSelectionArray::{{ orderDirectionSelectionArray}}<br>-->
                     <!--                    users_total_count::{{ users_total_count }}<br>-->
-                                        filter_name::{{ filter_name }}<br>
-                                        current_page::{{ current_page }}<br>
+                    filter_name::{{ filter_name }}<br>
+                    current_page::{{ current_page }}<br>
                     <!--                    order_by::{{ order_by }}<br>-->
                     <!--                    order_direction::{{ order_direction }}<br>-->
                     <div class="block_2columns_md p-2"> <!-- filter_name -->
@@ -123,7 +122,8 @@
                     <button type="button" class="btn btn-success btn-sm text-uppercase ml-4" @click="applyFilters">
                         <i :class="getHeaderIcon('save')" class="mr-1"></i>Apply
                     </button>
-                    <button type="button" class="btn btn-sm btn_remove_right_aligned  mt-1" @click="clearFilters()" v-show="filter_name || filter_email || filter_status">
+                    <button type="button" class="btn btn-sm btn_remove_right_aligned  mt-1" @click="clearFilters()"
+                            v-show="filter_name || filter_email || filter_status">
                         <i :class="getHeaderIcon('clear')" class="mr-1" title="Clear filters"></i>
                     </button>
                 </div>
@@ -136,20 +136,6 @@
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-header">
-<!--
-                                    <ListingHeader :showLoadingImage=!is_page_loaded
-                                                   :parentComponentKey="'currency'"
-                                                   :filtered_rows_count="currencies_filtered_count"
-                                                   :page_rows_count="currencyRows.length"
-                                                   :headerIcon="getHeaderIcon('currency')"
-                                                   :headerTitle="'Currencies'"
-                                                   :rightAddButtonLink="'admin.currencies.create'"
-                                                   :itemTitle="pluralize(currencyRows.length, 'currency', 'currencies')"
-                                                   :rightAddButtonLinkTitle="'New'"
-                                                   :rightIcon="'currency'"
-                                    >
-                                    </ListingHeader>
-                                    -->
                                     <ListingHeader :showLoadingImage=!is_page_loaded
                                                    :show_filters_button="true"
                                                    :parentComponentKey="'user'"
@@ -192,7 +178,9 @@
                                         <tr v-for="(user, index) in userRows" :key="index">
                                             <td>{{ user.id }}</td>
                                             <td class="text-right d-flex flex-nowrap">
-                                                <inertia-link :href="route('admin.users.edit', user)" class="btn btn-info m-1 p-1  pb-0 pt-0" :class="route().current('admin.users.*') ? 'active' : ' '">
+                                                <inertia-link :href="route('admin.users.edit', user)"
+                                                              class="btn btn-info m-1 p-1  pb-0 pt-0"
+                                                              :class="route().current('admin.users.*') ? 'active' : ' '">
                                                     <i :class="getHeaderIcon('edit')" class="mr-1" title="Edit"></i>
                                                 </inertia-link>
                                             </td>
@@ -200,8 +188,14 @@
                                             <td>{{ user.name }}</td>
                                             <td>{{ user.email }}</td>
                                             <td>{{ user.status_label }}</td>
-                                            <td>{{ momentDatetime(user.email_verified_at, settingsJsMomentDatetimeFormat) }}</td>
-                                            <td>{{ momentDatetime(user.created_at, settingsJsMomentDatetimeFormat) }}</td>
+                                            <td>{{
+                                                    momentDatetime(user.email_verified_at, settingsJsMomentDatetimeFormat)
+                                                }}
+                                            </td>
+                                            <td>{{
+                                                    momentDatetime(user.created_at, settingsJsMomentDatetimeFormat)
+                                                }}
+                                            </td>
                                         </tr>
                                         </tbody>
                                     </table>
@@ -231,7 +225,6 @@
 
 
         </admin-layout>
-    </div>
 </template>
 
 
@@ -282,11 +275,11 @@ export default {
         const filter_email = ref('')
         const filter_status = ref('')
         const filter_email_verified_at = ref('')
-        const orderBySelectionArray = ref( [
-            {id:'id', name:'Name'},
-            {id:'email', name:'Email'},
-            {id:'status', name:'Status'},
-            {id:'created_at', name:'Created'},
+        const orderBySelectionArray = ref([
+            {id: 'id', name: 'Name'},
+            {id: 'email', name: 'Email'},
+            {id: 'status', name: 'Status'},
+            {id: 'created_at', name: 'Created'},
         ])
 
         const orderDirectionSelectionArray = ref([

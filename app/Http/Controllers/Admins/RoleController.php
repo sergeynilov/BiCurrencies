@@ -69,7 +69,7 @@ class RoleController extends Controller  //    http://127.0.0.1:8000/admin/roles
     public function store(Request $request)
     {
         \Log::info('-1 store $request->all()::' . print_r($request->all(), true));
-        if ( ! auth()->user()->hasAnyRole(['super-admin', 'admin'])) {
+        if ( ! auth()->user()->can(ACCESS_APP_ADMIN_LABEL)) {
             \Log::info('-99 store ::');
 
             return redirect(route('admin.dashboard.index'))->withErrors(['message', 'You have no access to store role']);
@@ -134,7 +134,7 @@ class RoleController extends Controller  //    http://127.0.0.1:8000/admin/roles
 
 
         if (empty($role)) {
-            return redirect('/admin/roles');
+            return redirect(route('admin.roles.index'));
         }
         \Log::info(varDump($role, ' -12 edit $role::'));
         \Log::info(varDump($rolePermissions, ' -13 edit $rolePermissions::'));
@@ -159,7 +159,7 @@ class RoleController extends Controller  //    http://127.0.0.1:8000/admin/roles
     public function update(Request $request, int $role_id)
     {
         \Log::info('-1 update $request->all()::' . print_r($request->all(), true));
-        if ( ! auth()->user()->hasAnyRole(['super-admin', 'admin'])) {
+        if ( ! auth()->user()->can(ACCESS_APP_ADMIN_LABEL)) {
             \Log::info('-99 update ::');
 
             return redirect(route('admin.dashboard.index'))->withErrors(['message', 'You have no access to update role']);
@@ -208,7 +208,7 @@ class RoleController extends Controller  //    http://127.0.0.1:8000/admin/roles
     function destroy(
         Role $role
     ) {
-        if (auth()->user()->hasAnyRole(['super-admin', 'admin'])) {
+        if (auth()->user()->can(ACCESS_APP_ADMIN_LABEL)) {
             $role->delete();
 
             return back();

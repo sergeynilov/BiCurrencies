@@ -27,7 +27,7 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
             'photo' => ['nullable', 'mimes:jpg,jpeg,png', 'max:1024'],
         ]*/
 
-        $userValidationRulesArray = User::getUserValidationRulesArray(null, '', [
+        $userValidationRulesArray = User::getUserValidationRulesArray(null, [
             'name', 'email', 'status', 'password', 'password_2', 'avatar'
         ]);
 

@@ -2,9 +2,9 @@
         <admin-layout>
             <section class="content">
 
-                <div v-if="$page.props.jetstream.flash">
-                    {{ $page.props.jetstream.flash}}
-                </div>
+<!--                <div v-if="$page.props.jetstream.flash">-->
+<!--                    {{ $page.props.jetstream.flash}}-->
+<!--                </div>-->
 
                 <div class="container-fluid">
                     <div class="row">
@@ -37,6 +37,7 @@ import {
 
 export default {
     props: ['currency'],
+    name: 'adminCurrenciesCreate',
 
     components: {
         AdminLayout,

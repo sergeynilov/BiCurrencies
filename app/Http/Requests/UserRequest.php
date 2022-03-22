@@ -26,6 +26,6 @@ class UserRequest extends FormRequest
     public function rules()
     {
         $request= Request();
-        return User::getValidationRulesArray( $request->get('id'), ['password'] );
+        return User::getUserValidationRulesArray( $request->get('id'), ['password'] );
     }
 }

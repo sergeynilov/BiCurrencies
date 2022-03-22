@@ -1,6 +1,10 @@
 <template>
     <section class="m-0 p-2  pagination row_content">
 
+<!--        /mnt/_work_sdb8/wwwroot/lar/photographers/li/resources/views/vendor/pagination/bootstrap-4.blade.php-->
+
+<!--        paginationPages:;{{ paginationPages}}<br>-->
+<!--        paginationPages.length:;{{ paginationPages.length}}<br>-->
 <!--        filtered_rows_count:;{{ filtered_rows_count}}<br>-->
 <!--        page_rows_count:;{{ page_rows_count}}<br>-->
         <ul :class="'pagination pagination-sm m-0 float-right ' + ' listing_pagination_' + parentComponentKey">
@@ -112,6 +116,7 @@ export default {
         // console.log('setup props::')
         // console.log(props)
         // PROPS COMPUTED START
+
         const currentPage = computed(() => {
             // console.log('props::')
             // console.log(props)
@@ -145,6 +150,29 @@ export default {
         const parentComponentKey = computed({
             get: () => props.parentComponentKey
         })
+
+/*
+        const items_count = ref(3)
+        const show_first_item = ref(false)
+        const show_last_item = ref(false)
+        const limit_start= ref(1)
+        const limit_end= ref(1)
+
+
+        if (paginationPages.length > items_count*2) {
+            limit_start.value= currentPage.value - 1
+            limit_end.value= limit_start.value + 2
+        }
+
+        if(currentPage.value >= items_count.value) {
+            show_first_item.value= true
+        }
+        if($paginator->lastPage() > currentPage.value + 1) {
+            show_last_item.value= true
+        }
+
+*/
+
 
         // PROPS COMPUTED END
 
@@ -258,8 +286,6 @@ export default {
     font-weight: 300;
     line-height: 34px;
     height: 36px;
-    //color: $text-color;
-    //font-size: $font_size;
 }
 
 .pagination a {
@@ -274,7 +300,6 @@ export default {
 }
 
 .currentPage {
-    //border-color: $text-color;
     font-weight: bold;
     color: white !important;
     width: 40px !important;
@@ -285,7 +310,6 @@ export default {
 }
 
 .pagination {
-    //border-color: $text-color;
     font-weight: bold;
     color: white !important;
     //width:40px !important;

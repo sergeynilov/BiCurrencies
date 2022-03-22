@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admins;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CurrencyHistoryResource;
-use App\Library\Services\AppContent;
 use App\Models\CurrencyHistory;
 use App\Models\Settings;
 use App\Models\Currency;
@@ -38,7 +37,9 @@ class CurrencyController extends Controller  //    http://127.0.0.1:8000/admin/c
      */
     public function index()
     {
-        if ( ! auth()->user()->hasAnyRole(['super-admin', 'admin'])) {
+//        \Log::info(  varDump(auth()->user()->permissions, ' -1 $authUser->permissions::') );
+//        \Log::info(  varDump(ACCESS_APP_ADMIN , ' -1 CurrencyControllerACCESS_APP_ADMIN ::') );
+        if ( ! auth()->user()->can(ACCESS_APP_ADMIN_LABEL)) {
             return redirect(route('admin.dashboard.index'))
                 ->with('flash', 'warning_flash_type_You have no access to currency listing');
         }
@@ -49,7 +50,7 @@ class CurrencyController extends Controller  //    http://127.0.0.1:8000/admin/c
 
     public function filter()
     {
-        if ( ! auth()->user()->hasAnyRole(['super-admin', 'admin'])) {
+        if ( ! auth()->user()->can(ACCESS_APP_ADMIN_LABEL)) {
             return redirect(route('admin.dashboard.index'))
                 ->with('flash', 'warning_flash_type_You have no access to currency listing');
         }
@@ -81,7 +82,7 @@ class CurrencyController extends Controller  //    http://127.0.0.1:8000/admin/c
      */
     public function create()
     {
-        if ( ! auth()->user()->hasAnyRole(['super-admin', 'admin'])) {
+        if ( ! auth()->user()->can(ACCESS_APP_ADMIN_LABEL)) {
             return redirect(route('admin.dashboard.index'))
                 ->with('flash', 'warning_flash_type_You have no access to currency listing');
         }
@@ -100,7 +101,7 @@ class CurrencyController extends Controller  //    http://127.0.0.1:8000/admin/c
      */
     public function store(CurrencyRequest $request)
     {
-        if ( ! auth()->user()->hasAnyRole(['super-admin', 'admin'])) {
+        if ( ! auth()->user()->can(ACCESS_APP_ADMIN_LABEL)) {
             return redirect(route('admin.dashboard.index'))
                 ->with('flash', 'warning_flash_type_You have no access to currency listing');
         }
@@ -127,10 +128,10 @@ class CurrencyController extends Controller  //    http://127.0.0.1:8000/admin/c
         }
         \Log::info('-1 store $currency->id::' . print_r($currency->id, true));
 
-        return redirect('/admin/currencies/' . $currency->id . '/edit')->with('flash',
+        return redirect(route('admin.currencies.edit', $currency->id))->with('flash',
             'warning_flash_type_New currency was successfully added');
 
-
+        /* route('admin.currencies.index') */
     }
 
     /**
@@ -142,7 +143,7 @@ class CurrencyController extends Controller  //    http://127.0.0.1:8000/admin/c
      */
     public function edit(int $currency_id)
     {
-        if ( ! auth()->user()->hasAnyRole(['super-admin', 'admin'])) {
+        if ( ! auth()->user()->can(ACCESS_APP_ADMIN_LABEL)) {
             return redirect(route('admin.dashboard.index'))
                 ->with('flash', 'warning_flash_type_You have no access to currency listing');
         }
@@ -158,30 +159,32 @@ class CurrencyController extends Controller  //    http://127.0.0.1:8000/admin/c
         \Log::info(  varDump($minCurrencyHistoryDay, ' -1 $minCurrencyHistoryDay::') );
 
         if (empty($currency)) {
-            return redirect('/admin/currencies');
+            return redirect(route('admin.currencies.index'));
         }
         \Log::info(varDump($currency, ' -12 edit $currency::'));
 
         return Inertia::render('Admins/Currencies/Edit', [
             'currency' => $currency,
             'minCurrencyHistoryDay' => $minCurrencyHistoryDay,
-            'today_day' => Carbon::now(config('app.timezone'))->format('Y-m-d' ),
         ]);
 
+
+/*
+        public function project(project $project){
+        return Inertia::render('Projects/ProjectPage', [
+            'project' => [
+                'id' => $project->id,
+                'projectImage' => $project->projectImage,
+                'projectText' => $project->projectText,
+            ]
+        ]);
+    }*/
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param \App\Models\Currency $currency
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function update(CurrencyRequest $request, int $currency_id)
     {
         \Log::info('-1 update $request->all()::' . print_r($request->all(), true));
-        if ( ! auth()->user()->hasAnyRole(['super-admin', 'admin'])) {
+        if ( ! auth()->user()->can(ACCESS_APP_ADMIN_LABEL)) {
             return redirect(route('admin.dashboard.index'))
                 ->with('flash', 'warning_flash_type_You have no access to currency listing');
         }
@@ -189,7 +192,6 @@ class CurrencyController extends Controller  //    http://127.0.0.1:8000/admin/c
         $currency = Currency
             ::getById($currency_id)
             ->first();
-
 
         try {
             DB::beginTransaction();
@@ -213,12 +215,12 @@ class CurrencyController extends Controller  //    http://127.0.0.1:8000/admin/c
             return back()->withErrors(['message' => $e->getMessage()]);
         }
 
-        return redirect('/admin/currencies')->with('flash', 'Currency was successfully updated');
-    }
+        return redirect(route('admin.dashboard.index'))->with('flash', 'Currency was successfully updated');
+    } // public function update(CurrencyRequest $request, int $currency_id)
 
     public function destroy(int $currency_id)
     {
-        if ( ! auth()->user()->hasAnyRole(['super-admin', 'admin'])) {
+        if ( ! auth()->user()->can(ACCESS_APP_ADMIN_LABEL)) {
             return redirect(route('admin.dashboard.index'))
                 ->with('flash', 'warning_flash_type_You have no access to destroy currency');
         }
@@ -227,8 +229,11 @@ class CurrencyController extends Controller  //    http://127.0.0.1:8000/admin/c
         if ($currency == null) {
             \Log::info(varDump(-1000, ' -1000 destroy  $currency_id::'));
 
-            return redirect('/admin/currencies')->with('flash', 'warning_flash_type_Currency was not found !');
-
+//            return redirect('/admin/currencies')->with('flash', 'warning_flash_type_Currency was not found !');
+            return response()->json([
+                'message' => 'Currency # "' . $currency_id . '" not found!',
+                'image'   => null
+            ], HTTP_RESPONSE_NOT_FOUND);
         }
         try {
             DB::beginTransaction();
@@ -242,23 +247,24 @@ class CurrencyController extends Controller  //    http://127.0.0.1:8000/admin/c
             return back()->withErrors(['message' => $e->getMessage()]);
         }
 
-        return back();
+        return redirect(route('admin.currencies.index'))
+            ->with('flash', 'success_flash_type_You have deleted currency successfully !');
     }
 
     public function get_currency_image($currency_id)
     {
-        if ( ! auth()->user()->hasAnyRole(['super-admin', 'admin'])) {
+        if ( ! auth()->user()->can(ACCESS_APP_ADMIN_LABEL)) {
             return redirect(route('admin.dashboard.index'))
                 ->with('flash', 'warning_flash_type_You have no access to currency listing');
         }
 //        \Log::info(varDump($currency_id, ' -1 get_currency_image $currency_id::'));
         $currency = Currency::find($currency_id);
         if ($currency == null) {
-            return redirect('/admin/currencies')->with('flash', 'warning_flash_type_Currency was not found !');
+            return redirect(route('admin.dashboard.index'))->with('flash', 'warning_flash_type_Currency was not found !');
         }
 
         $retArray = [];
-        foreach ($currency->getMedia('currency_app') as $mediaImage) {
+        foreach ($currency->getMedia(config('app.media_app_name')) as $mediaImage) {
             if (File::exists($mediaImage->getPath())) {
                 $retArray['url']       = $mediaImage->getUrl();
                 $imageInstance = Image::load($mediaImage->getUrl());
@@ -323,14 +329,14 @@ class CurrencyController extends Controller  //    http://127.0.0.1:8000/admin/c
             DB::beginTransaction();
 
             if ( ! empty($currencyImageUploadedFile)) {
-                foreach ($currency->getMedia('currency_app') as $mediaImage) {
+                foreach ($currency->getMedia(config('app.media_app_name')) as $mediaImage) {
                     $mediaImage->delete();
                 }
 
                 $currency
                     ->addMediaFromRequest('image')
                     ->usingFileName($request->image_filename)
-                    ->toMediaCollection('currency_app' /*, 'public/currency_app' */);
+                    ->toMediaCollection(config('app.media_app_name') );
 
                 $currency->updated_at = Carbon::now(config('app.timezone'));
                 $currency->save();
@@ -355,5 +361,84 @@ class CurrencyController extends Controller  //    http://127.0.0.1:8000/admin/c
             HTTP_RESPONSE_OK
         ]);
     } // public function upload_image(CreateCustomerRequest $request)
+
+    public function activate(Request $request, int $currency_id)
+    {
+//        \Log::info('-1 activate $currency_id::' . print_r($currency_id, true));
+        if ( ! auth()->user()->can(ACCESS_APP_ADMIN_LABEL)) {
+            return redirect(route('admin.dashboard.index'))
+                ->with('flash', 'warning_flash_type_You have no access to currency listing');
+        }
+
+        $currency = Currency
+            ::getById($currency_id)
+            ->first();
+        if(empty($currency)) {
+            return response()->json([
+                'message' => 'Currency # "' . $currency_id . '" not found!',
+                'image'   => null
+            ], HTTP_RESPONSE_NOT_FOUND);
+        }
+
+        try {
+            DB::beginTransaction();
+            $currency->active     = 1;
+            $currency->updated_at = Carbon::now(config('app.timezone'));
+            $currency->save();
+//            \Log::info('-1 ACTIVATED $currency_id::' . print_r($currency_id, true));
+
+            DB::commit();
+        } catch (QueryException $e) {
+            DB::rollBack();
+//            \Log::info('-1 CurrencyController store $e->getMessage() ::' . print_r($e->getMessage(), true));
+            return response()->json([
+                'message' => $e->getMessage(),
+            ], HTTP_RESPONSE_NOT_FOUND);
+        }
+        return response()->json([
+            'currency' => $currency,
+            'message' => 'warning_flash_type_Currency was successfully activated987 !',
+            HTTP_RESPONSE_OK
+        ]);
+    } // public function activate(Request $request, int $currency_id)
+
+    public function deactivate(Request $request, int $currency_id)
+    {
+//        \Log::info('-1 deactivate $currency_id::' . print_r($currency_id, true));
+        if ( ! auth()->user()->can(ACCESS_APP_ADMIN_LABEL)) {
+            return redirect(route('admin.dashboard.index'))
+                ->with('flash', 'warning_flash_type_You have no access to currency listing');
+        }
+
+        $currency = Currency
+            ::getById($currency_id)
+            ->first();
+        if(empty($currency)) {
+            return response()->json([
+                'message' => 'Currency # "' . $currency_id . '" not found!',
+                'image'   => null
+            ], HTTP_RESPONSE_NOT_FOUND);
+        }
+
+        try {
+            DB::beginTransaction();
+            $currency->active     = 0;
+            $currency->updated_at = Carbon::now(config('app.timezone'));
+            $currency->save();
+
+            DB::commit();
+        } catch (QueryException $e) {
+            DB::rollBack();
+            return response()->json([
+                'message' => $e->getMessage(),
+            ], HTTP_RESPONSE_NOT_FOUND);
+        }
+
+        return response()->json([
+            'currency' => $currency,
+            'message' => 'warning_flash_type_Currency was successfully deactivated764 !',
+            HTTP_RESPONSE_OK
+        ]);
+    } // public function deactivate(Request $request, int $currency_id)
 
 }

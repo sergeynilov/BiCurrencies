@@ -80,7 +80,7 @@ export default {
         showLoadingImage: {
             type: Boolean,
             default: false,
-            required: true
+            required: false
         },
         show_filters_button: {
             type: Boolean,

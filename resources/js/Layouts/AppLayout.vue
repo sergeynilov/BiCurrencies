@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper">
-    <HRRRead :title="title" />
+    <Head :title="title" />
     <!-- Navbar -->
     <nav class="main-header navbar navbar-expand navbar-white navbar-light">
       <!-- Left navbar links -->

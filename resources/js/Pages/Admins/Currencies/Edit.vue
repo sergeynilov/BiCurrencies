@@ -1,26 +1,92 @@
 <template>
     <admin-layout>
-        <section class="content">
+        <vue-final-modal
+            v-model="show_currency_history_filters_modal"
+            classes="admin_listing_modal_container"
+            content-class="admin_listing_modal_content"
+        >
+            <h5 class="admin_listing_modal_header m-0 m-0">
+                <i :class="getHeaderIcon('filter')" class="mr-2"></i>Currency history filter
+            </h5>
 
+            <div class="content admin_listing_modal_content_editor_form ">
+                <div class="block_2columns_md p-2"> <!-- currency_history_filter_date_from -->
+                    <div class="horiz_divider_left_13">
+                        <label for="currency_history_filter_date_from">From:</label>
+                    </div>
+                    <div class="horiz_divider_right_23">
+                        <Datepicker
+                            id="currency_history_filter_date_from"
+                            v-model="currency_history_filter_date_from"
+                            :minDate="currency_history_filter_date_from"
+                            locale="en-US"
+                            format="d MMMM, yyyy"
+                        >
+                            <template v-slot:belowDate>
+                                <span></span>
+                            </template>
+                        </datepicker>
+                    </div>
+                </div> <!-- class="block_2columns_md" currency_history_filter_date_from -->
+
+                <div class="block_2columns_md p-2"> <!-- currency_history_filter_date_till -->
+                    <div class="horiz_divider_left_13">
+                        <label for="currency_history_filter_date_till">Till:</label>
+                    </div>
+                    <div class="horiz_divider_right_23">
+                        <Datepicker
+                            id="currency_history_filter_date_till"
+                            v-model="currency_history_filter_date_till"
+                            :maxDate="currency_history_filter_date_till"
+                            locale="en-US"
+                            format="d MMMM, yyyy"
+                        >
+                            <template v-slot:belowDate>
+                                <span></span>
+                            </template>
+                        </datepicker>
+
+                    </div>
+                </div> <!-- class="block_2columns_md" currency_history_filter_date_till -->
+
+            </div>
+            <button class="admin_listing_modal_close m-0 mt-3 mr-2" @click="hideCurrencyHistoryFiltersModal">
+                x
+            </button>
+
+            <div class="admin_listing_modal_footer">
+                <button type="button" class="btn btn-secondary btn-xs mt-1"
+                        @click="hideCurrencyHistoryFiltersModal">
+                    <i :class="getHeaderIcon('cancel')" class="mr-1"></i>Cancel
+                </button>
+                <button type="button" class="btn btn-success btn-sm text-uppercase ml-4"
+                        @click="applyCurrencyHistoryFilters">
+                    <i :class="getHeaderIcon('save')" class="mr-1"></i>Apply
+                </button>
+            </div>
+
+        </vue-final-modal>
+
+
+        <section class="content">
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-12">
-                        <!--                        currency::{{ currency }}-->
-                        <div class="card card-primary">
 
                             <div class="card card-primary card-tabs">
                                 <div class="card-header p-2">
                                     <ul class="nav nav-tabs" id="custom-tabs-one-tab" role="tablist">
                                         <li class="nav-item">
                                             <!--                                                    active-->
-                                            <a class="nav-link" id="currency-details-tab" data-toggle="pill"
+                                            <a class="nav-link " id="currency-details-tab" data-toggle="pill"
                                                href="#custom-tabs-one-home" role="tab"
                                                aria-controls="custom-tabs-one-home" aria-selected="true">Details</a>
                                         </li>
-                                        <li class="nav-item active">
-                                            <a class="nav-link" id="currency-history-tab" data-toggle="pill"
+                                        <li class="nav-item">
+                                            <a class="nav-link active" id="currency-history-tab" data-toggle="pill"
                                                href="#custom-tabs-one-profile" role="tab"
-                                               aria-controls="custom-tabs-one-profile" aria-selected="false">History</a>
+                                               aria-controls="custom-tabs-one-profile"
+                                               aria-selected="false">History</a>
                                         </li>
                                         <li class="nav-item">
                                             <!--                                            active-->
@@ -41,60 +107,29 @@
                                 <div class="card-body">
                                     <div class="tab-content" id="custom-tabs-one-tabContent">
                                         <!--                                                show active-->
-                                        <div class="tab-pane show " id="custom-tabs-one-home" role="tabpanel"
+                                        <div class="tab-pane fade" id="custom-tabs-one-home" role="tabpanel"
                                              aria-labelledby="currency-details-tab">
+
+<!--                                            editor::{{ editor }} <br>-->
+<!--                                            editorData::{{ editorData }} <br>-->
+<!--                                            editorConfig::{{ editorConfig }} <br>-->
+<!--                                            <ckeditor-->
+<!--                                                :editor="editor"-->
+<!--                                                v-model="editorData"-->
+<!--                                                      :config="editorConfig"-->
+<!--                                            ></ckeditor>-->
+
+
                                             <form-editor :is_insert="false" :currency="currency"></form-editor>
                                         </div>
 
-<!--                                        fade-->
-                                        <div class="tab-pane show active " id="custom-tabs-one-profile"
+                                        <!--                                        fade show active -->
+                                        <div class="tab-pane show active" id="custom-tabs-one-profile"
                                              role="tabpanel" aria-labelledby="currency-history-tab">
 
-<!--                                            minCurrencyHistoryDay::{{ minCurrencyHistoryDay}}<br>-->
-                                            currency_history_filter_date_from::{{currency_history_filter_date_from}}<br>
-                                            currency_history_filter_date_till::{{currency_history_filter_date_till}}<br>
-<!--                                            9th March, 2022 4:15 PM<br>-->
-
-
-                                            <div class="block_2columns_md p-2"> <!-- currency_history_filter_date_from -->
-                                                <div class="horiz_divider_left_13">
-                                                    <label for="currency_history_filter_date_from">From:</label>
-                                                </div>
-                                                <div class="horiz_divider_right_23">
-                                                    <Datepicker
-                                                        id="currency_history_filter_date_from"
-                                                        v-model="currency_history_filter_date_from"
-                                                        locale="en-US"
-                                                        format="d MMMM, yyyy"
-                                                    >
-                                                        <template v-slot:belowDate>
-                                                            <span></span>
-                                                        </template>
-                                                    </datepicker>
-                                                </div>
-                                            </div> <!-- class="block_2columns_md" currency_history_filter_date_from -->
-
-                                            <div class="block_2columns_md p-2"> <!-- currency_history_filter_date_till -->
-                                                <div class="horiz_divider_left_13">
-                                                    <label for="currency_history_filter_date_till">Till:</label>
-                                                </div>
-                                                <div class="horiz_divider_right_23">
-                                                    <Datepicker
-                                                        id="currency_history_filter_date_till"
-                                                        v-model="currency_history_filter_date_till"
-                                                        locale="en-US"
-                                                        format="d MMMM, yyyy"
-                                                    >
-                                                        <template v-slot:belowDate>
-                                                            <span></span>
-                                                        </template>
-                                                    </datepicker>
-
-                                                </div>
-                                            </div> <!-- class="block_2columns_md" currency_history_filter_date_till -->
-
+                                            currencies_history_filtered_count::{{ currencies_history_filtered_count }}
                                             <ListingHeader :showLoadingImage="false"
-                                                           :show_filters_button="false"
+                                                           :show_filters_button="true"
                                                            :parentComponentKey="'currencies_history'"
                                                            :filtered_rows_count="currencies_history_filtered_count"
                                                            :page_rows_count="currencyHistoryRows.length"
@@ -144,7 +179,8 @@
                                                 </table>
                                             </div>
 
-                                            <div class="card-footer clearfix">
+                                            <div class="card-footer clearfix" v-if="currencyHistoryRows.length > 0">
+                                                ListingPagination::currencies_history_filtered_count::{{ currencies_history_filtered_count }}
                                                 <ListingPagination
                                                     parentComponentKey="currency_history"
                                                     :currentPage="currencies_history_current_page"
@@ -203,11 +239,15 @@
                                                             </div>
 
                                                             <div v-show="uploaded_image_width" class="p-2">
-                                                                Width : <strong>{{ uploaded_image_width }}px</strong>
+                                                                Width : <strong>{{
+                                                                    uploaded_image_width
+                                                                }}px</strong>
                                                             </div>
 
                                                             <div v-show="uploaded_image_height" class="p-2">
-                                                                Height : <strong>{{ uploaded_image_height }}</strong>
+                                                                Height : <strong>{{
+                                                                    uploaded_image_height
+                                                                }}</strong>
                                                             </div>
                                                         </div>
                                                     </tr>
@@ -219,10 +259,10 @@
                                                         @click.prevent="cancelCurrencyImageUpload()">
                                                     <i :class="'i_link '+getHeaderIcon('cancel')"></i>Cancel
                                                 </button>
-                                                <button type="button" class="btn btn-success btn-sm text-uppercase ml-4"
+                                                <button type="button"
+                                                        class="btn btn-success btn-sm text-uppercase ml-4"
                                                         @click.prevent="uploadCancelCurrencyImage()">
                                                     <i :class="'i_link '+getHeaderIcon('save')"></i>Upload
-
                                                 </button>
                                             </div>
                                         </div>
@@ -230,11 +270,14 @@
                                         <div class="tab-pane fade" id="custom-tabs-one-settings" role="tabpanel"
                                              aria-labelledby="custom-tabs-one-settings-tab">
                                             Pellentesque vestibulum commodo nibh nec blandit. Maecenas neque magna,
-                                            iaculis tempus turpis ac, ornare sodales tellus. Mauris eget blandit dolor.
+                                            iaculis tempus turpis ac, ornare sodales tellus. Mauris eget blandit
+                                            dolor.
                                             Quisque tincidunt venenatis vulputate. Morbi euismod molestie tristique.
-                                            Vestibulum consectetur dolor a vestibulum pharetra. Donec interdum placerat
+                                            Vestibulum consectetur dolor a vestibulum pharetra. Donec interdum
+                                            placerat
                                             urna nec pharetra. Etiam eget dapibus orci, eget aliquet urna. Nunc at
-                                            consequat diam. Nunc et felis ut nisl commodo dignissim. In hac habitasse
+                                            consequat diam. Nunc et felis ut nisl commodo dignissim. In hac
+                                            habitasse
                                             platea dictumst. Praesent imperdiet accumsan ex sit amet facilisis.
                                         </div>
                                     </div>
@@ -244,7 +287,6 @@
 
                             </div>
 
-                        </div>
                     </div>
                 </div>
             </div>
@@ -266,9 +308,13 @@ import {
     getErrorMessage,
     showFlashMessage,
     getDictionaryLabel,
+    dateIntoDbFormat,
     getFileSizeAsString
 } from '@/commonFuncs'
-import {settingsJsMomentDatetimeFormat} from '@/app.settings.js'
+import {settingsJsMomentDatetimeFormat, settingsAppColors} from '@/app.settings.js'
+import CKEditor from '@ckeditor/ckeditor5-vue';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+
 // resources/js/Pages/Admins/Currencies/Form.vue
 // import { page } from '@inertiajs/inertia-vue3';
 
@@ -281,35 +327,35 @@ import ListingHeader from '@/components/ListingHeader.vue'
 
 import Datepicker from 'vue3-date-time-picker';
 import 'vue3-date-time-picker/dist/main.css';
+import {ModalsContainer, VueFinalModal} from "vue-final-modal";
 
 export default {
     props: ['currency', 'minCurrencyHistoryDay'],
 
-    name: 'CurrencyEdit',
+    name: 'adminCurrenciesEdit',
     components: {
         AdminLayout,
         ListingPagination,
         ListingHeader,
         Datepicker,
+        VueFinalModal,
+        ModalsContainer,
+        CKEditor,
         formEditor
     },
     setup(props) {
         console.log('resources/js/Pages/Admins/Currencies/Edit.vue setup props::')
         console.log(props)
-        // console.log('props.currency::')
-        // console.log(props.currency)
-
         const currency_history_filter_date_from = ref(props.minCurrencyHistoryDay)
-        const currency_history_filter_date_till = ref(props.today_day)
-        console.log('currency_history_filter_date_till::')
-        console.log(currency_history_filter_date_till)
-
-        // const currency_history_filter_date_till = ref(new Date()).toLocaleDateString('en-us', { year:"numeric", month:"numeric", day:"numeric"})
-
-        // new Date().toLocaleDateString('en-us', { weekday:"long", year:"numeric", month:"short", day:"numeric"})
-// "Friday, Jul 2, 2021"
+        var d = new Date();
+        const show_currency_history_filters_modal = ref(false)
+        var today_date = dateIntoDbFormat(d)
+        const currency_history_filter_date_till = ref(today_date)
+        // console.log('currency_history_filter_date_till::')
+        if (isEmpty(currency_history_filter_date_from.value)) {
+            currency_history_filter_date_from.value = today_date
+        }
         let currency = ref(props.currency)
-        // let minCurrencyHistoryDay = ref(props.minCurrencyHistoryDay)
         let currencyHistoryRows = ref([])
         let currencies_history_filtered_count = ref(0)
         let currencies_history_per_page = ref(0)
@@ -320,6 +366,10 @@ export default {
         let currencyImageFile = null
         let currency_image_url = ref(null)
         let currency_image_info = ref('')
+
+        let editorData = ref(' editorData init text')
+        let editor = ref(ClassicEditor)
+        let editorConfig = ref({})
 
         watchEffect(() => {
             if (imageFiles.value) {
@@ -453,17 +503,25 @@ export default {
         function loadCurrencyHistory() {
             console.log('loadCurrencyHistory currency_history_filter_date_from.value::')
             console.log(currency_history_filter_date_from.value)
-            console.log('loadCurrencyHistory currency_history_filter_date_till.value::')
-            console.log(currency_history_filter_date_till.value)
+            console.log(typeof currency_history_filter_date_from.value)
+            if (!isEmpty(currency_history_filter_date_from.value) && typeof currency_history_filter_date_from.value.getMonth === 'function') {
+                currency_history_filter_date_from.value = dateIntoDbFormat(currency_history_filter_date_from.value)
+                console.log('CHANGED currency_history_filter_date_from.value::')
+                console.log(currency_history_filter_date_from.value)
+            }
+            // console.log('loadCurrencyHistory currency_history_filter_date_till.value::')
+            // console.log(currency_history_filter_date_till.value)
+            if (!isEmpty(currency_history_filter_date_till.value) && typeof currency_history_filter_date_till.value.getMonth === 'function') {
+                currency_history_filter_date_till.value = dateIntoDbFormat(currency_history_filter_date_till.value)
+                console.log('CHANGED currency_history_filter_date_till.value::')
+                console.log(currency_history_filter_date_till.value)
+            }
 
             let url = route('admin.currency_histories.index', [currency.value.id, currencies_history_current_page.value, currency_history_filter_date_from.value, currency_history_filter_date_till.value])
-            console.log('loadCurrencyHistory url::')
-            console.log(url)
-
             axios.get(url)
                 .then(({data}) => {
-                    // console.log('data::')
-                    // console.log(data)
+                    console.log('loadCurrencyHistory data::')
+                    console.log(data)
                     currencyHistoryRows.value = data.data
                     currencies_history_filtered_count.value = data.meta.total
                     currencies_history_per_page.value = parseInt(data.meta.per_page)
@@ -480,18 +538,15 @@ export default {
                 text: "You what to delete this currency history!",
                 icon: 'warning',
                 showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
+                confirmButtonColor: settingsAppColors.confirmButtonColor,
+                cancelButtonColor: settingsAppColors.cancelButtonColor,
                 confirmButtonText: 'Yes, delete it!'
             }).then((result) => {
                 if (result.isConfirmed) {
 
-                    console.log('currencyHistory.value::')
-                    console.log(currencyHistory.value)
-
-                    //    Route::delete('currency_history/{currency_history_id}', [CurrencyHistoryController::class, 'currency_histories.destroy']);
-
-                    axios.post(route('admin.currency_histories.destroy', currencyHistory.value.id))
+                    // console.log('deleteCurrencyHistory currencyHistory::')
+                    // console.log(currencyHistory)
+                    axios.delete(route('admin.currency_histories.destroy', currencyHistory.id))
                         .then(({data}) => {
                             console.log('deleteCurrencyHistory data::')
                             console.log(data)
@@ -504,16 +559,56 @@ export default {
                         })
                         .catch(error => {
                             console.error(error)
-                            // this.showPopupMessage('Currencies History', error.response.data.message, 'warn')
                         })
                 }
             })
         } // function deleteCurrencyHistory(currencyHistory) {
 
+
         function currencyHistoryPaginationPageClicked(page) {
             currencies_history_current_page.value = page
             loadCurrencyHistory()
         }
+
+        function showCurrencyHistoryFiltersModal() {
+            console.log('showCurrencyHistoryFiltersModal::')
+            show_currency_history_filters_modal.value = true
+        }
+
+        function hideCurrencyHistoryFiltersModal() {
+            console.log('hideCurrencyHistoryFiltersModal::')
+            show_currency_history_filters_modal.value = false
+        }
+
+        function applyCurrencyHistoryFilters() {
+            console.log('applyCurrencyHistoryFilters::')
+            currencies_history_current_page.value = 1
+            loadCurrencyHistory(true)
+
+            show_currency_history_filters_modal.value = false
+            let filters_count_text = getCurrencyHistoryFiltersCountText()
+            let filters = {filter_name: 'filter_name'}
+            window.emitter.emit('listingFilterModifiedEvent', {
+                parentComponentKey: 'currencies_history',
+                filters: filters,
+                filters_count_text: filters_count_text
+            })
+        }
+
+        function getCurrencyHistoryFiltersCountText() {
+            let ret = 0
+            if (show_currency_history_filters_modal.value) return ''
+            if (currency_history_filter_date_from.value != '') {
+                ret++
+            }
+            if (currency_history_filter_date_till.value != '') {
+                ret++
+            }
+            console.log('getCurrencyHistoryFiltersCountText ret::')
+            console.log(ret)
+            if (!ret) return ''
+            return (ret > 0 ? ret + ' ' : '') + pluralize3(ret, ' no filters set', ' filter is set', ' filters are set')
+        } // getCurrencyHistoryFiltersCountText
 
 
         const adminCurrencyEditOnMounted = async () => {
@@ -531,6 +626,16 @@ export default {
                     currencyHistoryPaginationPageClicked(params.page)
                 }
             })
+
+            window.emitter.on('showFiltersModalEvent', params => {
+                console.log('TARGET showFiltersModalEvent params::')
+                console.log(params)
+                if (params.parentComponentKey === 'currencies_history') {
+                    showCurrencyHistoryFiltersModal()
+                }
+            })
+
+
             window.emitter.on('listingHeaderRightButtonClickedEvent', params => {
                 console.log('TARGET listingHeaderRightButtonClickedEvent params::')
                 console.log(params)
@@ -568,6 +673,15 @@ export default {
             currencies_history_filtered_count,
             currencies_history_per_page,
             currencies_history_current_page,
+            editorData,
+            editor,
+            editorConfig,
+
+            // Listing filtering
+            show_currency_history_filters_modal,
+            showCurrencyHistoryFiltersModal,
+            hideCurrencyHistoryFiltersModal,
+            applyCurrencyHistoryFilters,
 
             // Currency History listing
             currency_history_filter_date_from,
@@ -597,6 +711,7 @@ export default {
             getErrorMessage,
             showFlashMessage,
             getDictionaryLabel,
+            dateIntoDbFormat,
             getFileSizeAsString
         }
     }, // setup() {

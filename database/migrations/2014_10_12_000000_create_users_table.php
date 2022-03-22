@@ -31,6 +31,10 @@ return new class extends Migration
             $table->index(['name', 'status'], 'users_name_status_index');
 
         });
+
+        Artisan::call('db:seed', array('--class' => 'UsersTableSeeder'));
+
+
     }
 
     /**

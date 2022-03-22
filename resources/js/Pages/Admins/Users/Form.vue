@@ -5,7 +5,10 @@
         <!--        formEditor::{{ formEditor }}<br>-->
 
         <div class="card-header">
-            <h3 class="card-title">{{ getFormEditorTitle }}</h3>
+            <h3 class="card-title">
+                <i :class="getHeaderIcon('user')" class="mr-1"></i>
+                {{ getFormEditorTitle }}
+            </h3>
         </div> <!-- card-title -->
 
         <form @submit.prevent="saveUser">

@@ -5,7 +5,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use DB;
-use App\library\CheckValueType;
+use App\Library\CheckValueType;
 
 
 class Settings extends Model

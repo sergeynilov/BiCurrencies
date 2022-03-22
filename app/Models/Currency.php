@@ -1,62 +1,85 @@
 <?php
 
 namespace App\Models;
+
 use DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Validation\Rule;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
-class Currency extends Model  implements HasMedia
+class Currency extends Model implements HasMedia
 {
     use InteractsWithMedia;
-    protected $table      = 'currency';
+
+    protected $table = 'currency';
     protected $primaryKey = 'id';
-    public $timestamps    = false;
+    public $timestamps = false;
+    public $media_image_url = '';
+    public $latest_currency_history = [];
 
-    protected $fillable = [ 'name', 'num_code', 'char_code', 'color','bgcolor', 'is_top', 'active', 'ordering', 'updated_at'  ];
+    protected $fillable
+        = [
+            'name',
+            'num_code',
+            'char_code',
+            'color',
+            'bgcolor',
+            'is_top',
+            'active',
+            'ordering',
+            'updated_at'
+        ];
 
 
-    private static $currencyIsTopLabelValueArray = Array(0 => 'Not is top', 1 => 'Is top');
-    public static function getCurrencyIsTopValueArray($key_return= true) : array
+    private static $currencyIsTopLabelValueArray = array(0 => 'Not is top', 1 => 'Is top');
+
+    public static function getCurrencyIsTopValueArray($key_return = true): array
     {
         $resArray = [];
         foreach (self::$currencyIsTopLabelValueArray as $key => $value) {
             if ($key_return) {
-                $resArray[] = [ 'key' => $key, 'label' => $value ];
+                $resArray[] = ['key' => $key, 'label' => $value];
             } else {
                 $resArray[$key] = $value;
             }
         }
+
         return $resArray;
     }
-    public static function getCurrencyIsTopLabel(string $status):string
+
+    public static function getCurrencyIsTopLabel(string $status): string
     {
-        if (!empty(self::$currencyIsTopLabelValueArray[$status])) {
+        if ( ! empty(self::$currencyIsTopLabelValueArray[$status])) {
             return self::$currencyIsTopLabelValueArray[$status];
         }
+
         return '';
     }
 
 
-    private static $currencyActiveLabelValueArray = Array(0 => 'Inactive', 1 => 'Active');
-    public static function getCurrencyActiveValueArray($key_return= true) : array
+    private static $currencyActiveLabelValueArray = array(0 => 'Inactive', 1 => 'Active');
+
+    public static function getCurrencyActiveValueArray($key_return = true): array
     {
         $resArray = [];
         foreach (self::$currencyActiveLabelValueArray as $key => $value) {
             if ($key_return) {
-                $resArray[] = [ 'key' => $key, 'label' => $value ];
+                $resArray[] = ['key' => $key, 'label' => $value];
             } else {
                 $resArray[$key] = $value;
             }
         }
+
         return $resArray;
     }
-    public static function getCurrencyActiveLabel(string $status):string
+
+    public static function getCurrencyActiveLabel(string $status): string
     {
-        if (!empty(self::$currencyActiveLabelValueArray[$status])) {
+        if ( ! empty(self::$currencyActiveLabelValueArray[$status])) {
             return self::$currencyActiveLabelValueArray[$status];
         }
+
         return '';
     }
 
@@ -70,15 +93,16 @@ class Currency extends Model  implements HasMedia
         return $this->hasMany('App\Models\CurrencyHistory', 'currency_id', 'id');
     }
 
-    public function scopeGetById($query, int $id= null)
+    public function scopeGetById($query, int $id = null)
     {
-        if (!empty($id)) {
-            if ( is_array($id) ) {
-                $query->whereIn(with(new Currency)->getTable().'.id', $id);
+        if ( ! empty($id)) {
+            if (is_array($id)) {
+                $query->whereIn(with(new Currency)->getTable() . '.id', $id);
             } else {
-                $query->where(with(new Currency)->getTable().'.id', $id);
+                $query->where(with(new Currency)->getTable() . '.id', $id);
             }
         }
+
         return $query;
     }
 
@@ -87,25 +111,27 @@ class Currency extends Model  implements HasMedia
         if (empty($name)) {
             return $query;
         }
-        return $query->where( with(new Currency)->getTable() . '.name', 'like', '%'.$name.'%');
-    }
 
+        return $query->where(with(new Currency)->getTable() . '.name', 'like', '%' . $name . '%');
+    }
 
 
     public function scopeGetByIsTop($query, $is_top = null)
     {
-        if (!isset($is_top) or strlen($is_top) == 0) {
+        if ( ! isset($is_top) or strlen($is_top) == 0) {
             return $query;
         }
-        return $query->where( 'is_top', $is_top );
+
+        return $query->where('is_top', $is_top);
     }
 
     public function scopeGetByActive($query, $active = null)
     {
-        if (!isset($active) or strlen($active) == 0) {
+        if ( ! isset($active) or strlen($active) == 0) {
             return $query;
         }
-        return $query->where( 'active', $active );
+
+        return $query->where('active', $active);
     }
 
     public function scopeGetByNumCode($query, $numCode = null)
@@ -113,6 +139,7 @@ class Currency extends Model  implements HasMedia
         if (empty($numCode)) {
             return $query;
         }
+
         return $query->where(with(new Currency)->getTable() . '.num_code', $numCode);
     }
 
@@ -122,7 +149,8 @@ class Currency extends Model  implements HasMedia
         if (empty($charCode)) {
             return $query;
         }
-        return $query->where(with(new Currency)->getTable() . '.char_code', '!=' , $charCode);
+
+        return $query->where(with(new Currency)->getTable() . '.char_code', '!=', $charCode);
     }
 
     public function scopeGetByCharCode($query, $charCode = null)
@@ -130,20 +158,21 @@ class Currency extends Model  implements HasMedia
         if (empty($charCode)) {
             return $query;
         }
+
         return $query->where(with(new Currency)->getTable() . '.char_code', $charCode);
     }
 
 
-    public static function getCurrencyValidationRulesArray($currency_id = null, array $skipFieldsArray= []): array
+    public static function getCurrencyValidationRulesArray($currency_id = null, array $skipFieldsArray = []): array
     {
         $validationRulesArray = [
-            'name' => [
+            'name'      => [
                 'required',
                 'string',
                 'max:100',
                 Rule::unique(with(new Currency)->getTable())->ignore($currency_id),
             ],
-            'num_code' => [
+            'num_code'  => [
                 'integer',
                 'required',
                 'string',
@@ -158,39 +187,45 @@ class Currency extends Model  implements HasMedia
                 'max:3',
                 Rule::unique(with(new Currency)->getTable())->ignore($currency_id),
             ], //             $table->string('color', 7)->nullable();
-            'color' => [
-                'nullable',
+            'color'     => [
+                'required',
                 'string',
                 'min:7',
                 'max:7',
             ],
-            'bgcolor' => [
-                'nullable',
+            'bgcolor'   => [
+                'required',
                 'string',
                 'min:7',
                 'max:7',
             ],
-            'is_top'     => 'nullable',
-            'active'     => 'nullable',
-            'ordering'   => 'required|integer',
+            'is_top'    => 'nullable',
+            'active'    => 'nullable',
+            'ordering'  => 'required|integer|max:2000',
 
         ];
-        foreach( $skipFieldsArray as $next_field ) {
-            if(!empty($validationRulesArray[$next_field])) {
+        foreach ($skipFieldsArray as $next_field) {
+            if ( ! empty($validationRulesArray[$next_field])) {
                 unset($validationRulesArray[$next_field]);
             }
         }
+
         return $validationRulesArray;
     }
 
-    public static function getCurrenciesSelectionArray() :array {
-        $currencies = Currency
-            ::orderBy('ordering','asc')
+    public static function getCurrenciesSelectionArray(): array
+    {
+        $currencies               = Currency
+            ::orderBy('ordering', 'asc')
             ->get();
-        $currenciesSelectionArray= [];
-        foreach( $currencies as $nextCurrency ) {
-            $currenciesSelectionArray[]= [ 'char_code'=> $nextCurrency->char_code, 'name'=>$nextCurrency->id . '=>' . $nextCurrency->char_code . '=>' . $nextCurrency->name ];
+        $currenciesSelectionArray = [];
+        foreach ($currencies as $nextCurrency) {
+            $currenciesSelectionArray[] = [
+                'char_code' => $nextCurrency->char_code,
+                'name'      => $nextCurrency->id . '=>' . $nextCurrency->char_code . '=>' . $nextCurrency->name
+            ];
         }
+
 //        \Log::info(  varDump($currenciesSelectionArray, ' -1 $currenciesSelectionArray::') );
         return $currenciesSelectionArray;
     }

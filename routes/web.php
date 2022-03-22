@@ -13,8 +13,10 @@ use App\Http\Controllers\Admins\UserController;
 //use App\Http\Controllers\Admins\PermissionController;
 use App\Http\Controllers\Admins\AdminDashboardController;
 use App\Http\Controllers\Admins\SettingsController;
+use App\Http\Controllers\User\UserNotificationsController;
 use App\Http\Controllers\CurrencyController as FrontendCurrencyController;
 use App\Http\Controllers\TestController;
+use App\Http\Controllers\HomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,10 +42,35 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->name('dashboard');
 
-Route::post('current_rates/filter', [FrontendCurrencyController::class, 'filter'])->name('currencies_rates.filter');
+Route::get('/', [HomeController::class, 'index'])->name('root');
+Route::get('home', [HomeController::class, 'index'])->name('home');
+Route::post('get_block_cms_item', [HomeController::class, 'get_block_cms_item'])->name('frontend.get_block_cms_item');
+Route::post('', [HomeController::class, 'store_contact_us'])->name('frontend.store_contact_us');
+
+Route::post('current_rates/filter', [FrontendCurrencyController::class, 'filter'])->name('frontend.currencies_rates.filter');
+
+Route::get('currency_history/{id}', [FrontendCurrencyController::class, 'get_currency_history'])->name('frontend.get_currency_history');
 Route::get('current_rates', [FrontendCurrencyController::class, 'current_rates'])->name('frontend.current_rates');
 Route::get('test', [TestController::class, 'test'])->name('test');
 
+
+Route::middleware(['auth:sanctum', 'verified'])->name('user.')->prefix('user')->group(function() {
+//    Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
+
+    // app/Http/Controllers/User/ProfileController.php
+    Route::post('notifications/filter', [UserNotificationsController::class, 'filter'])->name('notifications.filter');
+    Route::resource('notifications', UserNotificationsController::class)->except(['show', 'edit', 'update', 'create', 'store']);
+
+//    Route::prefix('ads')->name('ads.')->group(function() {
+//        Route::post('', [ProfileAdController::class, 'store'])->name('store');
+//        Route::delete('/{ad}', [ProfileAdController::class, 'destroy'])->name('destroy');
+//    });
+
+//    Route::prefix('ad-like')->name('ad-like.')->group(function() {
+//        Route::post('/{ad}', [AdLikeController::class, 'store'])->name('store');
+//        Route::delete('/{ad}', [AdLikeController::class, 'destroy'])->name('destroy');
+//    });
+});
 
 
 Route::prefix('admin')->name('admin.')->middleware(['auth:sanctum', 'verified' /*, 'role: super-admin|admin|moderator|developer' */])->group(function() {
@@ -62,13 +89,15 @@ Route::prefix('admin')->name('admin.')->middleware(['auth:sanctum', 'verified' /
     Route::get('currencies/get_image/{currency_id}', [CurrencyController::class, 'get_currency_image'])->name('currencies.get_image');
 
     Route::resource('currencies', CurrencyController::class)->except(['show']);
-    // '/personal/upload_avatar'
 
-    /*             let url = route('admin.currency_histories.index', [currency.value.id, currencies_history_current_page.value, currency_history_filter_date_from.value, currency_history_filter_date_till.value])
- */
+    Route::post('currencies/activate/{currency_id}', [ CurrencyController::class, 'activate'] )->name('currencies.activate');
+    Route::post('currencies/deactivate/{currency_id}', [ CurrencyController::class, 'deactivate'] )->name('currencies.deactivate');
+
     Route::get('currency_history/{currency_id}/{page}/{filter_date_from?}/{filter_date_till?}', [CurrencyHistoryController::class, 'index'])->name('currency_histories.index');
-    Route::delete('currency_history', [CurrencyHistoryController::class, 'destroy'])->name('currency_histories.destroy');
+    Route::delete('currency_history/{currency_history_id}', [CurrencyHistoryController::class, 'destroy'])->name('currency_histories.destroy');
+
 
     Route::get('settings', [ SettingsController::class, 'edit'])->name('settings.index');
     Route::put('settings', [ SettingsController::class, 'update'])->name('settings.update');
+    Route::post('settings', [ SettingsController::class, 'run_currency_rates_import'])->name('settings.run_currency_rates_import');
 });

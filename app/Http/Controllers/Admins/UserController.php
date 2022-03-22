@@ -34,7 +34,7 @@ class UserController extends Controller  //    http://127.0.0.1:8000/admin/users
      */
     public function index()
     {
-        if ( ! auth()->user()->hasAnyRole(['super-admin', 'admin'])) {
+        if ( ! auth()->user()->can(ACCESS_APP_ADMIN_LABEL)) {
             return redirect(route('admin.dashboard.index'))
                 ->with( 'flash', 'warning_flash_type_You have no access to user listing');
         }
@@ -45,7 +45,7 @@ class UserController extends Controller  //    http://127.0.0.1:8000/admin/users
 
     public function filter()
     {
-        if ( ! auth()->user()->hasAnyRole(['super-admin', 'admin'])) {
+        if ( ! auth()->user()->can(ACCESS_APP_ADMIN_LABEL)) {
             return redirect(route('admin.dashboard.index'))
                 ->with( 'flash', 'warning_flash_type_You have no access to user listing');
         }
@@ -81,7 +81,7 @@ class UserController extends Controller  //    http://127.0.0.1:8000/admin/users
      */
     public function create()
     {
-        if ( ! auth()->user()->hasAnyRole(['super-admin', 'admin'])) {
+        if ( ! auth()->user()->can(ACCESS_APP_ADMIN_LABEL)) {
             return redirect(route('admin.dashboard.index'))
                 ->with( 'flash', 'warning_flash_type_You have no access to user listing');
         }
@@ -99,13 +99,13 @@ class UserController extends Controller  //    http://127.0.0.1:8000/admin/users
      */
     public function store(UserRequest $request)
     {
-        if ( ! auth()->user()->hasAnyRole(['super-admin', 'admin'])) {
+        if ( ! auth()->user()->can(ACCESS_APP_ADMIN_LABEL)) {
             return redirect(route('admin.dashboard.index'))
                 ->with( 'flash', 'warning_flash_type_You have no access to user listing');
         }
 
         \Log::info('-1 store $request->all()::' . print_r($request->all(), true));
-        if ( ! auth()->user()->hasAnyRole(['super-admin', 'admin'])) {
+        if ( ! auth()->user()->can(ACCESS_APP_ADMIN_LABEL)) {
             return redirect(route('admin.dashboard.index'))->with([
                 'flash', 'You have no access to store user'
             ]);
@@ -152,11 +152,12 @@ class UserController extends Controller  //    http://127.0.0.1:8000/admin/users
         }
         \Log::info('-1 store $user->id::' . print_r($user->id, true));
 
-        return redirect('/admin/users/' . $user->id . '/edit')->with('flash',
+
+        return redirect(route('admin.users.edit', $user->id)   /*'/admin/users/' . $user->id . '/edit'*/)->with('flash',
             'New user was successfully added');
 
 
-    }
+    } // public function store(UserRequest $request)
 
     /**
      * Show the form for editing the specified resource.
@@ -167,7 +168,7 @@ class UserController extends Controller  //    http://127.0.0.1:8000/admin/users
      */
     public function edit(int $user_id)
     {
-        if ( ! auth()->user()->hasAnyRole(['super-admin', 'admin'])) {
+        if ( ! auth()->user()->can(ACCESS_APP_ADMIN_LABEL)) {
             return redirect(route('admin.dashboard.index'))
                 ->with( 'flash', 'warning_flash_type_You have no access to user listing');
         }
@@ -178,7 +179,7 @@ class UserController extends Controller  //    http://127.0.0.1:8000/admin/users
             ->first();
 
         if (empty($user)) {
-            return redirect('/admin/users');
+            return redirect(route('admin.users.index') );
         }
         \Log::info(varDump($user, ' -12 edit $user::'));
 
@@ -199,7 +200,7 @@ class UserController extends Controller  //    http://127.0.0.1:8000/admin/users
     public function update(UserRequest $request, int $user_id)
     {
         \Log::info('-1 update $request->all()::' . print_r($request->all(), true));
-        if ( ! auth()->user()->hasAnyRole(['super-admin', 'admin'])) {
+        if ( ! auth()->user()->can(ACCESS_APP_ADMIN_LABEL)) {
             return redirect(route('admin.dashboard.index'))
                 ->with( 'flash', 'warning_flash_type_You have no access to user listing');
         }
@@ -226,11 +227,11 @@ class UserController extends Controller  //    http://127.0.0.1:8000/admin/users
             return back()->withErrors(['message' => $e->getMessage()]);
         }
 
-        return redirect('/admin/users')->with('flash', 'User was successfully updated');
+        return redirect(route('admin.users.index'))->with('flash', 'User was successfully updated');
     }
     public function destroy(int $user_id)
     {
-        if ( ! auth()->user()->hasAnyRole(['super-admin', 'admin'])) {
+        if ( ! auth()->user()->can(ACCESS_APP_ADMIN_LABEL)) {
             return redirect(route('admin.dashboard.index'))
                 ->with( 'flash', 'warning_flash_type_You have no access to destroy user');
         }
@@ -238,7 +239,7 @@ class UserController extends Controller  //    http://127.0.0.1:8000/admin/users
         $user = User::find($user_id+1000);
         if ($user == null) {
             \Log::info(varDump(-1000, ' -1000 destroy  $user_id::'));
-            return redirect('/admin/users')->with('flash', 'warning_flash_type_User was not found !');
+            return redirect( route('admin.users.index') )->with('flash', 'warning_flash_type_User was not found !');
 
         }
         try {

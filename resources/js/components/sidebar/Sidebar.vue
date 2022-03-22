@@ -1,52 +1,29 @@
 <template>
     <div class="sidebar" :style="{ width: sidebarWidth }">
-        <!--        collapsed::{{ collapsed}}-->
-        <h1>
+        <h3>
             <span v-if="collapsed">
-                <div>V</div>
-                <div>S</div>
+                <div>{{ getInitialLetter($page.props.auth.site_name, true) }}</div>
+                <div>{{ getInitialLetter($page.props.auth.site_name, false) }}</div>
             </span>
             <span v-else>
-                Vue Sidebar
+                {{ $page.props.auth.site_name }}
             </span>
-        </h1>
+        </h3>
 
-        <SidebarLink link_to="frontend.current_rates" link_icon="home">Home</SidebarLink>
-        <SidebarLink link_to="admin.dashboard.index" link_icon="home">Dashboard</SidebarLink>
+        <SidebarLink link_to="home" link_icon="home">Home</SidebarLink>
+        <SidebarLink link_to="frontend.current_rates" link_icon="home">Current rates</SidebarLink>
+        <SidebarLink link_to="admin.dashboard.index" link_icon="dashboard" :active_component="'Admins/Dashboard'">Dashboard
+        </SidebarLink>
         <!--        <SidebarLink to="/dashboard" icon="fas fa-columns">Dashboard</SidebarLink>-->
-        <SidebarLink link_to="admin.currencies.index" link_icon="currency" link_active="'admin.currencies.*'">Currencies 1</SidebarLink>
-        <!--        <SidebarLink to="/friends" icon="fas fa-users">Friends</SidebarLink>-->
-        <!--        <SidebarLink to="/image" icon="fas fa-image">Images</SidebarLink>-->
+        <SidebarLink link_to="admin.currencies.index" link_icon="currency" :active_component="'Admins/Currencies'">
+            Currencies
+        </SidebarLink>
+        <SidebarLink link_to="admin.settings.index" link_icon="settings" :active_component="'Admins/Settings'">Settings
+        </SidebarLink>
+        <a type="button" class=" nav-link" @click.prevent="logout()" title="logout">
+            <i class="nav-icon fas fa-sign-out-alt"></i>
+        </a>
 
-        <!--        <li class="nav-item" >
-                    <inertia-link :href="route('admin.currencies.index')" class="nav-link" :class="route().current('admin.currencies.*') ? 'active' : ' '">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>
-                            Currencies  0
-                        </p>
-                    </inertia-link>
-                </li>
-
-                <li class="nav-item" >
-                    <inertia-link :href="route('admin.settings.index')" class="nav-link" :class="route().current('admin.settings.*') ? 'active' : ' '">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>
-                            Settings 0
-                        </p>
-                    </inertia-link>
-                </li>
-
-                <li class="nav-item" >
-                    <inertia-link :href="route('admin.users.index')" class="nav-link" :class="route().current('admin.users.*') ? 'active' : ' '">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>
-                            Users 321
-                            &lt;!&ndash;                                        v-if="$page.props.auth.hasRole.superAdmin || $page.props.auth.hasRole.admin || $page.props.auth.hasRole.moderator"&ndash;&gt;
-                        </p>
-                    </inertia-link>
-                </li>
-
-                -->
         <span
             class="collapse-icon"
             :class="{ 'rotate-180': collapsed }"
@@ -59,13 +36,15 @@
 
 <script>
 import SidebarLink from './SidebarLink'
-import {collapsed, toggleSidebar, sidebarWidth} from './state'
+import {collapsed, sidebarWidth} from './state'
 import {ref, computed, onMounted} from 'vue'
 
 import {
     getHeaderIcon,
     getErrorMessage,
 } from '@/commonFuncs'
+import {Inertia} from "@inertiajs/inertia";
+import {usePage} from "@inertiajs/inertia-vue3";
 
 export default {
     name: 'Sidebar',
@@ -73,12 +52,51 @@ export default {
     components: {SidebarLink},
     setup() {
 
-        // const is_left_sidebar_visible = ref(true)
+        // console.log('Sidebar.vue  usePage().props::')
+        // console.log( usePage().props)
+        // console.log('Sidebar.vue  usePage().props.value::')
+        // console.log( usePage().props.value)
+        // console.log('Sidebar.vue  usePage().props.auth::')
+        // console.log( usePage().props.auth)
+        //
+
+        function toggleSidebar() {
+            collapsed.value = !collapsed.value
+            window.emitter.emit('AdminSidebarCollapseSwitcherEvent', {
+                parentComponentKey: 'Sidebar'
+            })
+
+        }
+
+        function logout() {
+            Inertia.post(route('logout'));
+        }
+
+        function getInitialLetter(text, first_letter) {
+            // console.log('getInitialLetter text::')
+            // console.log(text)
+            if (first_letter) {
+                return 'C';
+            }
+            if (!first_letter) {
+                return 'R';
+            }
+            // Inertia.visit(route('admin.currencies.index'), {method: 'get'});
+        }
 
 
         const adminSidebarOnMounted = async () => {
-            window.emitter.on('leftAdminSidebarSwitchEvent', params => {
-                console.log('TARGET leftAdminSidebarSwitchEvent params::')
+            // $page.props.auth.site_name $agent_device
+
+            //                 <div>{{ getInitialLetter($page.props.auth.site_name, true) }}</div>
+
+            /*
+                        console.log('Sidebar.vue  usePage().props.auth.value.agent_device::')
+                        console.log( usePage().props.auth.value.agent_device)
+            */
+
+            window.emitter.on('AdminTopNavbarSwitchEvent', params => {
+                console.log('TARGET AdminTopNavbarSwitchEvent params::')
                 console.log(params)
                 collapsed.value = !collapsed.value
                 // if (params.parentComponentKey === 'user') {
@@ -91,7 +109,11 @@ export default {
         onMounted(adminSidebarOnMounted)
 
         return { // setup return
-            collapsed, toggleSidebar, sidebarWidth,
+            collapsed,
+            toggleSidebar,
+            sidebarWidth,
+            getInitialLetter,
+            logout,
 
             // Common methods
             getErrorMessage,
@@ -138,7 +160,7 @@ export default {
 .collapse-icon {
     position: absolute;
     bottom: 0;
-    padding: 0.75em;
+    padding: 0.3em;
 
     color: rgba(255, 255, 255, 0.7);
 

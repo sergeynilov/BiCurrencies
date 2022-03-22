@@ -5,8 +5,7 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-12">
-<!--                        settingsData::{{ settingsData }}-->
-                        <div class="card card-primary">
+                        <!--                        settingsData::{{ settingsData }}-->
 
                             <div class="card card-primary card-tabs">
                                 <div class="card-header p-2">
@@ -43,8 +42,9 @@
                                         <!--                                                show active-->
                                         <div class="tab-pane  " id="custom-tabs-one-home" role="tabpanel"
                                              aria-labelledby="settings-details-tab">
-<!--                                            01settingsData::{{ settingsData}}-->
-                                            <form-editor :is_insert="false" :settingsData="settingsData[0]" :currenciesSelectionArray="currenciesSelectionArray"></form-editor>
+                                            <!--                                            01settingsData::{{ settingsData}}-->
+                                            <form-editor :is_insert="false" :settingsData="settingsData[0]"
+                                                         :currenciesSelectionArray="currenciesSelectionArray"></form-editor>
                                         </div>
 
                                         <div class="tab-pane fade " id="custom-tabs-one-profile"
@@ -60,27 +60,44 @@
 
                                         <div class="tab-pane show active" id="custom-tabs-one-settings" role="tabpanel"
                                              aria-labelledby="settings-operations-tab">
-                                            <h1>settings-operations-tab</h1>
 
-                                            <p class="text-sm text-warning p-2 pl-4">
-                                                <i :class="getHeaderIcon('info')"></i>
-                                                No data found. Try to change filter options.
-                                            </p>
-                                            file:///mnt/_work_sdb8/wwwroot/lar/BiCurrencies/__TEMPLATES/AdminLTE-3.2.0/pages/UI/buttons.html
-                                            use : Application Buttons with Custom Colors
+                                            <div class="card">
+                                                <div class="card-header">
+                                                    <h3 class="card-title">
+                                                        <i :class="getHeaderIcon('settings')" class="mr-1"></i>
+                                                        Currency rates data import
+                                                    </h3>
 
-                                            clear_rates_history
-                                            run_currency_rates_import_manually
+                                                </div> <!-- card-title -->
 
-                                            file:///_work/NSN/Me/Passport/IMG_20180201_082106.jpg
+                                                <div class="card-body">
+                                                    <div class="form-group row">
+                                                        <div class="col-sm-4">
+                                                            <button type="button" class="btn btn-primary btn-block"
+                                                                    @click.prevent="runCurrencyRatesImport()">
+                                                                <i :class="getHeaderIcon('action')"></i>
+                                                                Run
+                                                            </button>
+                                                        </div>
+                                                        <div class="col-sm-8">
+                                                            <label class="form-check-label">Manually run currency rates import for all currencies in the system on today date</label>
+                                                        </div>
+                                                    </div>
 
-                                            Pellentesque vestibulum commodo nibh nec blandit. Maecenas neque magna,
-                                            iaculis tempus turpis ac, ornare sodales tellus. Mauris eget blandit dolor.
-                                            Quisque tincidunt venenatis vulputate. Morbi euismod molestie tristique.
-                                            Vestibulum consectetur dolor a vestibulum pharetra. Donec interdum placerat
-                                            urna nec pharetra. Etiam eget dapibus orci, eget aliquet urna. Nunc at
-                                            consequat diam. Nunc et felis ut nisl commodo dignissim. In hac habitasse
-                                            platea dictumst. Praesent imperdiet accumsan ex sit amet facilisis.
+                                                    <div class="card-footer" v-show="currency_rates_import_base_currency_code && currency_rates_import_operation_date">
+                                                        <div class="product-info">
+                                                            <i :class="getHeaderIcon('results')" class="mr-1"></i>
+                                                            <a href="javascript:void(0)" class="product-title">
+                                                                for {{ currency_rates_import_base_currency_code}} / {{ currency_rates_import_operation_date }}
+                                                            </a>
+                                                            <span class="product-description">
+                                                                <span class="badge badge-warning m-1">{{ currency_rates_import_new_currency_rates_added_count }}</span>
+                                                               currency rates were added
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -89,7 +106,6 @@
 
                             </div>
 
-                        </div>
                     </div>
                 </div>
             </div>
@@ -118,7 +134,7 @@ import {onMounted, ref} from "vue";
 import axios from "axios";
 import ListingPagination from '@/components/ListingPagination.vue'
 import ListingHeader from '@/components/ListingHeader.vue'
-import { usePage } from '@inertiajs/inertia-vue3';
+import {usePage} from '@inertiajs/inertia-vue3';
 
 // import VueUploadComponent from 'vue-upload-component'
 // app.component('file-upload', VueUploadComponent)
@@ -137,34 +153,50 @@ export default {
     setup(props) {
         console.log('resources/js/Pages/Admins/Currencies/Edit.vue setup props::')
         console.log(props)
-        // console.log('props.settingsData::')
-        // console.log(props.settingsData)
         let settingsData = ref([props.settingsData])
+        const currency_rates_import_new_currency_rates_added_count= ref(0)
+        const currency_rates_import_base_currency_code= ref('')
+        const currency_rates_import_operation_date= ref('')
 
+        function runCurrencyRatesImport() {
+            console.log('runCurrencyRatesImport::')
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You what to run currency rates import !",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, run!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    axios.post(route('admin.settings.run_currency_rates_import'))
+                        .then(({data}) => {
+                           // console.log('runCurrencyRatesImport data.retArray::')
+                           //  console.log(data.retArray)
+                            currency_rates_import_new_currency_rates_added_count.value = data.retArray.new_currency_rate_added
+                            currency_rates_import_base_currency_code.value = data.retArray.base_currency_code
+                            currency_rates_import_operation_date.value = data.retArray.operation_date
+                            Swal.fire(
+                                'COMPLETED!',
+                                'Currency rates import was successfully run !',
+                                'success'
+                            )
+                        })
+                        .catch(error => {
+                            console.error(error)
+                        })
+                }
+            })
+
+        }
 
         const adminSettingsEditOnMounted = async () => {
             console.log('adminSettingsEditOnMounted settingsData::')
             console.log(settingsData)
-            // console.log(formEditor)
-            // window.emitter.on('paginationPageChangedEvent', params => {
-            //     console.log('TARGET paginationPageChangedEvent params::')
-            //     console.log(params)
-            //     if (params.parentComponentKey === 'currency_history') {
-            //         currencyHistoryPaginationPageClicked(params.page)
-            //     }
-            // })
-            // window.emitter.on('listingHeaderRightButtonClickedEvent', params => {
-            //     console.log('TARGET listingHeaderRightButtonClickedEvent params::')
-            //     console.log(params)
-            //     if (params.parentComponentKey === 'currencies_history') {
-            //         console.log('!!!!!loadCurrencyHistory::')
-            //         loadCurrencyHistory()
-            //     }
-            // })
-
-            //
-            console.log('Edit.vue  usePage().props.value.flash::')
-            console.log( usePage().props.value.flash)
+            // console.log('Edit.vue  usePage().props.value.flash::')
+            // console.log( usePage().props.value.flash)
             showFlashMessage()
         }
         // console.log('BEFORE onMounted::')
@@ -175,6 +207,10 @@ export default {
         return { // setup return
             // Listing Page state
             settingsData,
+            runCurrencyRatesImport,
+            currency_rates_import_new_currency_rates_added_count,
+            currency_rates_import_base_currency_code,
+            currency_rates_import_operation_date,
 
             // Common methods
             getHeaderIcon,

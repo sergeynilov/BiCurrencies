@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admins;
 
 use App\Http\Controllers\Controller;
+use App\Library\Services\CurrencyRatesFunctionality;
 use App\Models\Currency;
 use App\Models\Settings;
 use App\Library\CheckValueType;
@@ -14,6 +15,8 @@ use Illuminate\Http\Resources\Json\ResourceCollection;
 use Inertia\Inertia;
 use Auth;
 use DB;
+use App;
+
 //use App\Http\Resources\SettingsResource;
 use App\Http\Requests\SettingsRequest;
 
@@ -26,7 +29,7 @@ class SettingsController extends Controller  //    http://127.0.0.1:8000/admin/c
 
     public function edit()
     {
-        if ( ! auth()->user()->hasAnyRole(['super-admin', 'admin'])) {
+        if ( ! auth()->user()->can(ACCESS_APP_ADMIN_LABEL)) {
             \Log::info('-99 update ::');
             return redirect(route('admin.dashboard.index'))->withErrors([
                 'message',
@@ -51,7 +54,7 @@ class SettingsController extends Controller  //    http://127.0.0.1:8000/admin/c
     public function update(SettingsRequest $request)
     {
         \Log::info('-1 update $request->all()::' . print_r($request->all(), true));
-        if ( ! auth()->user()->hasAnyRole(['super-admin', 'admin'])) {
+        if ( ! auth()->user()->can(ACCESS_APP_ADMIN_LABEL)) {
             \Log::info('-99 update ::');
             return redirect(route('admin.dashboard.index'))->withErrors([
                 'message',
@@ -86,7 +89,7 @@ class SettingsController extends Controller  //    http://127.0.0.1:8000/admin/c
             return back()->withErrors(['message' => $e->getMessage()]);
         }
 
-        return redirect('/admin/dashboard')->with('flash', 'Settings  was successfully updated');
+        return redirect(route('admin.dashboard.index') )->with('flash', 'Settings  was successfully updated');
     }
 
     public function clear_rates_history()
@@ -104,12 +107,14 @@ class SettingsController extends Controller  //    http://127.0.0.1:8000/admin/c
         }
     }
 
-    public function run_currency_rates_import_manually()
+    public function run_currency_rates_import()
     {
-        \Log::info( '-1 run_currency_rates_import_manually ::' . print_r( -9, true  ) );
-
-        $exitCode = \Artisan::call('command:currencyRatesImport', []);
-        return response()->json(['error_code' => 1, 'message' => "", 'exitCode' => $exitCode], HTTP_RESPONSE_OK);
+        \Log::info( '-1 run_currency_rates_import ::' . print_r( -9, true  ) );
+        $currencyRatesFunctionality= App::make(CurrencyRatesFunctionality::class);
+//        $ret= \App\Library\Services\CurrencyRatesFunctionality::runImportCurrencyRates();
+        $retArray= $currencyRatesFunctionality->runImportCurrencyRates( from_cli: false,user_id : auth()->user()->id);
+        \Log::info(  varDump($retArray, ' -1 SettingsController importCurrencyRates $retArray::') );
+        return response()->json([ 'retArray' => $retArray], HTTP_RESPONSE_OK);
 
     }
 

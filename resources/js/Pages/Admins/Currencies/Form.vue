@@ -2,19 +2,20 @@
     <div v-if="!formEditor.processing">
         <!--        is_insert::{{ is_insert }}<br>-->
         <!--        formEditor.errors::{{ formEditor.errors }}<br>-->
-        <!--        formEditor::{{ formEditor }}<br>-->
+<!--        formEditor::{{ formEditor }}<br>-->
 
         <div class="card-header">
-            <h3 class="card-title">{{ getFormEditorTitle }}</h3>
+            <h3 class="card-title">
+                <i :class="getHeaderIcon('currency')" class="mr-1"></i>
+                {{ getFormEditorTitle }}
+            </h3>
         </div> <!-- card-title -->
 
-<!--        show_color_picker_modal::{{ show_color_picker_modal }}<br>-->
-<!--        modal_picker_color_selected_value::{{ modal_picker_color_selected_value }}<br>-->
+        <!--        show_color_picker_modal::{{ show_color_picker_modal }}<br>-->
+        <!--        modal_picker_color_selected_value::{{ modal_picker_color_selected_value }}<br>-->
         <form @submit.prevent="saveCurrency">
 
             <div class="card-body p-0">
-
-
                 <div class="block_2columns_md p-2" v-if="!is_insert"> <!-- id -->
                     <div class="horiz_divider_left_13">
                         <label for="id">Id:</label>
@@ -24,7 +25,6 @@
                                v-model="formEditor.id">
                     </div>
                 </div> <!-- class="block_2columns_md" id -->
-
 
                 <div class="block_2columns_md p-2"> <!-- name -->
                     <div class="horiz_divider_left_13">
@@ -80,15 +80,19 @@
                     <div class="horiz_divider_left_13">
                         <label for="btn_color">Color:</label>
                     </div>
-                    <div class="horiz_divider_right_23">
+                    <div class="horiz_divider_right_23 pull-left clearfix">
+
                         <button type="button" class="btn btn-secondary btn-xs mt-1"
                                 @click="showColorPickerModal('color')" id="btn_color">
                             <i :class="getHeaderIcon('color')" class="mr-1"></i>Select Color
                         </button>
-                        <p class="text-sm p-0" :style="{color: formEditor.color}">
+                        <div style="float: right;" >
+                        <p class="text-sm p-0 pull-left" :style="{color: formEditor.color}"  v-show="formEditor.color">
                             <i :class="getHeaderIcon('info')" class="mr-1"></i>
                             Current color : {{ formEditor.color }}
                         </p>
+                        </div>
+
                         <div class="invalid-feedback mb-3" v-if="formEditor.errors"
                              :class="{ 'd-block' : formEditor.errors && formEditor.errors.color}">
                             {{ formEditor.errors.color }}
@@ -107,15 +111,10 @@
                                 @click="showColorPickerModal('bgcolor')" id="btn_bgcolor">
                             <i :class="getHeaderIcon('color')" class="mr-1"></i>Select Color
                         </button>
-                        <p class="text-sm p-0" :style="{background: formEditor.bgcolor}">
+                        <p class="text-sm p-0" :style="{background: formEditor.bgcolor}" style="float: right;" v-show="formEditor.bgcolor">
                             <i :class="getHeaderIcon('info')" class="mr-1"></i>
                             Current color : {{ formEditor.bgcolor }}
                         </p>
-                        <div class="invalid-feedback mb-3" v-if="formEditor.errors"
-                             :class="{ 'd-block' : formEditor.errors && formEditor.errors.bgcolor}">
-                            {{ formEditor.errors.bgcolor }}
-                        </div>
-                        <!--                        </div>-->
                         <div class="invalid-feedback mb-3" v-if="formEditor.errors"
                              :class="{ 'd-block' : formEditor.errors && formEditor.errors.bgcolor}">
                             {{ formEditor.errors.bgcolor }}
@@ -126,21 +125,20 @@
 
                 <div class="block_2columns_md p-2"> <!-- is_top -->
                     <div class="horiz_divider_left_13">
-                        <label for="name">Is top:</label>
+                        <label for="is_top">Is top:</label>
                     </div>
                     <div class="horiz_divider_right_23">
                         <input type="checkbox" id="is_top" v-model="formEditor.is_top" :checked="formEditor.is_top"
-                               class="ml-1">
+                               class="ml-1 p-4">
                     </div>
                 </div> <!-- class="block_2columns_md" is_top -->
 
                 <div class="block_2columns_md p-2"> <!-- active -->
                     <div class="horiz_divider_left_13">
-                        <label for="name">Active:</label>
+                        <label for="active">Active:</label>
                     </div>
                     <div class="horiz_divider_right_23">
-                        <input type="checkbox" id="active" v-model="formEditor.active" :checked="formEditor.active"
-                               value="1" class="ml-1">
+                        <input type="text" class="form-control" id="active" disabled v-model="activeLabel">
                     </div>
                 </div> <!-- class="block_2columns_md" active -->
 
@@ -188,10 +186,25 @@
                 <button type="submit" class="btn btn-success btn-sm text-uppercase ml-4">
                     <i :class="getHeaderIcon('save')" class="mr-1"></i>{{ getSubmitBtnTitle }}
                 </button>
-                <button type="button" class="btn btn-sm btn_remove_right_aligned  mt-1" @click="deleteCurrency()"
-                        v-if="!is_insert">
-                    <i :class="getHeaderIcon('remove')" class="mr-1" title="Delete currency"></i>Delete
-                </button>
+                <div class="btn-group btn_remove_right_aligned" v-if="!is_insert">
+                    <button type="button" class="btn btn-info">Action</button>
+                    <button type="button" class="btn btn-info dropdown-toggle dropdown-icon" data-toggle="dropdown"
+                            aria-expanded="false">
+                        <span class="sr-only">Toggle Dropdown</span>
+                    </button>
+                    <div class="dropdown-menu" role="menu" style="">
+                        <a class="dropdown-item btn btn-sm btn_remove_right_aligned" @click="deleteCurrency()">
+                            <i :class="getHeaderIcon('remove')" class="mr-1"></i>Delete
+                        </a>
+
+                        <a class="dropdown-item btn-success" @click="activateCurrency()" v-show="!formEditor.active">
+                            <i :class="getHeaderIcon('status')" class="mr-1"></i>Activate
+                        </a>
+                        <a class="dropdown-item btn-secondary" @click="deactivateCurrency()" v-show="formEditor.active">
+                            <i :class="getHeaderIcon('status')" class="mr-1"></i>Deactivate
+                        </a>
+                    </div>
+                </div>
             </div>
 
         </form>
@@ -209,8 +222,8 @@
         <div class="content currencies_modal_content_editor_form ">
             <div :style="{background: modal_picker_color_selected_value}">
 
-<!--                modal_picker_color_selected_value::{{ modal_picker_color_selected_value }}<br>-->
-<!--                modal_picker_color_selected_type::{{ modal_picker_color_selected_type }}<br>-->
+                <!--                modal_picker_color_selected_value::{{ modal_picker_color_selected_value }}<br>-->
+                <!--                modal_picker_color_selected_type::{{ modal_picker_color_selected_type }}<br>-->
                 <ColorPicker
                     theme="dark"
                     :color="modal_picker_color_selected_value"
@@ -258,12 +271,13 @@ import {
     getDictionaryLabel,
 
 } from '@/commonFuncs'
-import {settingsJsMomentDatetimeFormat} from '@/app.settings.js'
+import {settingsJsMomentDatetimeFormat, settingsCurrencyActiveLabels, settingsAppColors} from '@/app.settings.js'
 import {ref, onMounted, computed} from "vue";
 import {useForm} from '@inertiajs/inertia-vue3';
 
 
 import {Inertia} from '@inertiajs/inertia'
+import axios from "axios";
 
 export default {
     props: ['currency', 'is_insert'],
@@ -290,7 +304,6 @@ export default {
         const bgcolor_picker = ref(props.currency.bgcolor)
         const suckerCanvas = ref(null)
         const suckerArea = ref([])
-        // let formEditor = null
 
         const formEditor = ref(useForm({
             id: is_insert.value ? '' : props.currency.id,
@@ -306,11 +319,6 @@ export default {
             updated_at: is_insert.value ? '' : props.currency.updated_at,
         }))
 
-        // const pureColor = ref<ColorInputWithoutInstance>("red");
-        // const gradientColor = ref("linear-gradient(0deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 100%)");
-
-        // console.log("END SETUP formEditor::")
-        // console.log(formEditor)
 
         const getFormEditorTitle = computed(() => {
             return is_insert.value ? 'Create new currency' : 'Edit currency'
@@ -324,6 +332,13 @@ export default {
         });
         const updatedAtLabel = computed(() => {
             return momentDatetime(formEditor.value.updated_at, settingsJsMomentDatetimeFormat)
+        });
+
+        const activeLabel = computed(() => {
+            console.log('activeLabel formEditor.value.active::')
+            console.log(formEditor.value.active)
+
+            return getDictionaryLabel(formEditor.value.active ? 1 : 0, settingsCurrencyActiveLabels)
         });
 
         function cancelCurrencyEditor() {
@@ -431,6 +446,104 @@ export default {
             }
         } // saveCurrency() {
 
+        function deleteCurrency() {
+            // console.log('deleteCurrency ::')
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You what to delete this currency with all related data!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: settingsAppColors.confirmButtonColor,
+                cancelButtonColor: settingsAppColors.cancelButtonColor,
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // console.log('deleteCurrency formEditor.value.id::')
+                    // console.log(formEditor.value.id)
+                    formEditor.value.delete(route('admin.currencies.destroy', formEditor.value.id), {
+                        preserveScroll: true,
+                        onSuccess: ()=> {
+                            Swal.fire(
+                                'Deleted!',
+                                'Currency has been successfully deleted',
+                                'success'
+                            )
+                        }
+                    })
+                }
+            })
+        } // deleteCurrency() {
+
+
+        function activateCurrency() {
+            // console.log('activateCurrency::')
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You what to activate this currency !",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: settingsAppColors.confirmButtonColor,
+                cancelButtonColor: settingsAppColors.cancelButtonColor,
+                confirmButtonText: 'Yes, activate it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // console.log('activateCurrency formEditor.value.id::')
+                    // console.log(formEditor.value.id)
+                    // console.log('activateCurrency formEditor.value::')
+                    // console.log(formEditor.value)
+                    //
+
+                    axios.post(route('admin.currencies.activate', formEditor.value.id))
+                        .then(({data}) => {
+                            // console.log('runCurrencyRatesImport data::')
+                            // console.log(data)
+                            formEditor.value.active = data.currency.active
+                            formEditor.value.updated_at = data.currency.updated_at
+                            Swal.fire(
+                                'CURRENCY STATUS!',
+                                'Currency was successfully activated !',
+                                'success'
+                            )
+                        })
+                        .catch(error => {
+                            console.error(error)
+                        })
+                }
+            })
+
+        } // function activateCurrency() {
+
+        function deactivateCurrency() {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You what to deactivate this currency !",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: settingsAppColors.confirmButtonColor,
+                cancelButtonColor: settingsAppColors.cancelButtonColor,
+                confirmButtonText: 'Yes, deactivate it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    axios.post(route('admin.currencies.deactivate', formEditor.value.id))
+                        .then(({data}) => {
+                            // console.log('runCurrencyRatesImport data::')
+                            // console.log(data)
+                            formEditor.value.active = data.currency.active
+                            formEditor.value.updated_at = data.currency.updated_at
+                            Swal.fire(
+                                'CURRENCY STATUS!',
+                                'Currency was successfully deactivated !',
+                                'success'
+                            )
+                        })
+                        .catch(error => {
+                            console.error(error)
+                        })
+                }
+            })
+        } // function deactivateCurrency() {
+
         const adminCurrencyFormOnMounted = async () => {
             console.log('Form.vue adminCurrencyFormOnMounted 1 is_insert.value')
             console.log(is_insert.value)
@@ -442,7 +555,11 @@ export default {
             is_insert,
             formEditor,
             cancelCurrencyEditor,
+            deleteCurrency,
+            activateCurrency,
+            deactivateCurrency,
             saveCurrency,
+            activeLabel,
             // pureColor, gradientColor,
 
             // Color Picker
@@ -670,9 +787,9 @@ export default {
 
 .currencies_modal_header {
     background-color: #0f6d7c;
-    color: $ text-color;
+    color: $admin_text_color;
     /*border-bottom: 2px solid rgba(123,123,123);*/
-    border-bottom: 1px solid $ text-color;
+    border-bottom: 1px solid $admin_text_color;
     /*padding: 0;*/
     padding: 0.5rem 0.5rem;
     margin: 0;
@@ -730,7 +847,7 @@ export default {
 
 .currencies_modal_close {
     background-color: #0f6d7c;
-    color: $ text-color !important;
+    color: $admin_text_color !important;
     position: absolute;
     top: 0;
     right: 0;
@@ -744,7 +861,7 @@ export default {
 }
 
 .currencies_modal_close::hover {
-    color: $ text-color !important;
+    color: $admin_text_color !important;
     background-color: #0f6d7c;
 }
 

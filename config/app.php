@@ -59,6 +59,7 @@ return [
     'asset_url' => env('ASSET_URL'),
     'currency_rates_import_url' => env('CURRENCY_RATES_IMPORT_URL', ''),
     'currencies_per_page' => env('CURRENCIES_PER_PAGE', 10),
+    'media_app_name' => 'currency_app',
 
     /*
     |--------------------------------------------------------------------------
@@ -181,6 +182,10 @@ return [
         App\Providers\TelescopeServiceProvider::class,
         App\Providers\FortifyServiceProvider::class,
         App\Providers\JetstreamServiceProvider::class,
+        Jenssegers\Agent\AgentServiceProvider::class,
+
+        App\Providers\CurrencyRatesServiceProvider::class,
+        App\Providers\DateFunctionalityServiceProvider::class,
     ],
 
     /*
@@ -195,6 +200,8 @@ return [
     */
 
     'aliases' => Facade::defaultAliases()->merge([
+        'Agent' => Jenssegers\Agent\Facades\Agent::class,
+
         // ...
     ])->toArray(),
 

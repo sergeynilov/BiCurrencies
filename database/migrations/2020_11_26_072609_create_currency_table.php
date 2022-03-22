@@ -19,13 +19,14 @@ class CreateCurrencyTable extends Migration
             $table->string('name', 100)->unique();
             $table->string('num_code', 3)->unique();
             $table->string('char_code', 3)->unique();
+            $table->mediumText('description')->nullable();
 
             $table->string('color', 7)->nullable();
             $table->string('bgcolor', 7)->nullable();
 
             $table->boolean('is_top')->default(false);
             $table->boolean('active')->default(false);
-            $table->integer('ordering')->unsigned();
+            $table->smallInteger('ordering')->unsigned();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->nullable();
 

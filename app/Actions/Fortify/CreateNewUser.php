@@ -34,7 +34,7 @@ class CreateNewUser implements CreatesNewUsers
 //        \Log::info(varDump(\App::runningInConsole(), ' -1 $hasPermissions'));
 
         if ($make_validation) {
-            $userValidationRulesArray = User::getUserValidationRulesArray(null, '', []);
+            $userValidationRulesArray = User::getUserValidationRulesArray(null,  []);
 //            \Log::info(varDump($userValidationRulesArray, ' -1 CreateNewUser $userValidationRulesArray::'));
 //            $userValidationRulesArray['password'] = $this->passwordRules();
             if (\App::runningInConsole()) {
@@ -93,9 +93,6 @@ class CreateNewUser implements CreatesNewUsers
         if (isset($input['activated_at'])) {
             $newUserData['activated_at'] = $input['activated_at'];
         }
-        if (isset($input['avatar'])) {
-            $newUserData['avatar'] = $input['avatar'];
-        }
         \Log::info(varDump($newUserData, ' -1 CreateNewUser $newUserData::'));
 
 
@@ -103,10 +100,11 @@ class CreateNewUser implements CreatesNewUsers
             DB::beginTransaction();
 
             $newUser = User::create($newUserData);
-            \Log::info(varDump($newUser, ' -1 $newUser::'));
+//            \Log::info(varDump($newUser, ' -1 $newUser::'));
             foreach ($hasPermissions as $nextHasPermission) {
-                $appAdminPermission = Permission::findByName($nextHasPermission);
-                \Log::info(varDump($appAdminPermission, ' -1 $appAdminPermission::'));
+//                \Log::info(varDump($nextHasPermission, ' -12 $nextHasPermission::'));
+                $appAdminPermission = Permission::findByName($nextHasPermission, 'web');
+//                \Log::info(varDump($appAdminPermission, ' -1 $appAdminPermission::'));
                 if ($appAdminPermission) {
                     $newUser->givePermissionTo($appAdminPermission);
                 }

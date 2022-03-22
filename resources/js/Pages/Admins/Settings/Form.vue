@@ -4,7 +4,10 @@
 <!--        formEditor::{{ formEditor }}<br>-->
 
         <div class="card-header">
-            <h3 class="card-title">Edit Settings</h3>
+            <h3 class="card-title">
+                <i :class="getHeaderIcon('settings')" class="mr-1"></i>
+                Edit Settings
+            </h3>
         </div> <!-- card-title -->
 
         <form @submit.prevent="saveSettings">
