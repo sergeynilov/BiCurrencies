@@ -19,18 +19,17 @@ class UserResource extends JsonResource
     public function toArray($request)
     {
         $dateFunctionality= App::make(DateFunctionality::class);
+//        \Log::info(  varDump($this, ' -1 $this::') );
+//        \Log::info(  varDump($this->status, ' -1 $this->status::') );
         return [
             'id'                   => $this->id,
             'name'                 => $this->name,
-            'is_admin'             => $this->is_admin,
             'email'                => $this->email,
             'email_verified_at'    => $this->email_verified_at,
             'current_team_id'      => $this->current_team_id,
             'status'               => $this->status,
-            'status_label'         => wrpGetUserStatusLabel($this->status),
+            'status_label'         => \App\Models\User::getUserStatusLabel($this->status),
 
-            //            'user_histories_count' => $this->when( isset($this->user_histories_count), $this->user_histories_count),
-            //            'latest_user_history'    => new UserHistoryResource($this->whenLoaded('latest_user_history')),
             'created_at'           => $this->created_at,
             'created_at_formatted' => $dateFunctionality->getFormattedDateTime($this->created_at),
             'updated_at'           => $this->updated_at,

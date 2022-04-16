@@ -1,10 +1,39 @@
-// import { bus } from '../app'
-// import appMixin from '../appMixin'
 import axios from 'axios'
 import {usePage} from '@inertiajs/inertia-vue3';
-// import app from '@/main.js'
 import {settingsAwesomeFontLabels} from '@/app.settings'
 import moment from 'moment-timezone'
+
+
+
+export function showRTE(e) {
+    // console.log('showRTE e::')
+    // console.log(e)
+    //
+    // console.log('showRTE e.message::')
+    // console.log(e.message)
+
+    if ( !isEmpty(e) && !isEmpty( e.message)) {
+        Toast.fire({
+            icon: 'error',
+            title: e.message
+        })
+    }
+
+}
+
+export function formattedLorem() {
+    return '<p>Lorem <strong>ipsum dolor sit</strong> amet, consectetur adipiscing elit, sed do eiusmod  tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim  veniam, quis <strong>nostrud exercitation</strong> ullamco laboris nisi ut aliquip ex ea  commodo consequat. Duis aute irure dolor in reprehenderit in voluptate  velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint  occaecat cupidatat non proident, sunt in culpa qui officia deserunt  mollit anim id est laborum.\n' +
+        '</p>\n' +
+        '<p>Lorem ipsum dolor sit amet, <strong>consectetur adipiscing elit</strong>, sed do eiusmod  tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim  veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea  commodo consequat. Duis aute irure dolor in reprehenderit in voluptate  velit esse cillum dolore eu fugiat nulla pariatur. <i>Excepteur sint  occaecat</i> cupidatat non proident, sunt in culpa qui officia deserunt  mollit anim id est laborum.\n' +
+        '</p>\n' +
+        '<ul>\n' +
+        '    <li>Lorem 1st point </li>\n' +
+        '    <li>Lorem 2nd point </li>\n' +
+        '    <li>Lorem 3rd point </li>\n' +
+        '</ul>\n' +
+        '<p>Lorem ipsum dolor sit amet, <strong>consectetur adipiscing elit</strong>, sed do eiusmod  tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim  veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea  commodo consequat. Duis aute irure dolor in reprehenderit in voluptate  velit esse cillum dolore eu fugiat nulla pariatur. <i>Excepteur sint  occaecat</i> cupidatat non proident, sunt in culpa qui officia deserunt  mollit anim id est laborum.\n' +
+        '</p>\n';
+}
 
 
 export function formatValue(value, rateDecimalNumbers) {
@@ -36,52 +65,41 @@ export function dateIntoDbFormat(d) {
     return ret;
 }
 export function showFlashMessage() {
-    console.log('showFlashMessage  usePage().props::')
-    console.log( usePage().props)
-    //
-    console.log('showFlashMessage usePage().props.value.flash::')
-    console.log(usePage().props.value.flash)
-    //
-    // console.log('showFlashMessage page.props::')
-    // console.log(page.props)
-    //
-    // console.log('showFlashMessage page.props.jetstream::')
-    // console.log(page.props.jetstream)
-    // console.log(Object.entries( page.props.jetstream) )
 
-    //             console.log(' usePage().props.value.flash::')
-    //             console.log( usePage().props.value.flash)
-    // if (usePage().props.value.flash && usePage().props.value.flash.length > 0) {
-    // export function getSplitted (str, splitter, index) {
+    // console.log('showFlashMessage  usePage().props.value.flash::')
+    // console.log( usePage().props.value.jetstream.flash)
+    // console.log('showFlashMessage  usePage().props.value.flash_type.message::')
+    // console.log( usePage().props.value.flash_type.message)
+    //
     let icon = 'success'
 
 
-    let flash_message = ''
-    if ( !isEmpty(usePage().props.value.flash) && !isEmpty(usePage().props.value.flash.message) ) {
-    // if (typeof usePage().props.value.flash != 'undefined' && typeof usePage().props.value.flash.message != 'undefined' && typeof usePage().props.value.flash.message.length != 'undefined' && usePage().props.value.flash.message.length > 0) {
-        flash_message = usePage().props.value.flash.message
+    let flash_message = usePage().props.value.jetstream.flash
+    console.log('showFlashMessage flash_message::')
+    console.log(flash_message)
 
-        console.log('INSIDE flash_message::')
-        console.log(flash_message)
-        console.log(typeof flash_message)
 
-        let icon_type = getSplitted(flash_message, '_flash_type_', 0)
-        let flash_message_2 = getSplitted(flash_message, '_flash_type_', 1)
+    let flash_type = usePage().props.value.flash_type.message
+    console.log('showFlashMessage flash_type::')
+    console.log(flash_type)
 
-        if (icon_type == 'warning') {
-            flash_message = flash_message_2
+    if ( !isEmpty(flash_message)  ) {
+        // console.log('INSIDE flash_message::')
+        // console.log(flash_message)
+        // console.log(typeof flash_message)
+
+        if (flash_type == 'warning') {
             icon = 'warning'
         }
 
-        if (icon_type == 'error') {
-            flash_message = flash_message_2
+        if (flash_type == 'error') {
             icon = 'error'
         }
 
-        // console.log('icon::')
-        // console.log(icon)
-        // console.log('flash_message::')
-        // console.log(flash_message)
+        console.log('icon::')
+        console.log(icon)
+        console.log('flash_message::')
+        console.log(flash_message)
 
         Toast.fire({
             icon: icon,
@@ -261,93 +279,6 @@ export function getSplitted(str, splitter, index) {
     return ''
 }
 
-// function initTinyMCEEditor (bySelectorContainer, bySelector, width, height) { // eslint-disable-line
-//
-//
-//   var deviceParams = effectiveDeviceWidth()
-//   var calculated_width = getCalculatedWidth(deviceParams.width)
-//   if (typeof calculated_width !== 'undefined') {
-//     width = getCalculatedWidth(deviceParams.width)
-//   }
-//   // alert( "initTinyMCEEditor width::"+(width) + "  bySelectorContainer::"+bySelectorContainer)
-//
-//   var editor_config = {
-//     path_absolute: '/',
-//     selector: '#' + bySelectorContainer,
-//
-//     setup: function (editor) {
-//       editor.on('change', function () {
-//         var current_context = tinymce.get(bySelectorContainer).getContent()
-//         // alert( "current_context::"+var_dump(current_context) )
-//         $('#' + bySelector).html(current_context)
-//       })
-//     },
-//
-//     theme: 'modern',
-//     width: width,
-//     height: height,
-//     plugins: [
-//       'advlist autolink lists link image charmap print preview hr anchor pagebreak',
-//       'searchreplace wordcount visualblocks visualchars code fullscreen',
-//       'insertdatetime media nonbreaking save table contextmenu directionality',
-//       'emoticons template paste textcolor colorpicker textpattern'
-//     ],
-//     toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media',
-//     relative_urls: false,
-//     file_browser_callback: function (field_name, url, type, win) {
-//       var x = window.innerWidth || document.documentElement.clientWidth || document.getElementsByTagName('body')[0].clientWidth
-//       var y = window.innerHeight || document.documentElement.clientHeight || document.getElementsByTagName('body')[0].clientHeight
-//
-//       var cmsURL = editor_config.path_absolute + 'laravel-filemanager?field_name=' + field_name
-//       if (type === 'image') {
-//         cmsURL = cmsURL + '&type=Images'
-//       } else {
-//         cmsURL = cmsURL + '&type=Files'
-//       }
-//
-//       tinyMCE.activeEditor.windowManager.open({
-//         file: cmsURL,
-//         title: 'Filemanager',
-//         width: x * 0.8,
-//         height: y * 0.8,
-//         resizable: 'yes',
-//         close_previous: 'no'
-//       })
-//     }
-//   }
-//
-//   tinymce.init(editor_config)
-//   // alert( "AFTER initTinyMCEEditor::"+var_dump(-99) )
-// }  // function initTinyMCEEditor(bySelectorContainer, bySelector, width, height) {
-
-// export function getModalCalculatedHeight (device_height) {
-//   if (device_height <= 320) {
-//     // alert( -1 )
-//     return 300
-//   }
-//   if (device_height > 320 && device_height <= 480) {
-//     // alert( -2 )
-//     return 300
-//   }
-//
-//   if (device_height > 480 && device_height <= 600) {
-//     // alert( -3 )
-//     return 440
-//   }
-//
-//   if (device_height > 600 && device_height <= 768) {
-//     // alert( -4 )
-//     return 560
-//   }
-//   if (device_height > 768 && device_height <= 1024) {
-//     // alert( -5 )
-//     return 720
-//   }
-//   if (device_height > 1024) {
-//     // alert( -6 )
-//     return 950
-//   }
-// }
 
 /*
 export function getModalCalculatedWidth (deviceWidth) {

@@ -2,12 +2,18 @@
 
 namespace App\Providers;
 
+use App\Models\Hostel;
+use App\Models\User;
 use Illuminate\Database\Events\TransactionBeginning;
 use Illuminate\Database\Events\TransactionCommitted;
 use Illuminate\Database\Events\TransactionRolledBack;
 use Illuminate\Support\ServiceProvider;
 use NascentAfrica\Jetstrap\JetstrapFacade;
 use Illuminate\Pagination\Paginator;
+use Validator;
+use Carbon;
+
+
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -50,7 +56,8 @@ class AppServiceProvider extends ServiceProvider
                     $str   = "  BEGIN; ";
                     $dbLog = new \Monolog\Logger('Query');
                     if (isDeveloperComp()) {
-                        $dbLog->pushHandler(new \Monolog\Handler\RotatingFileHandler(storage_path('logs/Query.txt'), 5, \Monolog\Logger::DEBUG));
+                        $dbLog->pushHandler(new \Monolog\Handler\RotatingFileHandler(storage_path('logs/Query.txt'), 5,
+                            \Monolog\Logger::DEBUG));
                         $dbLog->info($str);
                         $dbLog->info('');
                         $dbLog->info('');
@@ -71,7 +78,8 @@ class AppServiceProvider extends ServiceProvider
                     $str   = "  COMMIT; ";
                     $dbLog = new \Monolog\Logger('Query');
                     if (isDeveloperComp()) {
-                        $dbLog->pushHandler(new \Monolog\Handler\RotatingFileHandler(storage_path('logs/Query.txt'), 5, \Monolog\Logger::DEBUG));
+                        $dbLog->pushHandler(new \Monolog\Handler\RotatingFileHandler(storage_path('logs/Query.txt'), 5,
+                            \Monolog\Logger::DEBUG));
                         $dbLog->info($str);
                         $dbLog->info('');
                         $dbLog->info('');
@@ -92,7 +100,8 @@ class AppServiceProvider extends ServiceProvider
                     $str   = "  ROLLBACK; ";
                     $dbLog = new \Monolog\Logger('Query');
                     if (isDeveloperComp()) {
-                        $dbLog->pushHandler(new \Monolog\Handler\RotatingFileHandler(storage_path('logs/Query.txt'), 5, \Monolog\Logger::DEBUG));
+                        $dbLog->pushHandler(new \Monolog\Handler\RotatingFileHandler(storage_path('logs/Query.txt'), 5,
+                            \Monolog\Logger::DEBUG));
                         $dbLog->info($str);
                         $dbLog->info('');
                         $dbLog->info('');
@@ -117,7 +126,8 @@ class AppServiceProvider extends ServiceProvider
 
                 $dbLog = new \Monolog\Logger('Query');
                 if (isDeveloperComp()) {
-                    $dbLog->pushHandler(new \Monolog\Handler\RotatingFileHandler(storage_path('logs/Query.txt'), 5, \Monolog\Logger::DEBUG));
+                    $dbLog->pushHandler(new \Monolog\Handler\RotatingFileHandler(storage_path('logs/Query.txt'), 5,
+                        \Monolog\Logger::DEBUG));
                 }
                 $str = $query->sql;
                 $str = str_replace('%', 'QWERTYQWERTY', $str);
@@ -129,141 +139,190 @@ class AppServiceProvider extends ServiceProvider
                     $str = sprintf($str, "'" . dataWrapper($bindings[0]) . "'", "'" . dataWrapper($bindings[1]) . "'");
                 }
                 if (count(dataWrapper($bindings)) == 3) {
-                    $str = sprintf($str, "'" . dataWrapper($bindings[0]) . "'", "'" . dataWrapper($bindings[1]) . "'", "'" . dataWrapper
+                    $str = sprintf($str, "'" . dataWrapper($bindings[0]) . "'", "'" . dataWrapper($bindings[1]) . "'",
+                        "'" . dataWrapper
                         ($bindings[2]) . "'");
                 }
                 if (count(dataWrapper($bindings)) == 4) {
-                    $str = sprintf($str, "'" . dataWrapper($bindings[0]) . "'", "'" . dataWrapper($bindings[1]) . "'", "'" . dataWrapper
+                    $str = sprintf($str, "'" . dataWrapper($bindings[0]) . "'", "'" . dataWrapper($bindings[1]) . "'",
+                        "'" . dataWrapper
                         ($bindings[2]) . "'",
                         "'" . dataWrapper($bindings[3]) . "'");
                 }
                 if (count(dataWrapper($bindings)) == 5) {
-                    $str = sprintf($str, "'" . dataWrapper($bindings[0]) . "'", "'" . dataWrapper($bindings[1]) . "'", "'" . dataWrapper
+                    $str = sprintf($str, "'" . dataWrapper($bindings[0]) . "'", "'" . dataWrapper($bindings[1]) . "'",
+                        "'" . dataWrapper
                         ($bindings[2]) . "'",
                         "'" . dataWrapper($bindings[3]) . "'",
                         "'" . dataWrapper($bindings[4]) . "'");
                 }
                 if (count(dataWrapper($bindings)) == 6) {
-                    $str = sprintf($str, "'" . dataWrapper($bindings[0]) . "'", "'" . dataWrapper($bindings[1]) . "'", "'" . dataWrapper($bindings[2]) . "'",
+                    $str = sprintf($str, "'" . dataWrapper($bindings[0]) . "'", "'" . dataWrapper($bindings[1]) . "'",
+                        "'" . dataWrapper($bindings[2]) . "'",
                         "'" . dataWrapper($bindings[3]) . "'",
                         "'" . dataWrapper($bindings[4]) . "'", "'" . dataWrapper($bindings[5]) . "'");
                 }
 
 
                 if (count(dataWrapper($bindings)) == 7) {
-                    $str = sprintf($str, "'" . dataWrapper($bindings[0]) . "'", "'" . dataWrapper($bindings[1]) . "'", "'" . dataWrapper($bindings[2]) . "'",
+                    $str = sprintf($str, "'" . dataWrapper($bindings[0]) . "'", "'" . dataWrapper($bindings[1]) . "'",
+                        "'" . dataWrapper($bindings[2]) . "'",
                         "'" . dataWrapper($bindings[3]) . "'",
-                        "'" . dataWrapper($bindings[4]) . "'", "'" . dataWrapper($bindings[5]) . "'", "'" . dataWrapper($bindings[6]) . "'");
+                        "'" . dataWrapper($bindings[4]) . "'", "'" . dataWrapper($bindings[5]) . "'",
+                        "'" . dataWrapper($bindings[6]) . "'");
                 }
 
                 if (count(dataWrapper($bindings)) == 8) {
-                    $str = sprintf($str, "'" . dataWrapper($bindings[0],0) . "'", "'" . dataWrapper($bindings[1],1) . "'", "'" .
-                                                                                                                           dataWrapper($bindings[2],2) . "'",
-                        "'" . dataWrapper($bindings[3],3) . "'",
-                        "'" . dataWrapper($bindings[4],4) . "'", "'" . dataWrapper($bindings[5],5) . "'",
-                        "'" . dataWrapper($bindings[6],6) . "'", "'" . dataWrapper($bindings[7],7) . "'");
+                    $str = sprintf($str, "'" . dataWrapper($bindings[0], 0) . "'",
+                        "'" . dataWrapper($bindings[1], 1) . "'", "'" .
+                                                                  dataWrapper($bindings[2], 2) . "'",
+                        "'" . dataWrapper($bindings[3], 3) . "'",
+                        "'" . dataWrapper($bindings[4], 4) . "'", "'" . dataWrapper($bindings[5], 5) . "'",
+                        "'" . dataWrapper($bindings[6], 6) . "'", "'" . dataWrapper($bindings[7], 7) . "'");
                 }
 
                 if (count(dataWrapper($bindings)) == 9) {
-                    $str = sprintf($str, "'" . dataWrapper($bindings[0]) . "'", "'" . dataWrapper($bindings[1]) . "'", "'" . dataWrapper($bindings[2]) . "'",
+                    $str = sprintf($str, "'" . dataWrapper($bindings[0]) . "'", "'" . dataWrapper($bindings[1]) . "'",
+                        "'" . dataWrapper($bindings[2]) . "'",
                         "'" . dataWrapper($bindings[3]) . "'",
-                        "'" . dataWrapper($bindings[4]) . "'", "'" . dataWrapper($bindings[5]) . "'", "'" . dataWrapper($bindings[6]) . "'", "'" . dataWrapper($bindings[7]) . "'",
+                        "'" . dataWrapper($bindings[4]) . "'", "'" . dataWrapper($bindings[5]) . "'",
+                        "'" . dataWrapper($bindings[6]) . "'", "'" . dataWrapper($bindings[7]) . "'",
                         "'" . dataWrapper($bindings[8]) . "'");
                 }
 
                 if (count(dataWrapper($bindings)) == 10) {
-                    $str = sprintf($str, "'" . dataWrapper($bindings[0]) . "'", "'" . dataWrapper($bindings[1]) . "'", "'" . dataWrapper($bindings[2]) . "'",
+                    $str = sprintf($str, "'" . dataWrapper($bindings[0]) . "'", "'" . dataWrapper($bindings[1]) . "'",
+                        "'" . dataWrapper($bindings[2]) . "'",
                         "'" . dataWrapper($bindings[3]) . "'",
-                        "'" . dataWrapper($bindings[4]) . "'", "'" . dataWrapper($bindings[5]) . "'", "'" . dataWrapper($bindings[6]) . "'", "'" . dataWrapper($bindings[7]) . "'",
+                        "'" . dataWrapper($bindings[4]) . "'", "'" . dataWrapper($bindings[5]) . "'",
+                        "'" . dataWrapper($bindings[6]) . "'", "'" . dataWrapper($bindings[7]) . "'",
                         "'" . dataWrapper($bindings[8]) . "'", "'" . dataWrapper($bindings[9]) . "'");
                 }
 
                 if (count(dataWrapper($bindings)) == 11) {
-                    $str = sprintf($str, "'" . dataWrapper($bindings[0]) . "'", "'" . dataWrapper($bindings[1]) . "'", "'" . dataWrapper($bindings[2]) . "'",
+                    $str = sprintf($str, "'" . dataWrapper($bindings[0]) . "'", "'" . dataWrapper($bindings[1]) . "'",
+                        "'" . dataWrapper($bindings[2]) . "'",
                         "'" . dataWrapper($bindings[3]) . "'",
-                        "'" . dataWrapper($bindings[4]) . "'", "'" . dataWrapper($bindings[5]) . "'", "'" . dataWrapper($bindings[6]) . "'", "'" . dataWrapper($bindings[7]) . "'",
-                        "'" . dataWrapper($bindings[8]) . "'", "'" . dataWrapper($bindings[9]) . "'", "'" . dataWrapper($bindings[10]) . "'");
+                        "'" . dataWrapper($bindings[4]) . "'", "'" . dataWrapper($bindings[5]) . "'",
+                        "'" . dataWrapper($bindings[6]) . "'", "'" . dataWrapper($bindings[7]) . "'",
+                        "'" . dataWrapper($bindings[8]) . "'", "'" . dataWrapper($bindings[9]) . "'",
+                        "'" . dataWrapper($bindings[10]) . "'");
                 }
 
                 if (count(dataWrapper($bindings)) == 12) {
-                    $str = sprintf($str, "'" . dataWrapper($bindings[0]) . "'", "'" . dataWrapper($bindings[1]) . "'", "'" . dataWrapper($bindings[2]) . "'",
+                    $str = sprintf($str, "'" . dataWrapper($bindings[0]) . "'", "'" . dataWrapper($bindings[1]) . "'",
+                        "'" . dataWrapper($bindings[2]) . "'",
                         "'" . dataWrapper($bindings[3]) . "'",
-                        "'" . dataWrapper($bindings[4]) . "'", "'" . dataWrapper($bindings[5]) . "'", "'" . dataWrapper($bindings[6]) . "'", "'" . dataWrapper($bindings[7]) . "'",
-                        "'" . dataWrapper($bindings[8]) . "'", "'" . dataWrapper($bindings[9]) . "'", "'" . dataWrapper($bindings[10]) . "'", "'" . dataWrapper($bindings[11]) . "'");
+                        "'" . dataWrapper($bindings[4]) . "'", "'" . dataWrapper($bindings[5]) . "'",
+                        "'" . dataWrapper($bindings[6]) . "'", "'" . dataWrapper($bindings[7]) . "'",
+                        "'" . dataWrapper($bindings[8]) . "'", "'" . dataWrapper($bindings[9]) . "'",
+                        "'" . dataWrapper($bindings[10]) . "'", "'" . dataWrapper($bindings[11]) . "'");
                 }
 
 
                 if (count(dataWrapper($bindings)) == 13) {
-                    $str = sprintf($str, "'" . dataWrapper($bindings[0]) . "'", "'" . dataWrapper($bindings[1]) . "'", "'" . dataWrapper($bindings[2]) . "'",
+                    $str = sprintf($str, "'" . dataWrapper($bindings[0]) . "'", "'" . dataWrapper($bindings[1]) . "'",
+                        "'" . dataWrapper($bindings[2]) . "'",
                         "'" . dataWrapper($bindings[3]) . "'",
-                        "'" . dataWrapper($bindings[4]) . "'", "'" . dataWrapper($bindings[5]) . "'", "'" . dataWrapper($bindings[6]) . "'", "'" . dataWrapper($bindings[7]) . "'",
-                        "'" . dataWrapper($bindings[8]) . "'", "'" . dataWrapper($bindings[9]) . "'", "'" . dataWrapper($bindings[10]) . "'", "'" . dataWrapper($bindings[11]) . "'",
+                        "'" . dataWrapper($bindings[4]) . "'", "'" . dataWrapper($bindings[5]) . "'",
+                        "'" . dataWrapper($bindings[6]) . "'", "'" . dataWrapper($bindings[7]) . "'",
+                        "'" . dataWrapper($bindings[8]) . "'", "'" . dataWrapper($bindings[9]) . "'",
+                        "'" . dataWrapper($bindings[10]) . "'", "'" . dataWrapper($bindings[11]) . "'",
                         "'" . dataWrapper($bindings[12]) . "'");
                 }
 
 
                 if (count(dataWrapper($bindings)) == 14) {
-                    $str = sprintf($str, "'" . dataWrapper($bindings[0]) . "'", "'" . dataWrapper($bindings[1]) . "'", "'" . dataWrapper($bindings[2]) . "'",
+                    $str = sprintf($str, "'" . dataWrapper($bindings[0]) . "'", "'" . dataWrapper($bindings[1]) . "'",
+                        "'" . dataWrapper($bindings[2]) . "'",
                         "'" . dataWrapper($bindings[3]) . "'",
-                        "'" . dataWrapper($bindings[4]) . "'", "'" . dataWrapper($bindings[5]) . "'", "'" . dataWrapper($bindings[6]) . "'", "'" . dataWrapper($bindings[7]) . "'",
-                        "'" . dataWrapper($bindings[8]) . "'", "'" . dataWrapper($bindings[9]) . "'", "'" . dataWrapper($bindings[10]) . "'", "'" . dataWrapper($bindings[11]) . "'",
+                        "'" . dataWrapper($bindings[4]) . "'", "'" . dataWrapper($bindings[5]) . "'",
+                        "'" . dataWrapper($bindings[6]) . "'", "'" . dataWrapper($bindings[7]) . "'",
+                        "'" . dataWrapper($bindings[8]) . "'", "'" . dataWrapper($bindings[9]) . "'",
+                        "'" . dataWrapper($bindings[10]) . "'", "'" . dataWrapper($bindings[11]) . "'",
                         "'" . dataWrapper($bindings[12]) . "'", "'" . dataWrapper($bindings[13]) . "'");
                 }
 
 
                 if (count(dataWrapper($bindings)) == 15) {
-                    $str = sprintf($str, "'" . dataWrapper($bindings[0]) . "'", "'" . dataWrapper($bindings[1]) . "'", "'" . dataWrapper($bindings[2]) . "'",
+                    $str = sprintf($str, "'" . dataWrapper($bindings[0]) . "'", "'" . dataWrapper($bindings[1]) . "'",
+                        "'" . dataWrapper($bindings[2]) . "'",
                         "'" . dataWrapper($bindings[3]) . "'",
-                        "'" . dataWrapper($bindings[4]) . "'", "'" . dataWrapper($bindings[5]) . "'", "'" . dataWrapper($bindings[6]) . "'", "'" . dataWrapper($bindings[7]) . "'",
-                        "'" . dataWrapper($bindings[8]) . "'", "'" . dataWrapper($bindings[9]) . "'", "'" . dataWrapper($bindings[10]) . "'", "'" . dataWrapper($bindings[11]) . "'",
-                        "'" . dataWrapper($bindings[12]) . "'", "'" . dataWrapper($bindings[13]) . "'", "'" . dataWrapper($bindings[14]) . "'");
+                        "'" . dataWrapper($bindings[4]) . "'", "'" . dataWrapper($bindings[5]) . "'",
+                        "'" . dataWrapper($bindings[6]) . "'", "'" . dataWrapper($bindings[7]) . "'",
+                        "'" . dataWrapper($bindings[8]) . "'", "'" . dataWrapper($bindings[9]) . "'",
+                        "'" . dataWrapper($bindings[10]) . "'", "'" . dataWrapper($bindings[11]) . "'",
+                        "'" . dataWrapper($bindings[12]) . "'", "'" . dataWrapper($bindings[13]) . "'",
+                        "'" . dataWrapper($bindings[14]) . "'");
                 }
 
 
                 if (count(dataWrapper($bindings)) == 16) {
-                    $str = sprintf($str, "'" . dataWrapper($bindings[0]) . "'", "'" . dataWrapper($bindings[1]) . "'", "'" . dataWrapper($bindings[2]) . "'",
+                    $str = sprintf($str, "'" . dataWrapper($bindings[0]) . "'", "'" . dataWrapper($bindings[1]) . "'",
+                        "'" . dataWrapper($bindings[2]) . "'",
                         "'" . dataWrapper($bindings[3]) . "'",
-                        "'" . dataWrapper($bindings[4]) . "'", "'" . dataWrapper($bindings[5]) . "'", "'" . dataWrapper($bindings[6]) . "'", "'" . dataWrapper($bindings[7]) . "'",
-                        "'" . dataWrapper($bindings[8]) . "'", "'" . dataWrapper($bindings[9]) . "'", "'" . dataWrapper($bindings[10]) . "'", "'" . dataWrapper($bindings[11]) . "'",
-                        "'" . dataWrapper($bindings[12]) . "'", "'" . dataWrapper($bindings[13]) . "'", "'" . dataWrapper($bindings[14]) . "'", "'" . dataWrapper($bindings[15]) . "'");
+                        "'" . dataWrapper($bindings[4]) . "'", "'" . dataWrapper($bindings[5]) . "'",
+                        "'" . dataWrapper($bindings[6]) . "'", "'" . dataWrapper($bindings[7]) . "'",
+                        "'" . dataWrapper($bindings[8]) . "'", "'" . dataWrapper($bindings[9]) . "'",
+                        "'" . dataWrapper($bindings[10]) . "'", "'" . dataWrapper($bindings[11]) . "'",
+                        "'" . dataWrapper($bindings[12]) . "'", "'" . dataWrapper($bindings[13]) . "'",
+                        "'" . dataWrapper($bindings[14]) . "'", "'" . dataWrapper($bindings[15]) . "'");
                 }
 
 
                 if (count(dataWrapper($bindings)) == 17) {
-                    $str = sprintf($str, "'" . dataWrapper($bindings[0]) . "'", "'" . dataWrapper($bindings[1]) . "'", "'" . dataWrapper($bindings[2]) . "'",
+                    $str = sprintf($str, "'" . dataWrapper($bindings[0]) . "'", "'" . dataWrapper($bindings[1]) . "'",
+                        "'" . dataWrapper($bindings[2]) . "'",
                         "'" . dataWrapper($bindings[3]) . "'",
-                        "'" . dataWrapper($bindings[4]) . "'", "'" . dataWrapper($bindings[5]) . "'", "'" . dataWrapper($bindings[6]) . "'", "'" . dataWrapper($bindings[7]) . "'",
-                        "'" . dataWrapper($bindings[8]) . "'", "'" . dataWrapper($bindings[9]) . "'", "'" . dataWrapper($bindings[10]) . "'", "'" . dataWrapper($bindings[11]) . "'",
-                        "'" . dataWrapper($bindings[12]) . "'", "'" . dataWrapper($bindings[13]) . "'", "'" . dataWrapper($bindings[14]) . "'", "'" . dataWrapper($bindings[15]) . "'",
+                        "'" . dataWrapper($bindings[4]) . "'", "'" . dataWrapper($bindings[5]) . "'",
+                        "'" . dataWrapper($bindings[6]) . "'", "'" . dataWrapper($bindings[7]) . "'",
+                        "'" . dataWrapper($bindings[8]) . "'", "'" . dataWrapper($bindings[9]) . "'",
+                        "'" . dataWrapper($bindings[10]) . "'", "'" . dataWrapper($bindings[11]) . "'",
+                        "'" . dataWrapper($bindings[12]) . "'", "'" . dataWrapper($bindings[13]) . "'",
+                        "'" . dataWrapper($bindings[14]) . "'", "'" . dataWrapper($bindings[15]) . "'",
                         "'" . dataWrapper($bindings[16]) . "'");
                 }
 
                 if (count(dataWrapper($bindings)) == 18) {
-                    $str = sprintf($str, "'" . dataWrapper($bindings[0]) . "'", "'" . dataWrapper($bindings[1]) . "'", "'" . dataWrapper($bindings[2]) . "'",
+                    $str = sprintf($str, "'" . dataWrapper($bindings[0]) . "'", "'" . dataWrapper($bindings[1]) . "'",
+                        "'" . dataWrapper($bindings[2]) . "'",
                         "'" . dataWrapper($bindings[3]) . "'",
-                        "'" . dataWrapper($bindings[4]) . "'", "'" . dataWrapper($bindings[5]) . "'", "'" . dataWrapper($bindings[6]) . "'", "'" . dataWrapper($bindings[7]) . "'",
-                        "'" . dataWrapper($bindings[8]) . "'", "'" . dataWrapper($bindings[9]) . "'", "'" . dataWrapper($bindings[10]) . "'", "'" . dataWrapper($bindings[11]) . "'",
-                        "'" . dataWrapper($bindings[12]) . "'", "'" . dataWrapper($bindings[13]) . "'", "'" . dataWrapper($bindings[14]) . "'", "'" . dataWrapper($bindings[15]) . "'",
+                        "'" . dataWrapper($bindings[4]) . "'", "'" . dataWrapper($bindings[5]) . "'",
+                        "'" . dataWrapper($bindings[6]) . "'", "'" . dataWrapper($bindings[7]) . "'",
+                        "'" . dataWrapper($bindings[8]) . "'", "'" . dataWrapper($bindings[9]) . "'",
+                        "'" . dataWrapper($bindings[10]) . "'", "'" . dataWrapper($bindings[11]) . "'",
+                        "'" . dataWrapper($bindings[12]) . "'", "'" . dataWrapper($bindings[13]) . "'",
+                        "'" . dataWrapper($bindings[14]) . "'", "'" . dataWrapper($bindings[15]) . "'",
                         "'" . dataWrapper($bindings[16]) . "'", "'" . dataWrapper($bindings[17]) . "'");
                 }
 
                 if (count(dataWrapper($bindings)) == 19) {
-                    $str = sprintf($str, "'" . dataWrapper($bindings[0]) . "'", "'" . dataWrapper($bindings[1]) . "'", "'" . dataWrapper($bindings[2]) . "'",
+                    $str = sprintf($str, "'" . dataWrapper($bindings[0]) . "'", "'" . dataWrapper($bindings[1]) . "'",
+                        "'" . dataWrapper($bindings[2]) . "'",
                         "'" . dataWrapper($bindings[3]) . "'",
-                        "'" . dataWrapper($bindings[4]) . "'", "'" . dataWrapper($bindings[5]) . "'", "'" . dataWrapper($bindings[6]) . "'", "'" . dataWrapper($bindings[7]) . "'",
-                        "'" . dataWrapper($bindings[8]) . "'", "'" . dataWrapper($bindings[9]) . "'", "'" . dataWrapper($bindings[10]) . "'", "'" . dataWrapper($bindings[11]) . "'",
-                        "'" . dataWrapper($bindings[12]) . "'", "'" . dataWrapper($bindings[13]) . "'", "'" . dataWrapper($bindings[14]) . "'", "'" . dataWrapper($bindings[15]) . "'",
-                        "'" . dataWrapper($bindings[16]) . "'", "'" . dataWrapper($bindings[17]) . "'", "'" . dataWrapper($bindings[18]) . "'");
+                        "'" . dataWrapper($bindings[4]) . "'", "'" . dataWrapper($bindings[5]) . "'",
+                        "'" . dataWrapper($bindings[6]) . "'", "'" . dataWrapper($bindings[7]) . "'",
+                        "'" . dataWrapper($bindings[8]) . "'", "'" . dataWrapper($bindings[9]) . "'",
+                        "'" . dataWrapper($bindings[10]) . "'", "'" . dataWrapper($bindings[11]) . "'",
+                        "'" . dataWrapper($bindings[12]) . "'", "'" . dataWrapper($bindings[13]) . "'",
+                        "'" . dataWrapper($bindings[14]) . "'", "'" . dataWrapper($bindings[15]) . "'",
+                        "'" . dataWrapper($bindings[16]) . "'", "'" . dataWrapper($bindings[17]) . "'",
+                        "'" . dataWrapper($bindings[18]) . "'");
                 }
 
 
                 if (count(dataWrapper($bindings)) == 20) {
-                    $str = sprintf($str, "'" . dataWrapper($bindings[0]) . "'", "'" . dataWrapper($bindings[1]) . "'", "'" . dataWrapper($bindings[2]) . "'",
+                    $str = sprintf($str, "'" . dataWrapper($bindings[0]) . "'", "'" . dataWrapper($bindings[1]) . "'",
+                        "'" . dataWrapper($bindings[2]) . "'",
                         "'" . dataWrapper($bindings[3]) . "'",
-                        "'" . dataWrapper($bindings[4]) . "'", "'" . dataWrapper($bindings[5]) . "'", "'" . dataWrapper($bindings[6]) . "'", "'" . dataWrapper($bindings[7]) . "'",
-                        "'" . dataWrapper($bindings[8]) . "'", "'" . dataWrapper($bindings[9]) . "'", "'" . dataWrapper($bindings[10]) . "'", "'" . dataWrapper($bindings[11]) . "'",
-                        "'" . dataWrapper($bindings[12]) . "'", "'" . dataWrapper($bindings[13]) . "'", "'" . dataWrapper($bindings[14]) . "'", "'" . dataWrapper($bindings[15]) . "'",
-                        "'" . dataWrapper($bindings[16]) . "'", "'" . dataWrapper($bindings[17]) . "'", "'" . dataWrapper($bindings[18]) . "'", "'" . dataWrapper($bindings[19]) . "'");
+                        "'" . dataWrapper($bindings[4]) . "'", "'" . dataWrapper($bindings[5]) . "'",
+                        "'" . dataWrapper($bindings[6]) . "'", "'" . dataWrapper($bindings[7]) . "'",
+                        "'" . dataWrapper($bindings[8]) . "'", "'" . dataWrapper($bindings[9]) . "'",
+                        "'" . dataWrapper($bindings[10]) . "'", "'" . dataWrapper($bindings[11]) . "'",
+                        "'" . dataWrapper($bindings[12]) . "'", "'" . dataWrapper($bindings[13]) . "'",
+                        "'" . dataWrapper($bindings[14]) . "'", "'" . dataWrapper($bindings[15]) . "'",
+                        "'" . dataWrapper($bindings[16]) . "'", "'" . dataWrapper($bindings[17]) . "'",
+                        "'" . dataWrapper($bindings[18]) . "'", "'" . dataWrapper($bindings[19]) . "'");
                 }
 
 
@@ -282,9 +341,53 @@ class AppServiceProvider extends ServiceProvider
         } // if ($this->app->environment('local')) {
 
 
+        // validateCheckValidConfirmationCode
+        Validator::extend('check_valid_confirmation_code', function ($attribute, $value, $parameters, $validator) {
+            $confirmation_code_expire_minutes = (int)config('app.confirmation_code_expire_minutes', 24);
+            \Log::info(varDump($confirmation_code_expire_minutes, ' -1 confirmation_code_expire_minutes::'));
+
+            \Log::info(varDump($parameters, ' -1 check_valid_confirmation_code $parameters::'));
+            $confirmation_code = $parameters[0] ?? null;
+            $user_email        = $parameters[1] ?? null;
+            $user_id           = $parameters[2] ?? null;
+            //              'confirmation_code' => 'required|min:8|max:8| ' . 'check_valid_confirmation_code:' . $request->confirmation_code . ','
+            //                                   . $request->user_email . ',' . $request->user_id
+            $user = User
+                ::getByEmail($user_email)
+                ->getById($user_id)
+                ->first();
+            \Log::info(varDump($user, ' -12 check_valid_confirmation_code $user::'));
+            if (empty($user)) {
+                \Log::info(varDump(-77, ' -77 check_valid_confirmation_code FALSE::'));
+                return false;
+            }
+            \Log::info(varDump(-13, ' -13 check_valid_confirmation_code ::'));
+//            return true;
+
+            if ($user->confirmation_code != $confirmation_code) {
+                \Log::info(varDump(-88, ' -88 check_valid_confirmation_code FALSE::'));
+                return false;
+            }
+
+            $createdAt= Carbon\Carbon::parse($user->created_at);
+            \Log::info(  varDump($createdAt, ' -1 $createdAt::') );
+
+            // https://stackoverflow.com/questions/32549221/convert-string-to-carbon
+            if($createdAt->diffInMinutes(Carbon\Carbon::now()) > $confirmation_code_expire_minutes)  {
+                \Log::info(varDump(-99, ' -99 check_valid_confirmation_code FALSE::'));
+//                return false;
+            }
+
+                \Log::info(varDump(-14, ' -14 check_valid_confirmation_code ::'));
+            //confirmation_code_expire_minutes
+
+            //     public static function getSimilarHostelByName(string $name, int $user_id, int $id = null, $return_count = false)
+            return true;
+        });
+
+
     }
 }
-
 
 
 function formatSql($sql, $is_break_line = true, $is_include_html = true)
@@ -299,27 +402,44 @@ function formatSql($sql, $is_break_line = true, $is_include_html = true)
     $sql        = ' ' . $sql . ' ';
     $left_cond  = '~\b(?<![%\'])';
     $right_cond = '(?![%\'])\b~i';
-    $sql        = preg_replace($left_cond . "insert[\s]+into" . $right_cond, $space_char . $space_char . $bold_start . "INSERT INTO" . $bold_end, $sql);
-    $sql        = preg_replace($left_cond . "insert" . $right_cond, $space_char . $bold_start . "INSERT" . $bold_end, $sql);
-    $sql        = preg_replace($left_cond . "delete" . $right_cond, $space_char . $bold_start . "DELETE" . $bold_end, $sql);
-    $sql        = preg_replace($left_cond . "values" . $right_cond, $break_line . $space_char . $space_char . $bold_start . "VALUES" . $bold_end, $sql);
-    $sql        = preg_replace($left_cond . "update" . $right_cond, $space_char . $bold_start . "UPDATE" . $bold_end, $sql);
-    $sql        = preg_replace($left_cond . "inner[\s]+join" . $right_cond, $break_line . $space_char . $space_char . $bold_start . "INNER JOIN" . $bold_end,
+    $sql        = preg_replace($left_cond . "insert[\s]+into" . $right_cond,
+        $space_char . $space_char . $bold_start . "INSERT INTO" . $bold_end, $sql);
+    $sql        = preg_replace($left_cond . "insert" . $right_cond, $space_char . $bold_start . "INSERT" . $bold_end,
+        $sql);
+    $sql        = preg_replace($left_cond . "delete" . $right_cond, $space_char . $bold_start . "DELETE" . $bold_end,
+        $sql);
+    $sql        = preg_replace($left_cond . "values" . $right_cond,
+        $break_line . $space_char . $space_char . $bold_start . "VALUES" . $bold_end, $sql);
+    $sql        = preg_replace($left_cond . "update" . $right_cond, $space_char . $bold_start . "UPDATE" . $bold_end,
+        $sql);
+    $sql        = preg_replace($left_cond . "inner[\s]+join" . $right_cond,
+        $break_line . $space_char . $space_char . $bold_start . "INNER JOIN" . $bold_end,
         $sql);
     $sql        = preg_replace($left_cond . "straight[\s]+join" . $right_cond,
         $break_line . $space_char . $space_char . $bold_start . "STRAIGHT_JOIN" . $bold_end, $sql);
-    $sql        = preg_replace($left_cond . "left[\s]+join" . $right_cond, $break_line . $space_char . $space_char . $bold_start . "LEFT JOIN" . $bold_end,
+    $sql        = preg_replace($left_cond . "left[\s]+join" . $right_cond,
+        $break_line . $space_char . $space_char . $bold_start . "LEFT JOIN" . $bold_end,
         $sql);
-    $sql        = preg_replace($left_cond . "select" . $right_cond, $space_char . $bold_start . "SELECT" . $bold_end, $sql);
-    $sql        = preg_replace($left_cond . "from" . $right_cond, $break_line . $space_char . $space_char . $bold_start . "FROM" . $bold_end, $sql);
-    $sql        = preg_replace($left_cond . "where" . $right_cond, $break_line . $space_char . $space_char . $bold_start . "WHERE" . $bold_end, $sql);
-    $sql        = preg_replace($left_cond . "group by" . $right_cond, $break_line . $space_char . $space_char . "GROUP BY" . $bold_end, $sql);
-    $sql        = preg_replace($left_cond . "having" . $right_cond, $break_line . $space_char . $bold_start . "HAVING" . $bold_end, $sql);
-    $sql        = preg_replace($left_cond . "order[\s]+by" . $right_cond, $break_line . $space_char . $space_char . $bold_start . "ORDER BY" . $bold_end, $sql);
-    $sql        = preg_replace($left_cond . "and" . $right_cond, $space_char . $space_char . $bold_start . "AND" . $bold_end, $sql);
-    $sql        = preg_replace($left_cond . "or" . $right_cond, $space_char . $space_char . $bold_start . "OR" . $bold_end, $sql);
-    $sql        = preg_replace($left_cond . "as" . $right_cond, $space_char . $space_char . $bold_start . "AS" . $bold_end, $sql);
-    $sql        = preg_replace($left_cond . "exists" . $right_cond, $break_line . $space_char . $space_char . $bold_start . "EXISTS" . $bold_end, $sql);
+    $sql        = preg_replace($left_cond . "select" . $right_cond, $space_char . $bold_start . "SELECT" . $bold_end,
+        $sql);
+    $sql        = preg_replace($left_cond . "from" . $right_cond,
+        $break_line . $space_char . $space_char . $bold_start . "FROM" . $bold_end, $sql);
+    $sql        = preg_replace($left_cond . "where" . $right_cond,
+        $break_line . $space_char . $space_char . $bold_start . "WHERE" . $bold_end, $sql);
+    $sql        = preg_replace($left_cond . "group by" . $right_cond,
+        $break_line . $space_char . $space_char . "GROUP BY" . $bold_end, $sql);
+    $sql        = preg_replace($left_cond . "having" . $right_cond,
+        $break_line . $space_char . $bold_start . "HAVING" . $bold_end, $sql);
+    $sql        = preg_replace($left_cond . "order[\s]+by" . $right_cond,
+        $break_line . $space_char . $space_char . $bold_start . "ORDER BY" . $bold_end, $sql);
+    $sql        = preg_replace($left_cond . "and" . $right_cond,
+        $space_char . $space_char . $bold_start . "AND" . $bold_end, $sql);
+    $sql        = preg_replace($left_cond . "or" . $right_cond,
+        $space_char . $space_char . $bold_start . "OR" . $bold_end, $sql);
+    $sql        = preg_replace($left_cond . "as" . $right_cond,
+        $space_char . $space_char . $bold_start . "AS" . $bold_end, $sql);
+    $sql        = preg_replace($left_cond . "exists" . $right_cond,
+        $break_line . $space_char . $space_char . $bold_start . "EXISTS" . $bold_end, $sql);
 
     return $sql;
 }
@@ -394,7 +514,8 @@ function isDeveloperComp($check_debug = false)
     return false;
 }
 
-function dataWrapper($value,$index=null) {
+function dataWrapper($value, $index = null)
+{
     return $value;
 
     /*    if ($index) {
@@ -410,5 +531,6 @@ function dataWrapper($value,$index=null) {
 //        Carbon::parse($value)->format("d-m-Y hh:mm:ss");
         return $value->format("d-m-Y");
     }
+
     return $value;
 }

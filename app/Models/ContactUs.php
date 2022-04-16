@@ -53,7 +53,7 @@ class ContactUs extends Model
     }
 
 
-    public function scopeGetByAuthor($query, $author_id = null)
+    public function scopeGetByAuthorId($query, $author_id = null)
     {
         if (empty($author_id)) {
             return $query;

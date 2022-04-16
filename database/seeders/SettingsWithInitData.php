@@ -26,17 +26,17 @@ class SettingsWithInitData extends Seeder
         ]);
         \DB::table('settings')->insert([
             'name' => 'site_name',
-            'value' =>  'Currency rates',
+            'value' =>  'Currencies',
         ]);
 
         \DB::table('settings')->insert([
             'name' => 'copyright_text',
-            'value' =>  '© 2021 All rights reserved',
+            'value' =>  'All rights reserved',
         ]);
 
         \DB::table('settings')->insert([
             'name' => 'site_heading',
-            'value' =>  'Get Currency rate you need.',
+            'value' =>  'Registering on our site you can get currency rates you need',
         ]);
 
         \DB::table('settings')->insert([

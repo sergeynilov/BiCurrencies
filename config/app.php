@@ -61,6 +61,18 @@ return [
     'currencies_per_page' => env('CURRENCIES_PER_PAGE', 10),
     'media_app_name' => 'currency_app',
 
+    'images_extensions'               => ['png', /*'webp',*/ 'jpg', 'jpeg', 'gif'],
+//    'uploaded_documents_extensions'   => ['png', 'webp', 'jpg', 'jpeg', 'gif', 'doc', 'xls', 'zip', 'rar'],
+    'uploaded_file_max_mib'           => 1,
+    'avatar_dimension_limits'         => ['max_width' => 256, 'max_height' => 256],
+    'currency_image_dimension_limits'     => ['max_width' => 5024, 'max_height' => 5024],
+
+    'app_logo_dimension_limits'     => ['max_width' => 256, 'max_height' => 256],
+
+    'cms_item_image_dimension_limits'     => ['max_width' => 1024, 'max_height' => 820],
+    'valid_color_format'              => '~^#(([0-9a-fA-F]{2}){3}|([0-9a-fA-F]){3})$~',
+    'confirmation_code_expire_minutes'              => 10,
+
     /*
     |--------------------------------------------------------------------------
     | Application Timezone
@@ -182,7 +194,6 @@ return [
         App\Providers\TelescopeServiceProvider::class,
         App\Providers\FortifyServiceProvider::class,
         App\Providers\JetstreamServiceProvider::class,
-        Jenssegers\Agent\AgentServiceProvider::class,
 
         App\Providers\CurrencyRatesServiceProvider::class,
         App\Providers\DateFunctionalityServiceProvider::class,
@@ -200,7 +211,6 @@ return [
     */
 
     'aliases' => Facade::defaultAliases()->merge([
-        'Agent' => Jenssegers\Agent\Facades\Agent::class,
 
         // ...
     ])->toArray(),

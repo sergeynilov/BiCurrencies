@@ -24,7 +24,7 @@ mix.webpackConfig({
 
 
 mix.js('resources/js/app.js', 'public/js').vue()
-    .sass('resources/sass/app.scss', 'public/css')
+    .sass('resources/sass/admin_custom.scss', 'public/css')
     .sourceMaps()
     .webpackConfig(require('./webpack.config'));
 

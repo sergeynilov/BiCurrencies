@@ -124,11 +124,9 @@ export default defineComponent({
     },
 
     updatePhotoPreview() {
-      const photo = this.$refs.photo.files[0];
-
+      let photo = this.$refs.photo.files[0];
       if (! photo) return;
-
-      const reader = new FileReader();
+      let reader = new FileReader();
 
       reader.onload = (e) => {
         this.photoPreview = e.target.result;

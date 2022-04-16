@@ -1,44 +1,52 @@
 // Body
 $body-bg: #f8fafc;
 
+$debug_mode: false;
+
 // Typography
 //$font-family-sans-serif: 'Nunito', sans-serif;
 $font-size-base: 1.2rem;
 $line-height-base: 1.6;
 
 
-$admin_form_background_color: #939BA2;
 $admin_btn_color: #fff;
-$debug_mode: false;
 
 $admin_border_separator_color: 0.05rem solid #fcfcfc; // USED
 
-$forum_link_reversed: white;
-$link_color: #246647;
-$toggle_color: #3f5e5d;
-$action_color: #3f5e5d;
-$external_color: red;
-
-$navbar_background_color: #dbe7f3;
-$navbar_color: #114a86;
-$navbar_font_size: 0.8rem;
-
-//$background_color: #e0e6f9;// #CECDD2; // #EDEDED;
-//$gold_color : #ffee2c;
-
-//$admin_background_color: #edf2ff;
-//$frontend_background_color: #edf2ff;
-
 
 $frontend_text_color: #000000;
-$frontend_background_color: #DEFFFC;
+$frontend_background_color: red ;
+//$frontend_background_color: #DEFFFC;
 
-$admin_text_color: #a9bdc5;
-$text_color_reversed: white;
-$editable_input_color: $admin_text_color;
+// FRONTEND  BLOCK START
+
+$frontend_listing_header_color: yellow; // DEBUGGING
+$frontend_listing_cell_color: blue; // DEBUGGING
+$frontend_text_color: red;  // DEBUGGING
+//$frontend_listing_header_color: #a9bdc5;  // REAL
+//$frontend_listing_cell_color: #a9bdc5;  // REAL
+//$frontend_text_color: #a9bdc5;  // REAL
+
+$frontend_editable_input_color: $frontend_text_color;
+// ADMIN  BLOCK END
 
 
-$debug_mode: false;
+// FRONTEND  BLOCK START
+
+//$admin_listing_header_color: yellow; // DEBUGGING
+//$admin_listing_tr_color: blue; // DEBUGGING
+//$admin_text_color: red;  // DEBUGGING
+$admin_background_color: #343A40;
+$admin_listing_header_color: #a9bdc5;  // REAL
+$admin_listing_tr_color: #a9bdc5;  // REAL
+$admin_text_color: #a9bdc5;  // REAL
+
+$admin_editable_input_color: $admin_text_color;
+// ADMIN  BLOCK END
+
+
+$user_text_color: #1F2D3D;
+
 
 //$forums_block_header_height:60px;
 //$forums_block_footer_height:45px;

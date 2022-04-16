@@ -10,7 +10,7 @@
         "production": "mix --production"
     },
     "devDependencies": {
-        "@fortawesome/fontawesome-free": "^5.15.1",
+        "@fortawesome/fontawesome-free": "^5.15.4",
         "@inertiajs/inertia": "^0.10.0",
         "@inertiajs/inertia-vue3": "^0.5.1",
         "@inertiajs/progress": "^0.2.6",
@@ -37,11 +37,16 @@
         "@ckeditor/ckeditor5-build-classic": "^32.0.0",
         "@ckeditor/ckeditor5-vue": "^2.0.1",
         "@vueform/multiselect": "github:vueform/multiselect",
+        "@vueup/vue-quill": "^1.0.0-beta.8",
         "mitt": "^3.0.0",
+        "quill-better-table": "^1.2.10",
+        "quill-blot-formatter": "^1.0.5",
+        "sanitize-html": "^2.7.0",
         "vue-color-kit": "^1.0.5",
         "vue-final-modal": "^3.4.3",
         "vue-upload-component": "^3.1.2",
         "vue3-colorpicker": "^2.0.4",
-        "vue3-date-time-picker": "^2.7.0"
+        "vue3-date-time-picker": "^2.7.0",
+        "vuejs-paginate-next": "^1.0.2"
     }
 }

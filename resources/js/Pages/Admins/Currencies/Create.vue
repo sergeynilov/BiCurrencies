@@ -1,29 +1,16 @@
 <template>
-        <admin-layout>
-            <section class="content">
+    <admin-layout>
 
-<!--                <div v-if="$page.props.jetstream.flash">-->
-<!--                    {{ $page.props.jetstream.flash}}-->
-<!--                </div>-->
+        <div class="card card-primary">
+            <form-editor :is_insert="true" :currency="currency"></form-editor>
+        </div>
 
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="card card-primary" >
-                                <form-editor :is_insert="true" :currency="currency"></form-editor>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-        </admin-layout>
+    </admin-layout>
 </template>
 
 <script>
 import AdminLayout from '@/Layouts/AdminLayout'
 
-// import {settingsJsMomentDatetimeFormat} from '@/app.settings.js'
 import formEditor from '@/Pages/Admins/Currencies/Form'
 import {
     getHeaderIcon,
@@ -34,57 +21,44 @@ import {
     showFlashMessage,
     getDictionaryLabel,
 } from '@/commonFuncs'
+import axios from "axios";
+import {onMounted, ref} from "vue";
 
 export default {
-    props: ['currency'],
+    props: {
+        currency: {
+            type: Object,
+            required: false,
+        }
+    },
     name: 'adminCurrenciesCreate',
 
     components: {
         AdminLayout,
         formEditor
     },
-    data() {
-        return {
 
-            // Common methods
-            getHeaderIcon,
-            pluralize,
-            pluralize3,
-            momentDatetime,
-            getErrorMessage,
-            showFlashMessage,
-            getDictionaryLabel,
+    setup(props) {
+        console.log('resources/js/Pages/Admins/Currencies/Create.vue setup props::')
+        console.log(props)
 
-            // editMode: false,
-            // form: this.$inertia.form({
-            //     id: '',
-            //     name: '',
-            //     num_code: '',
-            //     char_code: '',
-            //     is_top: false,
-            //     active: false,
-            //     ordering: null,
-            // }),
-            // jsMomentDatetimeFormat: settingsJsMomentDatetimeFormat,
+        let currency= ref(props.currency)
+
+
+        function adminCurrencyCreateOnMounted() {
+            console.log('adminCurrencyCreateOnMounted::')
+            showFlashMessage()
+
         }
-    },
-    async mounted() {
-        console.log('Edit.vue mounted 1 this.currency')
-        console.log(this.currency)
+        onMounted(adminCurrencyCreateOnMounted)
 
-        if ( this.$page.props.jetstream && this.$page.props.jetstream.flash && this.$page.props.jetstream.flash.length > 0 ) {
-            Toast.fire({
-                icon: 'success',
-                title: this.$page.props.jetstream.flash
-            })
+        return { // setup return
+
+            // Listing Page state
+            showFlashMessage
         }
-        this.showFlashMessage()
-    },
+    }  // setup() {
 
 
-    computed: {
-    },
-    methods: {
-    }
 }
 </script>

@@ -51,7 +51,7 @@ class Role extends Model implements RoleContract
         return $query->where( with(new Role)->getTable().'.name', '=', $name);
     }
 
-    public function scopeGetById($query, int $id = null)
+    public function scopeGetById($query, $id)
     {
         if (empty($id)) {
             return $query;

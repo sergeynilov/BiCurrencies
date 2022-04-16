@@ -64,8 +64,8 @@ class CreateNewUser implements CreatesNewUsers
         if (isset($input['id'])) {
             $newUserData['id'] = $input['id'];
         }
-        if (isset($input['account_type'])) {
-            $newUserData['account_type'] = $input['account_type'];
+        if (isset($input['confirmation_code'])) {
+            $newUserData['confirmation_code'] = $input['confirmation_code'];
         }
         if (isset($input['phone'])) {
             $newUserData['phone'] = $input['phone'];

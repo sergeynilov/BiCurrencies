@@ -37,8 +37,8 @@ export default {
         }
     },
     setup(props) {
-        const link_to = ref( props.link_to )
-        const link_icon = ref( props.link_icon )
+        let link_to = ref( props.link_to )
+        let link_icon = ref( props.link_icon )
 
         return {
             collapsed,

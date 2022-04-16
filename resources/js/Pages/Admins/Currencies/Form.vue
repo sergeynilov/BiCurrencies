@@ -1,15 +1,15 @@
 <template>
-    <div v-if="!formEditor.processing">
+    <div class="card">
         <!--        is_insert::{{ is_insert }}<br>-->
         <!--        formEditor.errors::{{ formEditor.errors }}<br>-->
-<!--        formEditor::{{ formEditor }}<br>-->
+        <!--        formEditor::{{ formEditor }}<br>-->
 
         <div class="card-header">
-            <h3 class="card-title">
-                <i :class="getHeaderIcon('currency')" class="mr-1"></i>
+            <h3 class="card-title admin_color">
+                <i :class="getHeaderIcon('currency')" class="action_icon icon_right_text_margin"></i>
                 {{ getFormEditorTitle }}
             </h3>
-        </div> <!-- card-title -->
+        </div> <!-- card-header -->
 
         <!--        show_color_picker_modal::{{ show_color_picker_modal }}<br>-->
         <!--        modal_picker_color_selected_value::{{ modal_picker_color_selected_value }}<br>-->
@@ -18,23 +18,23 @@
             <div class="card-body p-0">
                 <div class="block_2columns_md p-2" v-if="!is_insert"> <!-- id -->
                     <div class="horiz_divider_left_13">
-                        <label for="id">Id:</label>
+                        <jet-label for="id" value="Id:" class="admin_editable_label"/>
                     </div>
                     <div class="horiz_divider_right_23">
-                        <input type="text" class="form-control" id="id" disabled
-                               v-model="formEditor.id">
+                        <jet-input id="id" type="text" class="form-control"
+                                   v-model="formEditor.id" disabled/>
                     </div>
                 </div> <!-- class="block_2columns_md" id -->
 
                 <div class="block_2columns_md p-2"> <!-- name -->
                     <div class="horiz_divider_left_13">
-                        <label for="name">Currency Name:</label>
+                        <jet-label for="name" value="Currency Name:" class="admin_editable_label"/>
                     </div>
                     <div class="horiz_divider_right_23">
-                        <input type="text" class="form-control" id="name"
-                               placeholder="Currency descriptive name" v-model="formEditor.name"
-                               :class="{ 'is-invalid' : formEditor.errors && formEditor.errors.name }"
-                               autofocus="autofocus" autocomplete="off">
+                        <jet-input id="name" type="text" class="form-control admin_editable_input"
+                                   v-model="formEditor.name" placeholder="Currency descriptive name"
+                                   :class="{ 'is-invalid' : formEditor.errors && formEditor.errors.name }"
+                                   autocomplete="off"/>
                         <div class="invalid-feedback mb-3" v-if="formEditor.errors"
                              :class="{ 'd-block' : formEditor.errors && formEditor.errors.name}">
                             {{ formEditor.errors.name }}
@@ -45,13 +45,13 @@
 
                 <div class="block_2columns_md p-2"> <!-- num_code -->
                     <div class="horiz_divider_left_13">
-                        <label for="num_code">Number code:</label>
+                        <jet-label for="num_code" value="Number code:" class="admin_editable_label"/>
                     </div>
                     <div class="horiz_divider_right_23">
-                        <input type="text" class="form-control" id="num_code"
-                               placeholder="Valid integer value " v-model="formEditor.num_code"
-                               :class="{ 'is-invalid' : formEditor.errors && formEditor.errors.num_code }"
-                               autofocus="autofocus" autocomplete="off" maxlength="3">
+                        <jet-input id="num_code" type="text" class="form-control admin_editable_input"
+                                   v-model="formEditor.num_code" placeholder="Currency descriptive num code"
+                                   :class="{ 'is-invalid' : formEditor.errors && formEditor.errors.num_code }"
+                                   autocomplete="off"/>
                         <div class="invalid-feedback mb-3" v-if="formEditor.errors"
                              :class="{ 'd-block' : formEditor.errors && formEditor.errors.num_code}">
                             {{ formEditor.errors.num_code }}
@@ -62,13 +62,13 @@
 
                 <div class="block_2columns_md p-2"> <!-- char_code -->
                     <div class="horiz_divider_left_13">
-                        <label for="char_code">Char code:</label>
+                        <jet-label for="char_code" value="Char code:" class="admin_editable_label"/>
                     </div>
                     <div class="horiz_divider_right_23">
-                        <input type="text" class="form-control" id="char_code"
-                               placeholder="Uppercase 3 chars code" v-model="formEditor.char_code"
-                               :class="{ 'is-invalid' : formEditor.errors && formEditor.errors.char_code }"
-                               autofocus="autofocus" autocomplete="off" maxlength="3">
+                        <jet-input id="char_code" type="text" class="form-control admin_editable_input"
+                                   v-model="formEditor.char_code" placeholder="Currency descriptive char code"
+                                   :class="{ 'is-invalid' : formEditor.errors && formEditor.errors.char_code }"
+                                   autocomplete="off"/>
                         <div class="invalid-feedback mb-3" v-if="formEditor.errors"
                              :class="{ 'd-block' : formEditor.errors && formEditor.errors.char_code}">
                             {{ formEditor.errors.char_code }}
@@ -76,21 +76,24 @@
                     </div>
                 </div> <!-- class="block_2columns_md" char_code -->
 
+
                 <div class="block_2columns_md p-2"> <!-- color -->
                     <div class="horiz_divider_left_13">
-                        <label for="btn_color">Color:</label>
+                        <jet-label for="btn_color" value="Color:" class="admin_editable_label"/>
                     </div>
                     <div class="horiz_divider_right_23 pull-left clearfix">
 
-                        <button type="button" class="btn btn-secondary btn-xs mt-1"
+                        <button type="button" class="btn btn-secondary btn-sm admin_color"
                                 @click="showColorPickerModal('color')" id="btn_color">
-                            <i :class="getHeaderIcon('color')" class="mr-1"></i>Select Color
+                            <i :class="getHeaderIcon('color')" class="action_icon icon_right_text_margin"></i>Select
+                            Color
                         </button>
-                        <div style="float: right;" >
-                        <p class="text-sm p-0 pull-left" :style="{color: formEditor.color}"  v-show="formEditor.color">
-                            <i :class="getHeaderIcon('info')" class="mr-1"></i>
-                            Current color : {{ formEditor.color }}
-                        </p>
+                        <div style="float: right;">
+                            <p class="text-sm p-0 pull-left" :style="{color: formEditor.color}"
+                               v-show="formEditor.color">
+                                <i :class="getHeaderIcon('info')" class="action_icon icon_right_text_margin"></i>
+                                Current color : {{ formEditor.color }}
+                            </p>
                         </div>
 
                         <div class="invalid-feedback mb-3" v-if="formEditor.errors"
@@ -103,16 +106,17 @@
 
                 <div class="block_2columns_md p-2"> <!-- bgcolor -->
                     <div class="horiz_divider_left_13">
-                        <label for="btn_bgcolor">Background color:</label>
+                        <jet-label for="btn_bgcolor" value="Background color:" class="admin_editable_label"/>
                     </div>
                     <div class="horiz_divider_right_23">
-                        <!--                        <div :style="{background: bgcolor_picker}">-->
-                        <button type="button" class="btn btn-secondary btn-xs mt-1"
-                                @click="showColorPickerModal('bgcolor')" id="btn_bgcolor">
-                            <i :class="getHeaderIcon('color')" class="mr-1"></i>Select Color
+                        <button type="button" class="btn btn-secondary btn-sm admin_color"
+                                @click="showColorPickerModal('bgcolor')" id="btn_bgcolor ">
+                            <i :class="getHeaderIcon('color')" class="action_icon icon_right_text_margin"></i>Select
+                            Color
                         </button>
-                        <p class="text-sm p-0" :style="{background: formEditor.bgcolor}" style="float: right;" v-show="formEditor.bgcolor">
-                            <i :class="getHeaderIcon('info')" class="mr-1"></i>
+                        <p class="text-sm p-0" :style="{background: formEditor.bgcolor}" style="float: right;"
+                           v-show="formEditor.bgcolor">
+                            <i :class="getHeaderIcon('info')" class="action_icon icon_right_text_margin"></i>
                             Current color : {{ formEditor.bgcolor }}
                         </p>
                         <div class="invalid-feedback mb-3" v-if="formEditor.errors"
@@ -125,32 +129,35 @@
 
                 <div class="block_2columns_md p-2"> <!-- is_top -->
                     <div class="horiz_divider_left_13">
-                        <label for="is_top">Is top:</label>
+                        <jet-label for="is_top" value="Is top:" class="admin_editable_label"/>
                     </div>
-                    <div class="horiz_divider_right_23">
-                        <input type="checkbox" id="is_top" v-model="formEditor.is_top" :checked="formEditor.is_top"
-                               class="ml-1 p-4">
+                    <div class="horiz_divider_right_23 custom-control custom-checkbox">
+                        <jet-checkbox name="is_top" id="is_top" v-model:checked="formEditor.is_top" class="ml-4"/>
+                        <label class="admin_editable_label custom-control-label ml-4" for="is_top">
+                            Selected currency will be visible on frontend
+                        </label>
                     </div>
                 </div> <!-- class="block_2columns_md" is_top -->
 
                 <div class="block_2columns_md p-2"> <!-- active -->
                     <div class="horiz_divider_left_13">
-                        <label for="active">Active:</label>
+                        <jet-label for="active" value="Active:" class="admin_editable_label"/>
                     </div>
                     <div class="horiz_divider_right_23">
-                        <input type="text" class="form-control" id="active" disabled v-model="activeLabel">
+                        <jet-input id="active" type="text" class="form-control"
+                                   v-model="activeLabel" disabled/>
                     </div>
                 </div> <!-- class="block_2columns_md" active -->
 
                 <div class="block_2columns_md p-2"> <!-- ordering -->
                     <div class="horiz_divider_left_13">
-                        <label for="ordering">Ordering:</label>
+                        <jet-label for="ordering" value="Ordering:" class="admin_editable_label"/>
                     </div>
                     <div class="horiz_divider_right_23">
-                        <input type="text" class="form-control" id="ordering"
-                               placeholder="Valid integer value" v-model="formEditor.ordering"
-                               :class="{ 'is-invalid' : formEditor.errors && formEditor.errors.ordering }"
-                               autofocus="autofocus" autocomplete="off">
+                        <jet-input id="ordering" type="text" class="form-control admin_editable_input"
+                                   v-model="formEditor.ordering" placeholder="Valid integer value"
+                                   :class="{ 'is-invalid' : formEditor.errors && formEditor.errors.ordering }"
+                                   autocomplete="off"/>
                         <div class="invalid-feedback mb-3" v-if="formEditor.errors"
                              :class="{ 'd-block' : formEditor.errors && formEditor.errors.ordering}">
                             {{ formEditor.errors.ordering }}
@@ -160,51 +167,69 @@
 
                 <div class="block_2columns_md p-2" v-if="!is_insert"> <!-- created_at -->
                     <div class="horiz_divider_left_13">
-                        <label for="created_at">Created:</label>
+                        <jet-label for="created_at" value="Created:" class="admin_editable_label"/>
                     </div>
                     <div class="horiz_divider_right_23">
-                        <input type="text" class="form-control" id="created_at" disabled v-model="createdAtLabel">
+                        <jet-input id="created_at" type="text" class="form-control"
+                                   v-model="createdAtLabel" disabled/>
                     </div>
                 </div> <!-- class="block_2columns_md" created_at -->
 
                 <div class="block_2columns_md p-2" v-if="!is_insert && formEditor.updated_at">
                     <!-- created_at -->
                     <div class="horiz_divider_left_13">
-                        <label for="updated_at">Updated:</label>
+                        <jet-label for="updated_at" value="Updated:" class="admin_editable_label"/>
                     </div>
                     <div class="horiz_divider_right_23">
-                        <input type="text" class="form-control" id="updated_at" disabled v-model="updatedAtLabel">
+                        <jet-input id="updated_at" type="text" class="form-control"
+                                   v-model="updatedAtLabel" disabled/>
                     </div>
                 </div> <!-- class="block_2columns_md" updated_at -->
             </div>
 
-            <div class="card-footer clearfix flex">
-                <button type="button" class="btn btn-secondary btn-xs mt-1"
-                        @click="cancelCurrencyEditor">
-                    <i :class="getHeaderIcon('cancel')" class="mr-1"></i>Cancel
-                </button>
-                <button type="submit" class="btn btn-success btn-sm text-uppercase ml-4">
-                    <i :class="getHeaderIcon('save')" class="mr-1"></i>{{ getSubmitBtnTitle }}
-                </button>
-                <div class="btn-group btn_remove_right_aligned" v-if="!is_insert">
-                    <button type="button" class="btn btn-info">Action</button>
-                    <button type="button" class="btn btn-info dropdown-toggle dropdown-icon" data-toggle="dropdown"
-                            aria-expanded="false">
-                        <span class="sr-only">Toggle Dropdown</span>
-                    </button>
-                    <div class="dropdown-menu" role="menu" style="">
-                        <a class="dropdown-item btn btn-sm btn_remove_right_aligned" @click="deleteCurrency()">
-                            <i :class="getHeaderIcon('remove')" class="mr-1"></i>Delete
-                        </a>
+            <div class="card-footer admin_color clearfix">
 
-                        <a class="dropdown-item btn-success" @click="activateCurrency()" v-show="!formEditor.active">
-                            <i :class="getHeaderIcon('status')" class="mr-1"></i>Activate
-                        </a>
-                        <a class="dropdown-item btn-secondary" @click="deactivateCurrency()" v-show="formEditor.active">
-                            <i :class="getHeaderIcon('status')" class="mr-1"></i>Deactivate
-                        </a>
+                <div class="row">
+                    <div class="col-md-12 col-lg-6 d-flex flex-nowrap mb-3">
+                        <jet-button button_type="admin_cancel" @click="cancelCurrencyEditor"
+                                    :disabled="formEditor.processing">
+                            <i :class="getHeaderIcon('cancel')" class="action_icon icon_right_text_margin"></i>Cancel
+                        </jet-button>
+
+                        <jet-button type="submit" button_type="admin_save" :disabled="formEditor.processing">
+                            <i :class="getHeaderIcon('save')"
+                               class="action_icon icon_right_text_margin"></i>{{ getSubmitBtnTitle }}
+                        </jet-button>
+                        <div v-show="formEditor.processing" class="form_processing"></div>
+                    </div>
+
+                    <div class="col-md-12 col-lg-6 mb-3">
+                        <div class="btn-group btn_remove_right_aligned" v-if="!is_insert">
+                            <button type="button" class="btn btn-info">Action</button>
+                            <button type="button" class="btn btn-info dropdown-toggle dropdown-icon"
+                                    data-toggle="dropdown"
+                                    aria-expanded="false">
+                                <span class="sr-only">Toggle Dropdown</span>
+                            </button>
+                            <div class="dropdown-menu" role="menu" style="">
+                                <a class="dropdown-item btn btn-sm btn_remove_right_aligned" @click="deleteCurrency()">
+                                    <i :class="getHeaderIcon('remove')" class="action_icon icon_right_text_margin"></i>Delete
+                                </a>
+
+                                <a class="dropdown-item btn-success" @click="activateCurrency()"
+                                   v-show="!formEditor.active">
+                                    <i :class="getHeaderIcon('status')" class="action_icon icon_right_text_margin"></i>Activate
+                                </a>
+                                <a class="dropdown-item btn-secondary" @click="deactivateCurrency()"
+                                   v-show="formEditor.active">
+                                    <i :class="getHeaderIcon('status')" class="action_icon icon_right_text_margin"></i>Deactivate
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
+
+
             </div>
 
         </form>
@@ -212,18 +237,17 @@
 
     <vue-final-modal
         v-model="show_color_picker_modal"
-        classes="currencies_modal_container"
-        content-class="currencies_modal_content"
+        classes="admin_editor_container"
+        content-class="admin_editor_content"
     >
-        <h5 class="currencies_modal_header m-0 m-0">
-            <i :class="getHeaderIcon('color')" class="mr-2"></i>Select color
+        <h5 class="admin_editor_header m-0 m-0">
+            <i :class="getHeaderIcon('color')" class="action_icon icon_right_text_margin"></i>Select color
         </h5>
 
-        <div class="content currencies_modal_content_editor_form ">
-            <div :style="{background: modal_picker_color_selected_value}">
+        <div class="content admin_editor_content_editor_form flex">
+            <div :style="{background: modal_picker_color_selected_value}"
+                 class="justify-content-center align-content-center">
 
-                <!--                modal_picker_color_selected_value::{{ modal_picker_color_selected_value }}<br>-->
-                <!--                modal_picker_color_selected_type::{{ modal_picker_color_selected_type }}<br>-->
                 <ColorPicker
                     theme="dark"
                     :color="modal_picker_color_selected_value"
@@ -236,17 +260,18 @@
 
             </div>
         </div>
-        <button class="currencies_modal_close m-0 mt-3 mr-2" @click="hideColorPickerModal">
+        <button class="admin_editor_close m-0 mt-3 mr-2" @click="hideColorPickerModal">
             x
         </button>
 
-        <div class="currencies_modal_footer">
-            <button type="button" class="btn btn-secondary btn-xs mt-1"
+        <div class="admin_editor_footer">
+            <button type="button" class="btn btn-secondary btn-sm"
                     @click="hideColorPickerModal">
-                <i :class="getHeaderIcon('cancel')" class="mr-1"></i>Cancel
+                <i :class="getHeaderIcon('cancel')" class="action_icon icon_right_text_margin"></i>Cancel
             </button>
-            <button type="button" class="btn btn-success btn-sm text-uppercase ml-4" @click="applyColorPickerModal">
-                <i :class="getHeaderIcon('save')" class="mr-1"></i>Apply
+            <button type="button" class="btn btn-success btn-sm text-uppercase right_btn_from_left_margin"
+                    @click="applyColorPickerModal">
+                <i :class="getHeaderIcon('save')" class="action_icon icon_right_text_margin"></i>Apply
             </button>
         </div>
 
@@ -278,34 +303,49 @@ import {useForm} from '@inertiajs/inertia-vue3';
 
 import {Inertia} from '@inertiajs/inertia'
 import axios from "axios";
+import JetDropdown from '@/Jetstream/Dropdown.vue'
+import JetButton from '@/Jetstream/Button.vue'
+import JetInput from '@/Jetstream/Input.vue'
+import JetCheckbox from "@/Jetstream/Checkbox.vue";
+import JetLabel from '@/Jetstream/Label.vue'
 
 export default {
-    props: ['currency', 'is_insert'],
+    props: {
+        currency: {
+            type: Object,
+            required: true,
+        },
+        is_insert: {
+            type: Boolean,
+            required: true,
+        }
+    },
+
 
     name: 'CurrencyForm',
     components: {
         AdminLayout,
         VueFinalModal,
         ModalsContainer,
-        ColorPicker
+        ColorPicker,
+        JetDropdown,
+        JetButton,
+        JetInput,
+        JetCheckbox,
+        JetLabel,
     },
     setup(props) {
-        // let currency = ref(props.currency)
-        // console.log('CurrencyForm Inertia::')
-        // console.log(Inertia) // I got "ReferenceError: $inertia is not defined error" here
+        let show_color_picker_modal = ref(false)
+        let modal_picker_color_selected_value = ref('')
+        let modal_picker_color_selected_type = ref('')
 
-        // const formEditor = ref( form )
-        const show_color_picker_modal = ref(false)
-        const modal_picker_color_selected_value = ref('')
-        const modal_picker_color_selected_type = ref('')
+        let is_insert = ref(props.is_insert)
 
-        const is_insert = ref(props.is_insert)
+        let bgcolor_picker = ref(props.currency.bgcolor)
+        let suckerCanvas = ref(null)
+        let suckerArea = ref([])
 
-        const bgcolor_picker = ref(props.currency.bgcolor)
-        const suckerCanvas = ref(null)
-        const suckerArea = ref([])
-
-        const formEditor = ref(useForm({
+        let formEditor = ref(useForm({
             id: is_insert.value ? '' : props.currency.id,
             name: is_insert.value ? 'name ' + new Date() : props.currency.name,
             num_code: is_insert.value ? '9' + (new Date().getSeconds()) : props.currency.num_code,
@@ -320,21 +360,21 @@ export default {
         }))
 
 
-        const getFormEditorTitle = computed(() => {
+        let getFormEditorTitle = computed(() => {
             return is_insert.value ? 'Create new currency' : 'Edit currency'
         });
-        const getSubmitBtnTitle = computed(() => {
+        let getSubmitBtnTitle = computed(() => {
             return is_insert.value ? 'Create' : 'Update'
         });
 
-        const createdAtLabel = computed(() => {
+        let createdAtLabel = computed(() => {
             return momentDatetime(formEditor.value.created_at, settingsJsMomentDatetimeFormat)
         });
-        const updatedAtLabel = computed(() => {
+        let updatedAtLabel = computed(() => {
             return momentDatetime(formEditor.value.updated_at, settingsJsMomentDatetimeFormat)
         });
 
-        const activeLabel = computed(() => {
+        let activeLabel = computed(() => {
             console.log('activeLabel formEditor.value.active::')
             console.log(formEditor.value.active)
 
@@ -342,6 +382,8 @@ export default {
         });
 
         function cancelCurrencyEditor() {
+            console.log('cancelCurrencyEditor::')
+
             Inertia.visit(route('admin.currencies.index'), {method: 'get'});
         }
 
@@ -448,7 +490,6 @@ export default {
 
         function deleteCurrency() {
             // console.log('deleteCurrency ::')
-
             Swal.fire({
                 title: 'Are you sure?',
                 text: "You what to delete this currency with all related data!",
@@ -463,12 +504,9 @@ export default {
                     // console.log(formEditor.value.id)
                     formEditor.value.delete(route('admin.currencies.destroy', formEditor.value.id), {
                         preserveScroll: true,
-                        onSuccess: ()=> {
-                            Swal.fire(
-                                'Deleted!',
-                                'Currency has been successfully deleted',
-                                'success'
-                            )
+                        onSuccess: (data) => {
+                            console.log('onSuccess data::')
+                            console.log(data)
                         }
                     })
                 }
@@ -506,8 +544,8 @@ export default {
                                 'success'
                             )
                         })
-                        .catch(error => {
-                            console.error(error)
+                        .catch(e => {
+                            console.error(e)
                         })
                 }
             })
@@ -538,16 +576,17 @@ export default {
                             )
                         })
                         .catch(error => {
-                            console.error(error)
+                            console.error(e)
                         })
                 }
             })
         } // function deactivateCurrency() {
 
-        const adminCurrencyFormOnMounted = async () => {
+        function adminCurrencyFormOnMounted() {
             console.log('Form.vue adminCurrencyFormOnMounted 1 is_insert.value')
             console.log(is_insert.value)
         }
+
         onMounted(adminCurrencyFormOnMounted)
 
         return { // setup return
@@ -598,278 +637,3 @@ export default {
 }
 </script>
 
-<style>
-.hu-color-picker {
-    padding: 10px;
-    background: #1d2024;
-    border-radius: 4px;
-    box-shadow: 0 0 16px 0 rgba(0, 0, 0, .16);
-    z-index: 1
-}
-
-.hu-color-picker.light {
-    background: #f7f8f9
-}
-
-.hu-color-picker.light .color-show .sucker {
-    background: #eceef0
-}
-
-.hu-color-picker.light .color-type .name {
-    background: #e7e8e9
-}
-
-.hu-color-picker.light .color-type .value {
-    color: #666;
-    background: #eceef0
-}
-
-.hu-color-picker.light .colors.history {
-    border-top: 1px solid #eee
-}
-
-.hu-color-picker canvas {
-    vertical-align: top
-}
-
-.hu-color-picker .color-set {
-    display: flex
-}
-
-.hu-color-picker .color-show {
-    margin-top: 8px;
-    display: flex
-}
-
-.saturation {
-    position: relative;
-    cursor: pointer
-}
-
-.saturation .slide {
-    position: absolute;
-    left: 100px;
-    top: 0;
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    border: 1px solid #fff;
-    box-shadow: 0 0 1px 1px rgba(0, 0, 0, .3);
-    pointer-events: none
-}
-
-.color-alpha {
-    position: relative;
-    margin-left: 8px;
-    cursor: pointer
-}
-
-.color-alpha .slide {
-    position: absolute;
-    left: 0;
-    top: 100px;
-    width: 100%;
-    height: 4px;
-    background: #fff;
-    box-shadow: 0 0 1px 0 rgba(0, 0, 0, .3);
-    pointer-events: none
-}
-
-.sucker {
-    width: 30px;
-    fill: #9099a4;
-    background: #2e333a;
-    cursor: pointer;
-    transition: all .3s
-}
-
-.sucker.active, .sucker:hover {
-    fill: #1593ff
-}
-
-.hue {
-    position: relative;
-    margin-left: 8px;
-    cursor: pointer
-}
-
-.hue .slide {
-    position: absolute;
-    left: 0;
-    top: 100px;
-    width: 100%;
-    height: 4px;
-    background: #fff;
-    box-shadow: 0 0 1px 0 rgba(0, 0, 0, .3);
-    pointer-events: none
-}
-
-.colors {
-    padding: 0;
-    margin: 0
-}
-
-.colors.history {
-    margin-top: 10px;
-    border-top: 1px solid #2e333a
-}
-
-.colors .item {
-    position: relative;
-    width: 16px;
-    height: 16px;
-    margin: 10px 0 0 10px;
-    border-radius: 3px;
-    box-sizing: border-box;
-    vertical-align: top;
-    display: inline-block;
-    transition: all .1s;
-    cursor: pointer
-}
-
-.colors .item:nth-child(8n+1) {
-    margin-left: 0
-}
-
-.colors .item:hover {
-    transform: scale(1.4)
-}
-
-.colors .item .alpha {
-    height: 100%;
-    border-radius: 4px
-}
-
-.colors .item .color {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    border-radius: 3px
-}
-
-.color-type {
-    display: flex;
-    margin-top: 8px;
-    font-size: 12px
-}
-
-.color-type .name {
-    width: 60px;
-    height: 30px;
-    float: left;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: #999;
-    background: #252930
-}
-
-.color-type .value {
-    flex: 1;
-    height: 30px;
-    min-width: 100px;
-    padding: 0 12px;
-    border: 0;
-    color: #fff;
-    background: #2e333a;
-    box-sizing: border-box
-}
-
-.currencies_modal_container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    /*background-color: #343A40;*/
-    /*background-color: olive !important;*/
-}
-
-.currencies_modal_header {
-    background-color: #0f6d7c;
-    color: $admin_text_color;
-    /*border-bottom: 2px solid rgba(123,123,123);*/
-    border-bottom: 1px solid $admin_text_color;
-    /*padding: 0;*/
-    padding: 0.5rem 0.5rem;
-    margin: 0;
-    position: relative;
-    /*border-top-left-radius: 0.5rem;*/
-    /*border-top-right-radius: 0.5rem;*/
-}
-
-.currencies_modal_footer {
-    /*border-top: 1px solid white;*/
-    padding: 0.8rem;
-    /*background-color: yellow;*/
-}
-
-.currencies_modal_content {
-    position: relative;
-    width: 50%;
-
-    margin-left: 4px;
-    min-height: 360px;
-    /*max-height: 360px;*/
-    padding: 0;
-    overflow: auto;
-    /*background-color: red !important;*/
-    background-color: #343A40 !important;
-    /*border-radius: 4px;*/
-
-    border: 1px solid #ced4da !important;
-    border-radius: 0.25rem !important;
-    box-shadow: inset 0 0 0 transparent !important;
-    /*border: 2px dotted yellow !important;*/
-
-
-    /*height: 100%;*/
-    /*//////////*/
-    display: flex;
-    flex-direction: column;
-
-    justify-content: flex-start; /* align items in Main Axis */
-    align-items: stretch; /* align items in Cross Axis */
-    align-content: stretch; /* Extra space in Cross Axis */
-
-    background: rgba(255, 255, 255, .1);
-
-}
-
-/* Medium ≥768px  ipad or ipad mini */
-@media only screen and (min-width: 768px) and (max-width: 991px) {
-    /* Ipad Pro md */
-    .currencies_modal_content {
-        min-height: 500px;
-        /*background-color: yellow !important;*/
-    }
-}
-
-.currencies_modal_close {
-    background-color: #0f6d7c;
-    color: $admin_text_color !important;
-    position: absolute;
-    top: 0;
-    right: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 24px;
-    height: 24px;
-    /*margin: 4px 4px 0 0;*/
-    cursor: pointer;
-}
-
-.currencies_modal_close::hover {
-    color: $admin_text_color !important;
-    background-color: #0f6d7c;
-}
-
-
-.currencies_modal_content_editor_form {
-    margin-top: 0.7rem;
-    flex: 1; /* same as flex: 1 1 auto; */
-    background-color: #343A40;
-}
-
-</style>

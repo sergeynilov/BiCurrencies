@@ -85,7 +85,7 @@
               Manage Account
             </h6>
 
-            <jet-dropdown-link :href="route('profile.show')">
+            <jet-dropdown-link :href="route('user.profile.index')">
               Profile
             </jet-dropdown-link>
 

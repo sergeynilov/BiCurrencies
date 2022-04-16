@@ -7,6 +7,8 @@
 
     <title inertia id="app_title">{{ config('app.name', 'Laravel') }}</title>
 
+    <link rel="shortcut icon" type="image/x-icon" href="/images/frontend_favicon.ico">
+
     <link href="https://fonts.googleapis.com/css2?family=Yantramanav:wght@300;400;500;700;900&amp;display=swap"
           rel="stylesheet">
 
@@ -18,9 +20,9 @@
     <!-- Scripts -->
 
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <link rel="stylesheet" href="/assets/css/theme.css">
+    <link rel="stylesheet" href="/css/theme.css">
+{{--    <link rel="stylesheet" href="{{ mix('css/custom_frontend.css') }}">--}}
 
-    <link rel="manifest" href="/assets/img/favicons/manifest.json">
     <script src="/vendors/@popperjs/popper.min.js"></script>
     <script src="/vendors/bootstrap/bootstrap.min.js"></script>
     <script src="/vendors/is/is.min.js"></script>

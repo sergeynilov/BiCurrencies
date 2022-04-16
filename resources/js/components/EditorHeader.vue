@@ -12,7 +12,7 @@
       </div>
 
       <div v-if="right_icon!= ''" style="display:flex; align-self: flex-end; border: 0px dotted blue; " class="mb-2">
-        <i :class="'i_link '+right_icon_class" title="Refresh" WWW@click="triggerEditorHeaderRightButtonClickedEvent"></i>
+        <i :class="'action_icon icon_right_text_margin '+right_icon_class" title="Refresh" WWW@click="triggerEditorHeaderRightButtonClickedEvent"></i>
       </div>
 
     </div>
@@ -27,7 +27,6 @@
 
 <script>
 
-  // import { bus } from '../main'
   export default {
 
     props: {

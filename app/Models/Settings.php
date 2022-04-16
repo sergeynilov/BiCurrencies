@@ -6,10 +6,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use DB;
 use App\Library\CheckValueType;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-
-class Settings extends Model
+class Settings extends Model implements HasMedia
 {
+    use InteractsWithMedia;
+
     protected $table = 'settings';
     protected $primaryKey = 'id';
     public $timestamps = false;

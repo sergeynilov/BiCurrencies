@@ -13,22 +13,32 @@ class cmsItemWithInitData extends Seeder
      */
     public function run()
     {
-        \DB::table('cms_item')->delete();
+        \DB::table('cms_items')->delete();
 
-        \DB::table('cms_item')->insert(array(
+/*        $table->string('title', 255);
+        $table->string('key', 255)->unique();
+        $table->mediumText('text');
+        $table->foreignId('author_id')->references('id')->on('users')->onDelete('CASCADE');
+        $table->boolean('published')->default(false);*/
+
+        \DB::table('cms_items')->insert(array(
             0 =>
                 array(
                     'id'    => 1,
-                    'title' => 'Currencies list',
+                    'title' => 'Top currencies list',
                     'key'   => 'main_page_currencies_list_block_header',
-                    'text'  => 'Currencies list lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim  veniam,',
+                    'text'  => 'Top currencies list lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim  veniam,',
+                    'author_id'=> 1,
+                    'published'=> true,
                 ),           // images/main_page_top_header.webp
             1 =>
                 array(
                     'id'    => 2,
-                    'title' => 'Main page Top Header block',
+                    'title' => 'Main page Top Header',
                     'key'   => 'main_page_top_header_block',
                     'text'  => 'Main page top header block lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ',
+                    'author_id'=> 4,
+                    'published'=> true,
                 ),
             2 =>
                 array(
@@ -36,6 +46,8 @@ class cmsItemWithInitData extends Seeder
                     'title' => 'Trusted sources',
                     'key'   => 'trusted_sources_block_header',
                     'text'  => 'Currency data delivered are sourced from financial data providers and banks, including the European Central Bank. lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+                    'author_id'=> 4,
+                    'published'=> true,
                 ),
             3 =>
                 array(
@@ -43,6 +55,8 @@ class cmsItemWithInitData extends Seeder
                     'title' => 'Currency rates service',
                     'key'   => 'currency_rates_service',
                     'text'  => 'Currency rates is a simple in use free service for current and historical foreign exchange rates lorem ipsum dolor sit amet, consectetur adipiscing elit',
+                    'author_id'=> 1,
+                    'published'=> true,
                 ),
             4 =>
                 array(
@@ -50,6 +64,8 @@ class cmsItemWithInitData extends Seeder
                     'title' => 'What People Says, About Us',
                     'key'   => 'what_people_says_about_us',
                     'text'  => 'At Currency rates it\'s important to gain feedback on the service we deliver to you. We can continuously relay back where progress is being made to reinforce lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim  veniam,',
+                    'author_id'=> 5,
+                    'published'=> true,
                 ),
 
             5 =>
@@ -58,6 +74,56 @@ class cmsItemWithInitData extends Seeder
                     'title' => 'Contact us',
                     'key'   => 'main_page_contact_us_block',
                     'text'  => 'Contact us and we will review your message and answer within next 24 hours lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua',
+                    'author_id'=> 2,
+                    'published'=> true,
+                ),
+
+            6 =>
+                array(
+                    'id'    => 7,
+                    'title' => 'Our authors',
+                    'key'   => 'main_page_our_authors_block',
+                    'text'  => 'Our authors ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua',
+                    'author_id'=> 1,
+                    'published'=> true,
+                ),
+
+            7 =>
+                array(
+                    'id'    => 8,
+                    'title' => 'Register information',
+                    'key'   => 'register_information_block',
+                    'text'  => 'Register information ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua',
+                    'author_id'=> 1,
+                    'published'=> true,
+                ),
+
+            8 =>
+                array(
+                    'id'    => 9,
+                    'title' => 'Our rules',
+                    'key'   => 'our_rules_block',
+                    'text'  => '<p><strong>Our rules</strong> description <p>Lorem <strong>ipsum dolor sit</strong> amet, consectetur adipiscing elit, sed do eiusmod  tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim  veniam, quis <strong>nostrud exercitation</strong> ullamco laboris nisi ut aliquip ex ea  commodo consequat. Duis aute irure dolor in reprehenderit in voluptate  velit esse cillum dolore eu fugiat nulla... <p>Lorem <strong>ipsum dolor sit</strong> amet, consectetur adipiscing elit, sed do eiusmod  tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim  veniam, quis <strong>nostrud exercitation</strong> ullamco laboris nisi ut aliquip ex ea  commodo consequat. Duis aute irure dolor in reprehenderit in voluptate  velit esse cillum dolore eu fugiat nulla... </p><p>Lorem <strong>ipsum dolor sit</strong> amet, consectetur adipiscing elit, sed do eiusmod  tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim  veniam, quis <strong>nostrud exercitation</strong> ullamco laboris nisi ut aliquip ex ea  commodo consequat. Duis aute irure dolor in reprehenderit in voluptate  velit esse cillum dolore eu fugiat nulla... </p><ul>
+    <li>1st point lorem ipsum</li>
+    <li>2nd point lorem ipsum</li>
+    <li>3rd point lorem ipsum</li>
+</ul></p>
+
+<p><strong>Our rules</strong> description <p>Lorem <strong>ipsum dolor sit</strong> amet, consectetur adipiscing elit, sed do eiusmod  tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim  veniam, quis <strong>nostrud exercitation</strong> ullamco laboris nisi ut aliquip ex ea  commodo consequat. Duis aute irure dolor in reprehenderit in voluptate  velit esse cillum dolore eu fugiat nulla... <p>Lorem <strong>ipsum dolor sit</strong> amet, consectetur adipiscing elit, sed do eiusmod  tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim  veniam, quis <strong>nostrud exercitation</strong> ullamco laboris nisi ut aliquip ex ea  commodo consequat. Duis aute irure dolor in reprehenderit in voluptate  velit esse cillum dolore eu fugiat nulla... </p><p>Lorem <strong>ipsum dolor sit</strong> amet, consectetur adipiscing elit, sed do eiusmod  tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim  veniam, quis <strong>nostrud exercitation</strong> ullamco laboris nisi ut aliquip ex ea  commodo consequat. Duis aute irure dolor in reprehenderit in voluptate  velit esse cillum dolore eu fugiat nulla... </p><ul>
+    <li>1st point lorem ipsum</li>
+    <li>2nd point lorem ipsum</li>
+    <li>3rd point lorem ipsum</li>
+</ul></p>
+
+<p><strong>Our rules</strong> description <p>Lorem <strong>ipsum dolor sit</strong> amet, consectetur adipiscing elit, sed do eiusmod  tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim  veniam, quis <strong>nostrud exercitation</strong> ullamco laboris nisi ut aliquip ex ea  commodo consequat. Duis aute irure dolor in reprehenderit in voluptate  velit esse cillum dolore eu fugiat nulla... <p>Lorem <strong>ipsum dolor sit</strong> amet, consectetur adipiscing elit, sed do eiusmod  tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim  veniam, quis <strong>nostrud exercitation</strong> ullamco laboris nisi ut aliquip ex ea  commodo consequat. Duis aute irure dolor in reprehenderit in voluptate  velit esse cillum dolore eu fugiat nulla... </p><p>Lorem <strong>ipsum dolor sit</strong> amet, consectetur adipiscing elit, sed do eiusmod  tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim  veniam, quis <strong>nostrud exercitation</strong> ullamco laboris nisi ut aliquip ex ea  commodo consequat. Duis aute irure dolor in reprehenderit in voluptate  velit esse cillum dolore eu fugiat nulla... </p><ul>
+    <li>1st point lorem ipsum</li>
+    <li>2nd point lorem ipsum</li>
+    <li>3rd point lorem ipsum</li>
+</ul></p>
+
+',
+                    'author_id'=> 1,
+                    'published'=> true,
                 ),
 
 
@@ -145,6 +211,28 @@ class cmsItemWithInitData extends Seeder
                 'generated_conversions' => '[]',
                 'responsive_images'     => '[]',
                 'order_column'          => 14,
+            )
+        ));
+
+        // our_rules_block
+        \DB::table('media')->insert(array(
+            array(
+                'id'                    => 21,
+                'model_type'            => 'App\\Models\\CMSItem',
+                'model_id'              => 9,
+                'uuid'                  => '2g4iu505-676e-406a-bi0u-u7a07e29391e',
+                'collection_name'       => config('app.media_app_name'),
+                'name'                  => 'b22d9u791bca17we4093c28re1c4b4b5',
+                'file_name'             => 'our_rules.png',
+                'mime_type'             => 'image/png',
+                'disk'                  => 'public',
+                'conversions_disk'      => 'public',
+                'size'                  => 29691,
+                'manipulations'         => '[]',
+                'custom_properties'     => '[]',
+                'generated_conversions' => '[]',
+                'responsive_images'     => '[]',
+                'order_column'          => 15,
             )
         ));
 

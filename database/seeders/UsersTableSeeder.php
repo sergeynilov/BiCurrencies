@@ -21,7 +21,7 @@ class UsersTableSeeder extends Seeder
     define("ACCESS_APP_CONTENT_EDITOR", 3); */
         app(CreateNewUser::class)->create([
             'id' => 1,
-            'name' => 'ShawnHadray',
+            'name' => 'Shawn Hadray',
             'email' => 'ShawnHadray@site.com',
             'password' => '111111',
             'status' => 'A',
@@ -30,7 +30,7 @@ class UsersTableSeeder extends Seeder
 
         app(CreateNewUser::class)->create([
             'id' => 2,
-            'name' => 'PatLongred',
+            'name' => 'Pat Longred',
             'email' => 'PatLongred@site.com',
             'password' => '111111',
             'status' => 'A',
@@ -45,7 +45,6 @@ class UsersTableSeeder extends Seeder
             'password'   => '11111111',
             'status'     => 'A',
             'email_verified_at' => '2019-04-29 11:03:50',
-//            'avatar' => 'john_doe.jpg', // ok
 
         ], true, [ ACCESS_APP_CONTENT_EDITOR_LABEL]);
 
@@ -56,7 +55,6 @@ class UsersTableSeeder extends Seeder
             'password'   => '11111111',
             'status'     => 'A',
             'email_verified_at' => '2019-04-29 11:03:50',
-//            'avatar' => 'JaneDoe.jpg',
 
         ], true, [ACCESS_APP_SUPPORT_MANAGER_LABEL, ACCESS_APP_CONTENT_EDITOR_LABEL]);
 
@@ -86,8 +84,8 @@ class UsersTableSeeder extends Seeder
 
         app(CreateNewUser::class)->create([
             'id'         => 7,
-            'name' => 'ShaonHahroy',
-            'email' => 'customer1@hostels21-site.com',
+            'name' => 'Shaon Hahroy',
+            'email' => 'customer1@site.com',
             'password' => '111111',
             'status' => 'A',
             'email_verified_at' => '2019-04-29 11:03:50',
@@ -97,7 +95,7 @@ class UsersTableSeeder extends Seeder
         app(CreateNewUser::class)->create([
             'id' => 8,
             'name' => 'BlackAdams',
-            'email' => 'BlackAdams@hostels232.site.com',
+            'email' => 'BlackAdams@site.com',
             'password' => '111111',
             'status' => 'A',
             'email_verified_at' => '2019-04-29 11:03:50',
@@ -107,7 +105,7 @@ class UsersTableSeeder extends Seeder
         app(CreateNewUser::class)->create([
             'id' => 9,
             'name' => 'MarthaLang',
-            'email' => 'MarthaLang@hostels23-site.com',
+            'email' => 'MarthaLang@site.com',
             'password' => '111111',
             'status' => 'N',
             'email_verified_at' => '2019-04-29 11:03:50',
@@ -127,7 +125,7 @@ class UsersTableSeeder extends Seeder
                 'mime_type'             => 'image/jpg',
                 'disk'                  => 'public',
                 'conversions_disk'      => 'public',
-                'size'                  => 5151,
+                'size'                  => 38235,
                 'manipulations'         => '[]',
                 'custom_properties'     => '[]',
                 'generated_conversions' => '[]',
@@ -148,7 +146,7 @@ class UsersTableSeeder extends Seeder
                 'mime_type'             => 'image/jpg',
                 'disk'                  => 'public',
                 'conversions_disk'      => 'public',
-                'size'                  => 1215,
+                'size'                  => 25670,
                 'manipulations'         => '[]',
                 'custom_properties'     => '[]',
                 'generated_conversions' => '[]',
@@ -169,7 +167,7 @@ class UsersTableSeeder extends Seeder
                 'mime_type'             => 'image/jpg',
                 'disk'                  => 'public',
                 'conversions_disk'      => '5163',
-                'size'                  => 5151,
+                'size'                  => 96150,
                 'manipulations'         => '[]',
                 'custom_properties'     => '[]',
                 'generated_conversions' => '[]',
@@ -186,11 +184,11 @@ class UsersTableSeeder extends Seeder
                 'uuid'                  => '26586415-106e-4a3a-biyf-2691o370291e',
                 'collection_name'       => 'currency_app',
                 'name'                  => 'b22de6732bca17190523c285e1c4a9b5',
-                'file_name'             => '5.jpeg',
+                'file_name'             => 'RedSong.jpg',
                 'mime_type'             => 'image/jpg',
                 'disk'                  => 'public',
                 'conversions_disk'      => 'public',
-                'size'                  => 1561,
+                'size'                  => 29904,
                 'manipulations'         => '[]',
                 'custom_properties'     => '[]',
                 'generated_conversions' => '[]',

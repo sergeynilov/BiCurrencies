@@ -8,43 +8,41 @@ use Illuminate\Database\QueryException;
 
 //use App\Models\User;
 //use Auth;
-use App\Library\LayoutType;
-
-use App\Models\HostelImage;
-use App\Models\HostelInquiry;
-use App\Models\HostelInquiryOperation;
-use App\Models\Hostel;
-use App\Models\HostelRoom;
 use App\Models\User;
-use App\Models\News;
+
 //use App\Models\AppImage;
 use App\Models\Settings;
-use App\Models\Page;
+use Illuminate\Support\Str;
 
-//             'notifiable_type' => convertNotificationIntoLabel($this->notifiable_type, 'type'),
 if ( ! function_exists('convertNotificationIntoLabel')) {
-    function convertNotificationIntoLabel($value, $field){
-        \Log::info(  varDump($field, ' -1 convertNotificationIntoLabel $field::') );
-        if($field == 'type') {
-            \Log::info(  varDump($value, ' -10 convertNotificationIntoLabel $value::') );
-            if($value == 'App\Notifications\CurrencyRatesImportRun') {
+    function convertNotificationIntoLabel($value, $field)
+    {
+        if ($field == 'type') {
+            if ($value == 'App\Notifications\CurrencyRatesImportRunNotification') {
                 return 'Currency rates import';
             }
+            if ($value == 'App\Notifications\ContactUsCreatedNotification') {
+                return 'Contact Us';
+            }
         }
+
         return $value;
     }
 } // if ( ! function_exists('convertNotificationIntoLabel')) {
 
 if ( ! function_exists('getRequestIp')) {
-    function getRequestIp(){
-        $request= request();
-        return $user_ip_address=$request->ip();
+    function getRequestIp()
+    {
+        $request = request();
+
+        return $user_ip_address = $request->ip();
     }
 } // if ( ! function_exists('getRequestIp')) {
 
 if ( ! function_exists('workTextString')) {
     /* Submitting form string value must be worked out according to options of app */
-    function workTextString( $str, $skip_strip_tags = false ) {
+    function workTextString($str, $skip_strip_tags = false)
+    {
         if (is_string($str) and ! $skip_strip_tags) {
             $str = makeStripTags($str);
         }
@@ -60,22 +58,26 @@ if ( ! function_exists('workTextString')) {
 } // if ( ! function_exists('workTextString')) {
 
 if ( ! function_exists('makeStripTags')) {
-    function makeStripTags( string $str  ) {
+    function makeStripTags(string $str)
+    {
         return strip_tags($str);
     }
 } // if ( ! function_exists('makeStripTags')) {
 
 if ( ! function_exists('makeStripslashes')) {
-    function makeStripslashes(string $str): string {
+    function makeStripslashes(string $str): string
+    {
         return stripslashes($str);
     }
 } // if ( ! function_exists('makeStripslashes')) {
 
 if ( ! function_exists('make64Decode')) {
-    function make64Decode($data) {
+    function make64Decode($data)
+    {
         list($type, $data) = explode(';', $data);
-        list(, $data)      = explode(',', $data);
+        list(, $data) = explode(',', $data);
         $data = base64_decode($data);
+
         return $data;
     }
 } // if ( ! function_exists('make64Decode')) {
@@ -99,116 +101,19 @@ if ( ! function_exists('getAppImageIsOnlyForAdminLabel')) {
 ////// NEWS BLOCK END /////
 
 
-////// USERS BLOCK START /////
-if ( ! function_exists('wrpGetUserStatusLabel')) {
-    function wrpGetUserStatusLabel($status)
-    {
-        return User::getUserStatusLabel($status);
-    }
-} // if ( ! function_exists('wrpGetUserStatusLabel')) {
-
-if ( ! function_exists('wrpGetUserAccountTypeLabel')) {
-    function wrpGetUserAccountTypeLabel($account_type)
-    {
-        return User::getUserAccountTypeLabel($account_type);
-    }
-}
-
-////// USERS BLOCK END /////
-
 if ( ! function_exists('getYesNoLabel')) {
     function getYesNoLabel($val): string
     {
-        if(strtoupper($val) == 'N') return 'No';
-        if(strtoupper($val) == 'Y') return 'Yes';
+        if (strtoupper($val) == 'N') {
+            return 'No';
+        }
+        if (strtoupper($val) == 'Y') {
+            return 'Yes';
+        }
+
         return $val ? 'Yes' : 'No';
     }
 } // if ( ! function_exists('getYesNoLabel')) {
-
-
-
-////// HOSTEL INQUERIES BLOCK START /////
-
-if ( ! function_exists('wrpGetHostelInquiryOperationStatusLabel')) {
-    function wrpGetHostelInquiryOperationStatusLabel($status)
-    {
-        return HostelInquiryOperation::getHostelInquiryOperationStatusLabel($status);
-    }
-} // if ( ! function_exists('wrpGetHostelInquiryOperationStatusLabel')) {
-
-if ( ! function_exists('wrpGetHostelInquiryStatusLabel')) {
-    function wrpGetHostelInquiryStatusLabel($status)
-    {
-        return HostelInquiry::getHostelInquiryStatusLabel($status);
-    }
-} // if ( ! function_exists('wrpGetHostelInquiryStatusLabel')) {
-
-if ( ! function_exists('wrpGetHostelInquiryRequestCallbackLabel')) {
-    function wrpGetHostelInquiryRequestCallbackLabel($request_callback)
-    {
-        return HostelInquiry::getRequestCallbackLabel($request_callback);
-    }
-} // if ( ! function_exists('wrpGetHostelInquiryRequestCallbackLabel')) {
-
-////// HOSTEL INQUERIES BLOCK END /////
-
-
-////// HOSTEL IMAGES BLOCK START /////
-
-if ( ! function_exists('wrpGetHostelImageIsVideoLabel')) {
-    function wrpGetHostelImageIsVideoLabel($is_video)
-    {
-        return HostelImage::getHostelImageIsVideoLabel($is_video);
-    }
-} // if ( ! function_exists('wrpGetHostelImageIsVideoLabel')) {
-
-if ( ! function_exists('wrpGetHostelImageIsMainLabel')) {
-    function wrpGetHostelImageIsMainLabel($is_main)
-    {
-        return HostelImage::getHostelImageIsMainLabel($is_main);
-    }
-} // if ( ! function_exists('wrpGetHostelImageIsMainLabel')) {
-
-////// HOSTEL IMAGES BLOCK END /////
-
-////// HOSTEL BLOCK START /////
-if ( ! function_exists('wrpGetHostelFeatureLabel')) {
-    function wrpGetHostelFeatureLabel($feature)
-    {
-        return Hostel::getHostelFeatureLabel($feature);
-    }
-}  // if ( ! function_exists('wrpGetHostelFeatureLabel')) {
-if ( ! function_exists('wrpGetHostelStatusLabel')) {
-    function wrpGetHostelStatusLabel($status)
-    {
-        return Hostel::getHostelStatusLabel($status);
-    }
-}  // if ( ! function_exists('wrpGetHostelStatusLabel')) {
-////// HOSTEL BLOCK START /////
-
-////// HOSTEL ROOM BLOCK START /////
-if ( ! function_exists('wrpGetHostel_RoomTypeLabel')) {
-    function wrpGetHostel_RoomTypeLabel($type)
-    {
-        return HostelRoom::getHostel_RoomTypeLabel($type);
-    } // if ( ! function_exists('wrpGetHostel_RoomTypeLabel')) {
-}
-
-if ( ! function_exists('wrpGetHostel_RoomIs_DormLabel')) {
-    function wrpGetHostel_RoomIs_DormLabel($is_dorm)
-    {
-        return HostelRoom::getHostel_RoomIs_DormLabel($is_dorm);
-    } // if ( ! function_exists('wrpGetHostel_RoomIs_DormLabel')) {
-}
-
-
-if ( ! function_exists('wrpGetHostel_RoomIs_PrivateLabel')) {
-    function wrpGetHostel_RoomIs_PrivateLabel($is_private)
-    {
-        return HostelRoom::getHostel_RoomIs_PrivateLabel($is_private);
-    } // if ( ! function_exists('wrpGetHostel_RoomIs_PrivateLabel')) {
-}
-////// HOSTEL ROOM BLOCK END /////
 
 
 ////// NEWS BLOCK START /////
@@ -269,6 +174,7 @@ if ( ! function_exists('getRatingIconColor')) {
         if ($rating > 0) {
             return '#000000';
         }
+
         return '#000000';
     }
 } // if ( ! function_exists('getRatingIconColor')) {
@@ -310,6 +216,7 @@ if ( ! function_exists('showAppIcon')) {
         }
 //        \Log::info(  varDump($icon_class, ' -1 showAppIcon$icon_class::') );
         $ret = '<i class="' . $appTitleIconsList[$icon] . $icon_class . ' mr-1" title="' . $title . '" ></i>';
+
 //        \Log::info(  varDump($ret, ' -1 $ret::') );
 
         return $ret;
@@ -342,7 +249,6 @@ if ( ! function_exists('formatCurrencySum')) {
         return getCFPriceFormat($currency_sum) . ($show_only_digits ? '' : $current_currency_short);
     }
 } // if ( ! function_exists('formatCurrencySum')) {
-
 
 
 if ( ! function_exists('countNonEmptyValues')) {
@@ -497,24 +403,33 @@ if ( ! function_exists('getLoggedUserDisplayName')) {
     }
 } // if ( ! function_exists('getLoggedUserDisplayName')) {
 
-function checkLoggedUserHasImage() : bool {
-    if (!Auth::check()) return false;
-    $authUser= Auth::user();
-    if ( empty($authUser->avatar) ) return false;
+function checkLoggedUserHasImage(): bool
+{
+    if ( ! Auth::check()) {
+        return false;
+    }
+    $authUser = Auth::user();
+    if (empty($authUser->avatar)) {
+        return false;
+    }
     $dir_path = User::getUserAvatarPath($authUser->id, $authUser->avatar);
 //    \Log::info(  varDump($dir_path, ' -1 checkauthUserHasImage $dir_path::') );
     //  /storage/user-avatars/-user-avatar-5/5.jpeg
-    $file_exists    = Storage::disk('local')->exists('public/' . $dir_path);
+    $file_exists = Storage::disk('local')->exists('public/' . $dir_path);
     // file:///_wwwroot/lar/Hostels4J/public/storage/user-avatars/-user-avatar-5/5.jpeg
     //         $file_exists = ( ! empty($image) and Storage::disk('local')->exists('public/' . $file_full_path));
 //    \Log::info(  varDump($file_exists, ' -1 checkauthUserHasImage $file_exists::') );
     return $file_exists;
 }
 
-function getLoggedUserImage() : string {
-    if (!Auth::check()) return '';
-    $authUser= Auth::user();
-    $avatar_path= '/storage/' . User::getUserAvatarPath($authUser->id, $authUser->avatar);
+function getLoggedUserImage(): string
+{
+    if ( ! Auth::check()) {
+        return '';
+    }
+    $authUser    = Auth::user();
+    $avatar_path = '/storage/' . User::getUserAvatarPath($authUser->id, $authUser->avatar);
+
 //    \Log::info(  varDump($avatar_path, ' -1 $avatar_path::') );
     return $avatar_path;
 }
@@ -574,33 +489,42 @@ if ( ! function_exists('crlf')) {
     }
 } // if ( ! function_exists('crlf')) {
 
-if ( ! function_exists('checkValidImgName')) {
-    function checkValidImgName(
-        string $filename,
-        int $max_length = 0,
-        bool $check_valid_chars = false
-    ): string {
-        $ret_str = $filename;
+if ( ! function_exists('checkValidFilename')) {
+    function checkValidFilename( string $filename, int $max_length = 0,  bool $check_valid_chars = false ): string {
+        $str = '';
+
+        if ($check_valid_chars) {
+            $l = strlen($filename);
+            for ($i = 0; $i < $l; $i++) {
+                $ch     = $filename[$i];
+                $random = Str::random(1);
+//            $r= preg_replace('/(?![A-Z])\p{L}/iu', $random, $ch);
+//            $r= preg_replace('/[^a-z0-9_\-\.\s ]/i', $random, $ch);
+                $r       = preg_replace('/[^a-z0-9_.]/i', $random, $ch);
+                $r       = str_replace(' ', '_', $r);
+                $str .= $r;
+            }
+        } else {
+            $str = $filename;
+        }
+//        echo '<pre>$str::'.print_r($str,true).'</pre>';
+//        die("-1 XXZ");
         if ( ! empty($max_length) and isPositiveNumeric($max_length)) {
-            if (strlen($filename) > $max_length) {
-//                echo '<pre>$filename::'.print_r($filename,true).'</pre>';
-                $basename = getFilenameBasename($filename);
+            if (strlen($str) > $max_length) {
+//                echo '<pre>$str::'.print_r($str,true).'</pre>';
+                $basename = getFilenameBasename($str);
 //                echo '<pre>$basename::'.print_r($basename,true).'</pre>';
-                $extension = getFilenameExtension($filename);
+                $extension = getFilenameExtension($str);
 //                echo '<pre>$extension::'.print_r($extension,true).'</pre>';
                 $index = $max_length - strlen('.' . $extension);
 //                echo '<pre>$index::'.print_r($index,true).'</pre>';
-                $ret_str = substr($basename, 0, $index) . '.' . $extension;
+                $str = substr($basename, 0, $index) . '.' . $extension;
             }
         }
-        if ($check_valid_chars) {
-            $ret_str = str_replace(' ', '_', $ret_str);
-        }
-
-        return $ret_str;
+        return $str;
     }
+} // if ( ! function_exists('checkValidFilename')) {
 
-} // if ( ! function_exists('checkValidImgName')) {
 if ( ! function_exists('deleteFileByPath')) {
     function deleteFileByPath(string $filename_path, $delete_empty_directory = false): bool
     {
@@ -628,30 +552,6 @@ if ( ! function_exists('deleteFileByPath')) {
     }
 } // if ( ! function_exists('deleteFileByPath')) {
 
-
-if ( ! function_exists('wrpGetPagePublishedLabel')) {
-    function wrpGetPagePublishedLabel($published)
-    {
-        return Page::getPublishedLabel($published);
-    }
-} // if ( ! function_exists('wrpGetPagePublishedLabel')) {
-
-if ( ! function_exists('wrpGetPageIsHomepageLabel')) {
-    function wrpGetPageIsHomepageLabel($is_homepage)
-    {
-        return Page::getIsHomepageLabel($is_homepage);
-    }
-} // if ( ! function_exists('wrpGetPageIsHomepageLabel')) {
-
-//    static function getActionLabel(string $action): string
-if ( ! function_exists('wrpGetActionLabelLabel')) {
-    function wrpGetActionLabelLabel($action)
-    {
-        return PageMailchimpRevision::getActionLabel($action);
-    }
-} // if ( ! function_exists('wrpGetPageIsHomepageLabel')) {
-
-
 /*     static function getIsHomepageLabel(string $has_locations): string
     {
         if ( ! empty(self::$isHomepageLabelValueArray[$has_locations])) {
@@ -678,10 +578,6 @@ if ( ! function_exists('wrpGetActionLabelLabel')) {
     }
     static function getPublishedLabel(string $has_locations): string
  */
-
-
-
-
 
 
 if ( ! function_exists('getSystemInfo')) {
@@ -759,6 +655,7 @@ if ( ! function_exists('getValueLabelKeys')) {
         foreach ($keys as $next_key) {
             $ret_str .= $next_key . ',';
         }
+
         return trimRightSubString($ret_str, ',');
     }
 
@@ -867,6 +764,7 @@ if ( ! function_exists('varDump')) {
                 return;
             }
             $output_str = ' (Object of ' . get_class($var) . ') :' . (! empty($descr) ? $descr . ' : ' : '') . print_r((array)$var,
+//            $output_str = ' (Object of ' . get_class($var) . ') :' . (! empty($descr) ? $descr . ' : ' : '') . print_r((array)json_encode($var),
                     true);
             if ($return_string) {
                 return $output_str;
@@ -895,7 +793,6 @@ if ( ! function_exists('prefixHttpProtocol')) {
         return 'http://' . $url;
     }
 } // if ( ! function_exists('prefixHttpProtocol')) {
-
 
 
 if ( ! function_exists('clearValidationError')) {
@@ -967,34 +864,6 @@ if ( ! function_exists('isValidFloat')) {
         }
     }
 } // if (! function_exists('isValidFloat')) {
-
-if ( ! function_exists('getQuizQualityOptions')) {
-
-    function getQuizQualityOptions(bool $return_key_value = false): array
-    {
-        $settings = Settings::getByName('showQuizQualityOptions')->first();
-        if ($settings !== null) {
-            $settings_quizQualityOptions_str = $settings->value;
-            $arr                             = splitStrIntoArray($settings_quizQualityOptions_str, ';');
-            $settingsQuizQualityOptions      = [];
-            foreach ($arr as $next_key => $next_value) {
-                if ($return_key_value) {
-                    $settingsQuizQualityOptions[$next_key] = $next_value;
-                } else {
-                    $settingsQuizQualityOptions[] = [
-                        'quiz_quality_id'    => $next_key,
-                        'quiz_quality_label' => $next_value
-                    ];
-                }
-            }
-
-            return $settingsQuizQualityOptions;
-        }
-
-        return [];
-
-    }
-} // if (! function_exists('getQuizQualityOptions')) {
 
 if ( ! function_exists('getFileExtensionsImageUrl')) {
     function getFileExtensionsImageUrl(string $filename): string
@@ -1317,7 +1186,7 @@ if ( ! function_exists('isHttpsProtocol')) {
         if (empty($_SERVER['HTTP_HOST'])) {
             return false;
         }
-        if ( ! (strpos($_SERVER['HTTP_HOST'], 'votes.my-demo-apps')) === false) {
+        if ( ! (strpos($_SERVER['HTTP_HOST'], 'local-bi-currencies.com')) === false) {
             return true;
         }
 
@@ -1329,7 +1198,7 @@ if ( ! function_exists('isDeveloperComp')) {
     function isDeveloperComp($check_debug = false)
     {
         if ( ! empty($_SERVER['HTTP_HOST'])) {
-            $pos = strpos($_SERVER['HTTP_HOST'], 'local-hostels4j.com');
+            $pos = strpos($_SERVER['HTTP_HOST'], 'local-bi-currencies.com');
             if ( ! ($pos === false)) {
                 return true;
             }
@@ -1342,19 +1211,6 @@ if ( ! function_exists('isDeveloperComp')) {
         return ! empty($app_developers_mode);
     }
 } // if (! function_exists('isDeveloperComp')) {
-
-if ( ! function_exists('getSpatieTagLocaledValue')) {
-    function getSpatieTagLocaledValue($value)
-    {
-        $spatie_tag_locale = config('app.spatie_tag_locale', config('app.locale', 'en'));
-        $decodedValue      = (array)json_decode($value);
-        if ( ! empty($decodedValue[$spatie_tag_locale])) {
-            return $decodedValue[$spatie_tag_locale];
-        }
-
-        return '';
-    }
-} // if (! function_exists('getSpatieTagLocaledValue')) {
 
 if ( ! function_exists('clearEmptyArrayItems')) {
     function clearEmptyArrayItems($arr): array
@@ -1445,40 +1301,6 @@ if ( ! function_exists('getRightSubstring')) {
 } // if (! function_exists('getRightSubstring')) {
 
 
-if ( ! function_exists('setArrayHeader')) {
-    //        $newsPublishedValueArray   = SetArrayHeader(['key'=> '', 'label' => ' -Select published- '], News::getNewsPublishedValueArray(true));
-    function setArrayHeader(array $headersArray, array $dataArray): array
-    {
-//        \Log::info( '-1 setArrayHeader $headersArray ::' . print_r(  $headersArray, true  ) );
-
-        if (empty($headersArray) or ! is_array(($headersArray))) {
-//            \Log::info( '-2 ' . print_r(  -2, true  ) );
-            return $dataArray;
-        }
-        $retArray = [];
-//        \Log::info( '-3 ' . print_r(  -3, true  ) );
-        foreach ($headersArray as $next_header_key => $next_header_text) {
-//            \Log::info( '-4 $next_header_key' . print_r(  $next_header_key, true  ) );
-//            \Log::info( '-5 $next_header_text' . print_r(  $next_header_text, true  ) );
-            $retArray[$next_header_key] = $next_header_text;
-//            \Log::info( '-51 $retArray' . print_r(  $retArray, true  ) );
-//            $retArray[$next_header_text['key']] = $next_header_text['label'];
-        }
-//        \Log::info( '-52 $retArray' . print_r(  $retArray, true  ) );
-        if (is_array($dataArray)) {
-            foreach ($dataArray as $next_data_key => $next_data_text) {
-//                \Log::info( '-6 $next_data_key' . print_r(  $next_data_key, true  ) );
-//                \Log::info( '-7 $next_data_text' . print_r(  $next_data_text, true  ) );
-//                $retArray[$next_data_key] = $next_data_text;
-                $retArray[$next_data_key] = $next_data_text;
-            }
-        } //         $viewParamsArray['statusesArray']       = SetArrayHeader(['' => ' -Select Status- '], User::getUserStatusValueArray(false));
-
-
-        return $retArray;
-    }
-} // if (! function_exists('setArrayHeader')) {
-
 
 if ( ! function_exists('getCFPriceFormat')) {
     function getCFPriceFormat($value)
@@ -1486,8 +1308,6 @@ if ( ! function_exists('getCFPriceFormat')) {
         return number_format($value, 2, ',', '.');
     }
 } // if (! function_exists('getCFPriceFormat')) {
-
-
 
 
 if ( ! function_exists('cFWriteArrayToCsvFile')) {
@@ -1590,8 +1410,8 @@ if ( ! function_exists('getSystemInfo')) {
         $db_version    = $pdo->query('select version()')->fetchColumn();
         $tables_prefix = DB::getTablePrefix();
 
-        $newsLetterApiArray    = (array)\Newsletter::getApi();
-        $mail_chimp_api_text   = '';
+        $newsLetterApiArray  = (array)\Newsletter::getApi();
+        $mail_chimp_api_text = '';
         foreach ($newsLetterApiArray as $next_key => $next_value) {
             if (strpos($next_key, 'api_endpoint') > 0) {
                 $mail_chimp_api_text = 'Mail Chimp API : <strong>' . $next_value . '</strong>';
@@ -1747,8 +1567,6 @@ if ( ! function_exists('pregSplit')) {
 } // if (! function_exists('pregSplit')) {
 
 
-
-
 if ( ! function_exists('makeClearDoubledSpaces')) {
     function makeClearDoubledSpaces(string $str): string
     {
@@ -1760,11 +1578,14 @@ if ( ! function_exists('makeClearDoubledSpaces')) {
 if ( ! function_exists('getLastTokenItem')) {
     function getLastTokenItem($str, $splitter = "\\"): string
     {
-        $A = preg_split("/".preg_quote($splitter)."/", $str);
-        if(!is_array($A)) return '';
-        if (count($A) >= 1) {
-            return $A[ count($A)-1 ];
+        $A = preg_split("/" . preg_quote($splitter) . "/", $str);
+        if ( ! is_array($A)) {
+            return '';
         }
+        if (count($A) >= 1) {
+            return $A[count($A) - 1];
+        }
+
         return '';
     }
 } // if (! function_exists('getLastTokenItem')) {

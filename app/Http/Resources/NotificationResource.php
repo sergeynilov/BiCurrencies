@@ -19,15 +19,19 @@ class NotificationResource extends JsonResource
     public function toArray($request)
     {
         $dateFunctionality= App::make(DateFunctionality::class);
-//        \Log::info(  varDump( $this->data, ' -1 $this->data::') );
+//        \Log::info(  varDump( $this, ' -100 $this::') );
         $data_text= '';
-        foreach( $this->data as $next_key=>$next_value ) {
-            if( is_array($next_value) ) {
-                $next_value= print_r(is_array($next_value));
+        if(!empty($this->data)) {
+//            \Log::info(  varDump( $this->data, ' -1 $this->data::') );
+            foreach ($this->data as $next_key => $next_value) {
+                if (is_array($next_value)) {
+                    $next_value = print_r(is_array($next_value));
+                }
+                $data_text .= $next_key . ' = ' . $next_value . '<br> ';
             }
-            $data_text.= $next_key . ' = ' . $next_value.', ';
         }
         return [
+//            'id' => !empty($this->id) ? $this->id : $this['id'],
             'id' => $this->id,
             'type' => $this->type,
             'notifiable_type' => convertNotificationIntoLabel($this->type, 'type'),
@@ -43,4 +47,5 @@ class NotificationResource extends JsonResource
         ];
     }
 }
+
 

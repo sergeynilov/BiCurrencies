@@ -1,0 +1,66 @@
+append variables
+  -
+    var design= [
+      {
+        name:'Safira Petterson',
+        text:'It would be only imprudent if you dont grab this app now and use it at its best, with all the great facilities it got.',
+      },
+      {
+        name:'Nazip Terasi',
+        text:'Myriad options and brillant outlook: what more I can ask for? I trust this app for it well furnished features and reliable modeling. The best of all is it got the option of scalability which opens up a big window of opportunity. It is the tool of future. ',
+      },
+      {
+        name:'Manion Potter',
+        text:'From the production to deployment, this one is an absolute marvel to be work with. Give it your shot so that you don’t regret',
+      },
+      {
+        name:'Frankistain Belio',
+        text:'The app totally surprised me with its well planned designs and fine structured build-up. For a brilliant team-work, this one is a perfect choice.  ',
+      },
+     
+    ];
+mixin DesignConcept(config)
+  .col-sm-6.col-lg-3.mb-5
+    .card.card-span.shadow.h-100.px-3.py-5
+      .card-body
+        h3!=config.name
+        p!=config.text
+        a(href='#!') Experienced team
+
+mixin DesignConcepts
+  +Section.py-4.overflow-hidden
+    .row.h-100
+      .col-lg-7.mx-auto.text-center.py-5
+        h5 DESIGN CONCEPT
+        h5.fw-bold.fs-3.fs-lg-5.fs-xxl-7 The best design team for your
+          br
+          |studio website
+      .col-12
+        #carouselDesignConcepts.carousel.slide(data-bs-touch="false" data-bs-interval="false")
+          .carousel-inner
+            .carousel-item.active(data-bs-interval='10000')
+              .row.gx-3.px-3.pt-3.h-100          
+                +DesignConcept(design[0])                                                                    
+                +DesignConcept(design[1])                                                                    
+                +DesignConcept(design[2])                                                                    
+                +DesignConcept(design[3])                                                                                                                                       
+            .carousel-item(data-bs-interval='5000')
+              .row.gx-3.px-3.pt-3.h-100           
+                +DesignConcept(design[0])                                                                    
+                +DesignConcept(design[1])                                                                    
+                +DesignConcept(design[2])
+                +DesignConcept(design[3])                                         
+            .carousel-item(data-bs-interval='3000')
+              .row.gx-3.px-3.pt-3.h-100                               
+                +DesignConcept(design[0])                                                                    
+                +DesignConcept(design[1])                                                                    
+                +DesignConcept(design[2])
+                +DesignConcept(design[3])                                             
+          .row
+            .col-3.col-sm-2.col-lg-1.position-relative
+              button.carousel-control-prev.carousel-icon(type='button' data-bs-target='#carouselDesignConcepts' data-bs-slide='prev')
+                span.carousel-control-prev-icon(aria-hidden='true')
+                span.visually-hidden Previous
+              button.carousel-control-next.carousel-icon(type='button' data-bs-target='#carouselDesignConcepts' data-bs-slide='next')
+                span.carousel-control-next-icon(aria-hidden='true')
+                span.visually-hidden Next 

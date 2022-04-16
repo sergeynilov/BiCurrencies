@@ -1,14 +1,14 @@
 <template>
-    <div v-if="!formEditor.processing">
+    <div>
 <!--        formEditor.errors::{{ formEditor.errors }}<br>-->
 <!--        formEditor::{{ formEditor }}<br>-->
 
         <div class="card-header">
-            <h3 class="card-title">
-                <i :class="getHeaderIcon('settings')" class="mr-1"></i>
+            <h3 class="card-title admin_color">
+                <i :class="getHeaderIcon('settings')" class="action_icon icon_right_text_margin"></i>
                 Edit Settings
             </h3>
-        </div> <!-- card-title -->
+        </div> <!-- card-header -->
 
         <form @submit.prevent="saveSettings">
 
@@ -16,13 +16,13 @@
 
                 <div class="block_2columns_md p-2"> <!-- site_name -->
                     <div class="horiz_divider_left_13">
-                        <label for="site_name">Site Name:</label>
+                        <jet-label for="site_name" value="Site Name:" class="admin_editable_label"/>
                     </div>
                     <div class="horiz_divider_right_23">
-                        <input type="text" class="form-control" id="site_name"
-                               placeholder="Site descriptive name" v-model="formEditor.site_name"
-                               :class="{ 'is-invalid' : formEditor.errors && formEditor.errors.site_name }"
-                               autofocus="autofocus" autocomplete="off" maxlength="255">
+                        <jet-input id="site_name" type="text" class="form-control admin_editable_input"
+                                   v-model="formEditor.site_name" placeholder="Site descriptive name"
+                                   :class="{ 'is-invalid' : formEditor.errors && formEditor.errors.site_name }"
+                                   autocomplete="off"/>
                         <div class="invalid-feedback mb-3" v-if="formEditor.errors"
                              :class="{ 'd-block' : formEditor.errors && formEditor.errors.site_name}">
                             {{ formEditor.errors.site_name }}
@@ -32,13 +32,13 @@
 
                 <div class="block_2columns_md p-2"> <!-- site_heading -->
                     <div class="horiz_divider_left_13">
-                        <label for="site_heading">Site heading:</label>
+                        <jet-label for="site_heading" value="Site heading:" class="admin_editable_label"/>
                     </div>
                     <div class="horiz_divider_right_23">
-                        <input type="text" class="form-control" id="site_heading"
-                               placeholder="Site descriptive name" v-model="formEditor.site_heading"
-                               :class="{ 'is-invalid' : formEditor.errors && formEditor.errors.site_heading }"
-                               autofocus="autofocus" autocomplete="off" maxlength="255">
+                        <jet-input id="site_heading" type="text" class="form-control admin_editable_input"
+                                   v-model="formEditor.site_heading" placeholder="Site descriptive heading"
+                                   :class="{ 'is-invalid' : formEditor.errors && formEditor.errors.site_heading }"
+                                   autocomplete="off"/>
                         <div class="invalid-feedback mb-3" v-if="formEditor.errors"
                              :class="{ 'd-block' : formEditor.errors && formEditor.errors.site_heading}">
                             {{ formEditor.errors.site_heading }}
@@ -48,13 +48,14 @@
 
                 <div class="block_2columns_md p-2"> <!-- copyright_text -->
                     <div class="horiz_divider_left_13">
-                        <label for="copyright_text">Copyright text:</label>
+                        <jet-label for="copyright_text" value="Copyright text:" class="admin_editable_label"/>
                     </div>
                     <div class="horiz_divider_right_23">
-                        <input type="text" class="form-control" id="copyright_text"
-                               placeholder="Site descriptive name" v-model="formEditor.copyright_text"
-                               :class="{ 'is-invalid' : formEditor.errors && formEditor.errors.copyright_text }"
-                               autofocus="autofocus" autocomplete="off" maxlength="255">
+                        <jet-input id="copyright_text" type="text" class="form-control admin_editable_input"
+                                   v-model="formEditor.copyright_text" placeholder="Site copyright text"
+                                   :class="{ 'is-invalid' : formEditor.errors && formEditor.errors.copyright_text }"
+                                   autocomplete="off"/>
+
                         <div class="invalid-feedback mb-3" v-if="formEditor.errors"
                              :class="{ 'd-block' : formEditor.errors && formEditor.errors.copyright_text}">
                             {{ formEditor.errors.copyright_text }}
@@ -64,7 +65,7 @@
 
                 <div class="block_2columns_md p-2"> <!-- base_currency -->
                     <div class="horiz_divider_left_13">
-                        <label for="base_currency">Base currency:</label>
+                        <jet-label for="base_currency" value="Base currency:" class="admin_editable_label"/>
                     </div>
                     <div class="horiz_divider_right_23">
                         <Multiselect
@@ -79,7 +80,7 @@
                             label="name"
                             track-by="name"
                             placeholder="Select currency"
-                            class="multiselect-admin-lte"
+                            class="admin_multiselect_lte admin_editable_input"
                         />
                         <div class="invalid-feedback mb-3" v-if="formEditor.errors"
                              :class="{ 'd-block' : formEditor.errors && formEditor.errors.base_currency}">
@@ -91,13 +92,13 @@
 
                 <div class="block_2columns_md p-2"> <!-- backend_items_per_page -->
                     <div class="horiz_divider_left_13">
-                        <label for="backend_items_per_page">Backend items per page:</label>
+                        <jet-label for="backend_items_per_page" value="Backend items per page:" class="admin_editable_label"/>
                     </div>
                     <div class="horiz_divider_right_23">
-                        <input type="text" class="form-control" id="backend_items_per_page"
-                               placeholder="Site descriptive name" v-model="formEditor.backend_items_per_page"
-                               :class="{ 'is-invalid' : formEditor.errors && formEditor.errors.backend_items_per_page }"
-                               autofocus="autofocus" autocomplete="off" maxlength="4">
+                        <jet-input id="backend_items_per_page" type="text" class="form-control admin_editable_input"
+                                   v-model="formEditor.backend_items_per_page" placeholder="Valid integer value"
+                                   :class="{ 'is-invalid' : formEditor.errors && formEditor.errors.backend_items_per_page }"
+                                   autocomplete="off"/>
                         <div class="invalid-feedback mb-3" v-if="formEditor.errors"
                              :class="{ 'd-block' : formEditor.errors && formEditor.errors.backend_items_per_page}">
                             {{ formEditor.errors.backend_items_per_page }}
@@ -107,13 +108,13 @@
 
                 <div class="block_2columns_md p-2"> <!-- rate_decimal_numbers -->
                     <div class="horiz_divider_left_13">
-                        <label for="rate_decimal_numbers">Rate decimal numbers:</label>
+                        <jet-label for="rate_decimal_numbers" value="Rate decimal numbers:" class="admin_editable_label"/>
                     </div>
                     <div class="horiz_divider_right_23">
-                        <input type="text" class="form-control" id="rate_decimal_numbers"
-                               placeholder="Site descriptive name" v-model="formEditor.rate_decimal_numbers"
-                               :class="{ 'is-invalid' : formEditor.errors && formEditor.errors.rate_decimal_numbers }"
-                               autofocus="autofocus" autocomplete="off" maxlength="4">
+                        <jet-input id="rate_decimal_numbers" type="text" class="form-control admin_editable_input"
+                                   v-model="formEditor.rate_decimal_numbers" placeholder="Valid integer value"
+                                   :class="{ 'is-invalid' : formEditor.errors && formEditor.errors.rate_decimal_numbers }"
+                                   autocomplete="off"/>
                         <div class="invalid-feedback mb-3" v-if="formEditor.errors"
                              :class="{ 'd-block' : formEditor.errors && formEditor.errors.rate_decimal_numbers}">
                             {{ formEditor.errors.rate_decimal_numbers }}
@@ -123,13 +124,13 @@
 
                 <div class="block_2columns_md p-2"> <!-- items_per_page -->
                     <div class="horiz_divider_left_13">
-                        <label for="items_per_page">Items per page:</label>
+                        <jet-label for="items_per_page" value="Items per page:" class="admin_editable_label"/>
                     </div>
-                    <div class="horiz_divider_right_23">
-                        <input type="text" class="form-control" id="items_per_page"
-                               placeholder="Site descriptive name" v-model="formEditor.items_per_page"
-                               :class="{ 'is-invalid' : formEditor.errors && formEditor.errors.items_per_page }"
-                               autofocus="autofocus" autocomplete="off" maxlength="4">
+                    <div class="horiz_divider_right_23 ">
+                        <jet-input id="items_per_page" type="text" class="form-control admin_editable_input"
+                                   v-model="formEditor.items_per_page" placeholder="Valid integer value"
+                                   :class="{ 'is-invalid' : formEditor.errors && formEditor.errors.items_per_page }"
+                                   autocomplete="off"/>
                         <div class="invalid-feedback mb-3" v-if="formEditor.errors"
                              :class="{ 'd-block' : formEditor.errors && formEditor.errors.items_per_page}">
                             {{ formEditor.errors.items_per_page }}
@@ -137,16 +138,28 @@
                     </div>
                 </div> <!-- class="block_2columns_md" items_per_page -->
 
+
+                <div class="block_2columns_md p-2"> <!-- lorem -->
+                    <div class="horiz_divider_left_13">
+                        <label class="admin_editable_label">lorem:</label>
+                    </div>
+                    <div class="horiz_divider_right_23 admin_content_text">
+                        <div v-html="formattedLorem()"></div>
+                    </div>
+                </div> <!-- class="block_2columns_md" lorem -->
+
+
             </div>
 
-            <div class="card-footer clearfix flex">
-                <button type="button" class="btn btn-secondary btn-xs mt-1"
-                        @click="cancelSettingsEdit">
-                    <i :class="getHeaderIcon('cancel')" class="mr-1"></i>Cancel
-                </button>
-                <button type="submit" class="btn btn-success btn-sm text-uppercase ml-4">
-                    <i :class="getHeaderIcon('save')" class="mr-1"></i>Update
-                </button>
+            <div class="card-footer clearfix flex mb-2 d-flex flex-nowrap">
+                <jet-button button_type="admin_cancel" @click="cancelSettingsEdit" :disabled="formEditor.processing">
+                    <i :class="getHeaderIcon('cancel')" class="action_icon icon_right_text_margin"></i>Cancel
+                </jet-button>
+
+                <jet-button type="submit"  button_type="admin_save" :disabled="formEditor.processing">
+                    <i :class="getHeaderIcon('save')" class="action_icon icon_right_text_margin"></i>Update
+                </jet-button>
+                <div v-show="formEditor.processing" class="form_processing"></div>
             </div>
 
         </form>
@@ -167,13 +180,16 @@ import {
     getErrorMessage,
     showFlashMessage,
     getDictionaryLabel,
-
+    formattedLorem
 } from '@/commonFuncs'
 import {settingsJsMomentDatetimeFormat} from '@/app.settings.js'
 import {ref, onMounted, computed} from "vue";
 import {useForm} from '@inertiajs/inertia-vue3';
-
 import {Inertia} from '@inertiajs/inertia'
+import JetApplicationLogo from '@/Jetstream/ApplicationLogo.vue'
+import JetButton from '@/Jetstream/Button.vue'
+import JetInput from '@/Jetstream/Input.vue'
+import JetLabel from '@/Jetstream/Label.vue'
 
 export default {
     props: ['settingsData', 'currenciesSelectionArray'],
@@ -181,10 +197,14 @@ export default {
     name: 'SettingsForm',
     components: {
         AdminLayout,
-        Multiselect
+        Multiselect,
+        JetApplicationLogo,
+        JetButton,
+        JetInput,
+        JetLabel,
     },
     setup(props) {
-        const formEditor = ref(useForm({
+        let formEditor = ref(useForm({
             site_name: props.settingsData.site_name,
             site_heading: props.settingsData.site_heading,
             copyright_text: props.settingsData.copyright_text,
@@ -224,7 +244,7 @@ export default {
             })
         } // saveSettings() {
 
-        const adminSettingsFormOnMounted = async () => {
+        function adminSettingsFormOnMounted() {
             console.log('Form.vue adminSettingsFormOnMounted 1 settingsData')
         }
         onMounted(adminSettingsFormOnMounted)
@@ -243,6 +263,7 @@ export default {
             getErrorMessage,
             showFlashMessage,
             getDictionaryLabel,
+            formattedLorem
 
         }
     }, // setup() {

@@ -30,5 +30,15 @@ class CurrencyHistoryResource extends JsonResource
             'created_at_formatted' => $dateFunctionality->getFormattedDateTime($this->created_at),
         ];
     }
+
+    public function with($request)
+    {
+        return [
+            'meta' => [
+                'version' => getAppVersion()
+            ]
+        ];
+    }
+
 }
 

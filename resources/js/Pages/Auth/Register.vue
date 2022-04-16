@@ -65,7 +65,6 @@ import JetButton from '@/Jetstream/Button.vue'
 import JetInput from '@/Jetstream/Input.vue'
 import JetCheckbox from "@/Jetstream/Checkbox.vue";
 import JetLabel from '@/Jetstream/Label.vue'
-import JetValidationErrors from '@/Jetstream/ValidationErrors.vue'
 import { Head, Link } from '@inertiajs/inertia-vue3'
 
 export default defineComponent({
@@ -77,7 +76,6 @@ export default defineComponent({
     JetInput,
     JetCheckbox,
     JetLabel,
-    JetValidationErrors,
     Link,
   },
 

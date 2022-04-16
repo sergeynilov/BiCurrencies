@@ -15,7 +15,7 @@ use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
 use DB;
 
-class User extends Authenticatable implements HasMedia
+class User extends Authenticatable implements HasMedia //s implements MustVerifyEmail
 {
     use InteractsWithMedia;
     use HasApiTokens, Notifiable;
@@ -32,7 +32,7 @@ class User extends Authenticatable implements HasMedia
     protected $fillable = [
         'name',
         'email',
-        'is_admin',
+        'confirmation_code',
         'password',
     ];
 
@@ -89,22 +89,30 @@ class User extends Authenticatable implements HasMedia
     }
 
 
-    public function scopeGetById($query, int $id)
+    public function scopeGetById($query, $id)
     {
         return $query->where(with(new User)->getTable() . '.id', $id);
     }
 
     public function scopeGetByEmail($query, $email)
     {
-        if (empty($email)) {
-            return $query;
-        }
-        return $query->whereRaw(with(new User)->getTable() . ".email like '%" . $email . "%' " );
+        return $query->where(with(new User)->getTable() . ".email", $email );
     }
 
     public function scopeExcludeId($query, $id)
     {
         return $query->where(with(new User)->getTable() . '.id', '!=' , $id);
+    }
+
+
+
+    public function CMSItems()
+    {
+        return $this->hasMany('App\Models\CMSItem', 'author_id', 'id');
+    }
+    public function contactUs()
+    {
+        return $this->hasMany('App\Models\ContactUs', 'author_id', 'id');
     }
 
     public function scopeGetByName($query, $name = null, $extended_search = false)
@@ -143,13 +151,6 @@ class User extends Authenticatable implements HasMedia
         return $query;
     }
 
-    public function scopeGetByAccountType($query, $account_type= null)
-    {
-        if (!empty($account_type)) {
-            $query->where(with(new User)->getTable().'.account_type', $account_type);
-        }
-        return $query;
-    }
 
     public function scopeGetByUserPermission($query, $permission_id=null)
     {
@@ -192,7 +193,7 @@ class User extends Authenticatable implements HasMedia
 
         \Log::info(  varDump(with(new User)->getTable(), ' -1 with(new User)->getTable()::') );
         $validationRulesArray = [
-            'name'            => 'required|max:100|unique:' . with(new User)->getTable(),
+            'name'            => 'required|max:100|min:2|unique:' . with(new User)->getTable(),
             'email'           => 'required|email|max:100|unique:' . with(new User)->getTable(),
             'status'           => 'required|in:' . getValueLabelKeys(User::getUserStatusValueArray(false)),
             'password'        => 'required|min:6|max:15', // required|min:6|max:15|confirmed:register_password

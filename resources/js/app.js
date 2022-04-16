@@ -12,6 +12,8 @@ window.Toast = Swal.mixin({
     }
 })
 
+require('@fortawesome/fontawesome-free/js/all.min.js');
+
 // Import modules...
 import { createApp, h } from 'vue';
 import { createInertiaApp, Link } from '@inertiajs/inertia-vue3';
@@ -31,12 +33,10 @@ const appName = window.document.getElementsByTagName('title')[0]?.innerText || '
 import Multiselect from '@vueform/multiselect'
 
 
-import CKEditor from '@ckeditor/ckeditor5-vue' // https://stackoverflow.com/questions/55129721/ckeditor5-integration-with-vue-js-and-laravel
-
-// Vue.component('ck-editor', require('./components/ckeditor.vue').default);
 
 import VueUploadComponent from 'vue-upload-component'
 // app.component('file-upload', VueUploadComponent)
+import Paginate from "vuejs-paginate-next";
 
 
 const app =  createInertiaApp({
@@ -45,9 +45,11 @@ const app =  createInertiaApp({
     setup({ el, app, props, plugin }) {
         return createApp({ render: () => h(app, props) })
             .use(plugin)
-            .use( CKEditor )
             .component('inertia-link', Link)
+            .component('Paginate', Paginate)
             .component('file-upload', VueUploadComponent)
+
+
             .mixin({ methods: { route } })
             // .use(Vue3ColorPicker)
 
@@ -57,7 +59,6 @@ const app =  createInertiaApp({
 
 
             .component('multiselect', Multiselect)
-            .component('ck-editor', require('./components/ckeditor.vue').default)
             .mount(el);
     },
 });

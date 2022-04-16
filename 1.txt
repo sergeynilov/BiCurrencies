@@ -1,0 +1,27 @@
+
+mkdir /_diskE_Media/__Archieve/2022-04-03_ME
+cd /_diskE_Media/__Archieve/2022-04-03_ME
+
+
+tar czf "BiCurrencies_2022-04-03_ME.tar.xz"  --exclude .git --exclude .idea  --exclude vendor "/_wwwroot/lar/BiCurrencies"
+tar czf "photos_demo_2022-04-03_ME.tar.xz"  --exclude .git --exclude .idea  --exclude vendor "/_wwwroot/lar/photos_demo"
+
+tar czf "PublishBuyDocs_2022-04-03_ME.tar.xz"  --exclude .git --exclude .idea  --exclude vendor "/_wwwroot/lar/PublishBuyDocs"
+
+
+tar czf "li_2022-04-03_ME.tar.xz"  --exclude .git --exclude .idea  --exclude vendor "/mnt/_work_sdb8/wwwroot/lar/photographers/li"
+
+tar czf "streamgeeks-rebranded_2022-04-03_ME.tar.xz"  --exclude .git --exclude .idea  --exclude vendor "/_wwwroot/lar/StreamgeeksRebrandedApp/streamgeeks-rebranded"
+
+tar czf "PublishPagesAPI_2022-04-03_ME.tar.xz"  --exclude .git --exclude .idea  --exclude vendor "/_wwwroot/LumenProjects/PublishPagesAPI"
+
+
+tar czf "Hostels4J_2022-04-03_ME.tar.xz"  --exclude .git --exclude .idea  --exclude vendor "/_wwwroot/lar/Hostels4J"
+
+
+tar czf "nsn_2022-04-03_ME.tar.xz"  "/_work/NSN/MyDocs/nsn.ctd"
+tar czf "MyProjects_2022-04-03_ME.tar.xz"  "/_work/NSN/MyDocs/MyProjects.ctd"
+
+
+tar czf "Kubuntu_doc_2022-04-03_ME.tar.xz"  "/_work/NSN/MyDocs/Kubuntu.doc"
+

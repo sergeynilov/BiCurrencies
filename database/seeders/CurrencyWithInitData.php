@@ -12,7 +12,7 @@ class CurrencyWithInitData extends Seeder
      */
     public function run()  //  https://fontawesome.com/v5/search?c=currency
     {
-        \DB::table('currency')->insert([
+        \DB::table('currencies')->insert([
             'id'                    => 1,
             'name'      => 'Canadian dollar',
             'char_code' => 'CAD',
@@ -28,7 +28,7 @@ class CurrencyWithInitData extends Seeder
             'active'    => true,
             'ordering'  => 6,
         ]);
-        \DB::table('currency')->insert([
+        \DB::table('currencies')->insert([
             'id'                    => 2,
             'name'      => 'Hong Kong dollar',  //?
             'char_code' => 'HKD',
@@ -44,7 +44,7 @@ class CurrencyWithInitData extends Seeder
             'active'    => true,
             'ordering'  => 13,
         ]);
-        \DB::table('currency')->insert([
+        \DB::table('currencies')->insert([
             'id'                    => 3,
             'name'      => 'Icelandic króna', //?
             'char_code' => 'ISK',
@@ -61,7 +61,7 @@ class CurrencyWithInitData extends Seeder
             'ordering'  => 11,
 
         ]);
-        \DB::table('currency')->insert([
+        \DB::table('currencies')->insert([
             'id'                    => 4,
             'name'      => 'Philippine peso',
             'char_code' => 'PHP',
@@ -77,7 +77,7 @@ class CurrencyWithInitData extends Seeder
             'active'    => true,
             'ordering'  => 12,
         ]);
-        \DB::table('currency')->insert([
+        \DB::table('currencies')->insert([
             'id'                    => 5,
             'name'      => 'Danish krone',
             'char_code' => 'DKK',
@@ -93,7 +93,7 @@ class CurrencyWithInitData extends Seeder
             'active'    => true,
             'ordering'  => 14,
         ]);
-        \DB::table('currency')->insert([
+        \DB::table('currencies')->insert([
             'id'                    => 6,
             'name'      => 'Hungarian forint',
             'char_code' => 'HUF',
@@ -109,7 +109,7 @@ class CurrencyWithInitData extends Seeder
             'active'    => true,
             'ordering'  => 15,
         ]);
-        \DB::table('currency')->insert([
+        \DB::table('currencies')->insert([
             'id'                    => 7,
             'name'      => 'Czechoslovak koruna',
             'char_code' => 'CZK',
@@ -125,7 +125,7 @@ class CurrencyWithInitData extends Seeder
             'active'    => true,
             'ordering'  => 16,
         ]);
-        \DB::table('currency')->insert([
+        \DB::table('currencies')->insert([
             'id'                    => 8,
             'name'      => 'Australian dollar',
             'char_code' => 'AUD',
@@ -141,7 +141,7 @@ class CurrencyWithInitData extends Seeder
             'active'    => true,
             'ordering'  => 3,
         ]);
-        \DB::table('currency')->insert([
+        \DB::table('currencies')->insert([
             'id'                    => 9,
             'name'      => 'Romanian leu',
             'char_code' => 'RON',
@@ -157,7 +157,7 @@ class CurrencyWithInitData extends Seeder
             'active'    => true,
             'ordering'  => 17,
         ]);
-        \DB::table('currency')->insert([
+        \DB::table('currencies')->insert([
             'id'                    => 10,
             'name'      => 'Swedish krona/kronor',
             'char_code' => 'SEK',
@@ -173,7 +173,7 @@ class CurrencyWithInitData extends Seeder
             'active'    => true,
             'ordering'  => 18,
         ]);
-        \DB::table('currency')->insert([
+        \DB::table('currencies')->insert([
             'id'                    => 11,
             'name'      => 'Indonesian rupiah',
             'char_code' => 'IDR',
@@ -189,7 +189,7 @@ class CurrencyWithInitData extends Seeder
             'active'    => true,
             'ordering'  => 19,
         ]);
-        \DB::table('currency')->insert([
+        \DB::table('currencies')->insert([
             'id'                    => 12,
             'name'      => 'Indian rupee',
             'char_code' => 'INR',
@@ -205,7 +205,7 @@ class CurrencyWithInitData extends Seeder
             'active'    => true,
             'ordering'  => 20,
         ]);
-        \DB::table('currency')->insert([
+        \DB::table('currencies')->insert([
             'id'                    => 13,
             'name'      => 'Brazilian cruzeiro',
             'char_code' => 'BRL',
@@ -221,7 +221,7 @@ class CurrencyWithInitData extends Seeder
             'active'    => true,
             'ordering'  => 21,
         ]);
-        \DB::table('currency')->insert([
+        \DB::table('currencies')->insert([
             'id'                    => 14,
             'name'      => 'Russian ruble',
             'char_code' => 'RUB',
@@ -234,10 +234,10 @@ class CurrencyWithInitData extends Seeder
             'bgcolor' => '#0036A3',   // blue
             'num_code'  => 810,
             'is_top'    => false,
-            'active'    => true,
+            'active'    => false,
             'ordering'  => 22,
         ]);
-        \DB::table('currency')->insert([
+        \DB::table('currencies')->insert([
             'id'                    => 15,
             'name'      => 'Croatian kuna',
             'char_code' => 'HRK',
@@ -253,7 +253,7 @@ class CurrencyWithInitData extends Seeder
             'active'    => true,
             'ordering'  => 23,
         ]);
-        \DB::table('currency')->insert([
+        \DB::table('currencies')->insert([
             'id'                    => 16,
             'name'      => 'Japanese yen',
             'char_code' => 'JPY',
@@ -269,7 +269,7 @@ class CurrencyWithInitData extends Seeder
             'active'    => true,
             'ordering'  => 24,
         ]);
-        \DB::table('currency')->insert([
+        \DB::table('currencies')->insert([
             'id'                    => 17,
             'name'      => 'Thai baht',
             'char_code' => 'THB',
@@ -285,7 +285,7 @@ class CurrencyWithInitData extends Seeder
             'active'    => false,
             'ordering'  => 25,
         ]);
-        \DB::table('currency')->insert([
+        \DB::table('currencies')->insert([
             'id'                    => 18,
             'name'      => 'Swiss franc',
             'char_code' => 'CHF',
@@ -301,7 +301,7 @@ class CurrencyWithInitData extends Seeder
             'active'    => true,
             'ordering'  => 26,
         ]);
-        \DB::table('currency')->insert([
+        \DB::table('currencies')->insert([
             'id'                    => 19,
             'name'      => 'Singapore dollar',
             'char_code' => 'SGD',
@@ -317,7 +317,7 @@ class CurrencyWithInitData extends Seeder
             'active'    => true,
             'ordering'  => 27,
         ]);
-        \DB::table('currency')->insert([
+        \DB::table('currencies')->insert([
             'id'                    => 20,
             'name'      => 'Polish zloty',
             'char_code' => 'PLN',
@@ -333,7 +333,7 @@ class CurrencyWithInitData extends Seeder
             'active'    => true,
             'ordering'  => 28,
         ]);
-        \DB::table('currency')->insert([
+        \DB::table('currencies')->insert([
             'id'                    => 21,
             'name'      => 'Bulgarian lev',
             'char_code' => 'BGN',
@@ -349,7 +349,7 @@ class CurrencyWithInitData extends Seeder
             'active'    => true,
             'ordering'  => 29,
         ]);
-        \DB::table('currency')->insert([
+        \DB::table('currencies')->insert([
             'id'                    => 22,
             'name'      => 'Turkish lira',
             'char_code' => 'TRY',
@@ -365,7 +365,7 @@ class CurrencyWithInitData extends Seeder
             'active'    => true,
             'ordering'  => 30,
         ]);
-        \DB::table('currency')->insert([
+        \DB::table('currencies')->insert([
             'id'                    => 23,
             'name'      => 'Chinese yuan',
             'char_code' => 'CNY',
@@ -377,11 +377,11 @@ class CurrencyWithInitData extends Seeder
             'color' => '#ffff00',   // yellow
             'bgcolor' => '#DC3545',   // red OK
             'num_code'  => 156,
-            'is_top'    => true,
+            'is_top'    => false,
             'active'    => true,
             'ordering'  => 31,
         ]);
-        \DB::table('currency')->insert([
+        \DB::table('currencies')->insert([
             'id'                    => 24,
             'name'      => 'Norwegian krone',
             'char_code' => 'NOK',
@@ -397,7 +397,7 @@ class CurrencyWithInitData extends Seeder
             'active'    => true,
             'ordering'  => 32,
         ]);
-        \DB::table('currency')->insert([
+        \DB::table('currencies')->insert([
             'id'                    => 25,
             'name'      => 'New Zealand dollar',
             'char_code' => 'NZD',
@@ -413,7 +413,7 @@ class CurrencyWithInitData extends Seeder
             'active'    => true,
             'ordering'  => 33,
         ]);
-        \DB::table('currency')->insert([
+        \DB::table('currencies')->insert([
             'id'                    => 26,
             'name'      => 'South African rand',
             'char_code' => 'ZAR',
@@ -429,7 +429,7 @@ class CurrencyWithInitData extends Seeder
             'active'    => true,
             'ordering'  => 34,
         ]);
-        \DB::table('currency')->insert([
+        \DB::table('currencies')->insert([
             'id'                    => 27,
             'name'      => 'United States dollar',
             'char_code' => 'USD',
@@ -445,7 +445,7 @@ class CurrencyWithInitData extends Seeder
             'active'    => true,
             'ordering'  => 1,
         ]);
-        \DB::table('currency')->insert([
+        \DB::table('currencies')->insert([
             'id'                    => 28,
             'name'      => 'Mexican peso',
             'char_code' => 'MXN',
@@ -461,7 +461,7 @@ class CurrencyWithInitData extends Seeder
             'active'    => true,
             'ordering'  => 35,
         ]);
-        \DB::table('currency')->insert([
+        \DB::table('currencies')->insert([
             'id'                    => 29,
             'name'      => 'Israeli new shekel',
             'char_code' => 'ILS',
@@ -477,7 +477,7 @@ class CurrencyWithInitData extends Seeder
             'active'    => true,
             'ordering'  => 36,
         ]);
-        \DB::table('currency')->insert([
+        \DB::table('currencies')->insert([
             'id'                    => 30,
             'name'      => 'Pound sterling',
             'char_code' => 'GBP',
@@ -493,7 +493,7 @@ class CurrencyWithInitData extends Seeder
             'active'    => true,
             'ordering'  => 2,
         ]);
-        \DB::table('currency')->insert([
+        \DB::table('currencies')->insert([
             'id'                    => 31,
             'name'      => 'South Korean won',
             'char_code' => 'KRW',
@@ -509,7 +509,7 @@ class CurrencyWithInitData extends Seeder
             'active'    => true,
             'ordering'  => 37,
         ]);
-        \DB::table('currency')->insert([
+        \DB::table('currencies')->insert([
             'id'                    => 32,
             'name'      => 'Malaysian ringgit',
             'char_code' => 'MYR',

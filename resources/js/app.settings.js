@@ -9,6 +9,11 @@ export const settingsFilterOnlyUnreadNotificationsLabels = [
     { code: '1', label: 'Show only unread notifications' }
 ]
 
+export const settingsCMSItemPublishedLabels = [
+    { code: 0, label: 'Not published' },
+    { code: 1, label: 'Published' }
+]
+
 export const settingsCurrencyActiveLabels = [
     { code: 0, label: 'Inactive' },
     { code: 1, label: 'Yes, active' }
@@ -42,7 +47,6 @@ export const settingsYesNoLabels = [
 
 
 
-
 export const settingsAwesomeFontLabels = [   // https://fontawesome.com/v5.15/icons?d=gallery&p=2&m=free
     { code: 'cancel', font: 'fa fa-window-close' },
     { code: 'save', font: 'fa fa-save' },
@@ -67,6 +71,22 @@ export const settingsAwesomeFontLabels = [   // https://fontawesome.com/v5.15/ic
     { code: 'contact_us', font: 'fa fa-file-contract' },
     { code: 'details', font: 'fa fa-calendar-week' },
     { code: 'unmark', font: 'fa fa-broom' },
+    { code: 'logout', font: 'fa fa-sign-out-alt' },
+    { code: 'log', font: 'fa fa-table' },
+    { code: 'view', font: 'fa fa-eye' },
+    { code: 'active', font: 'fa fa-creative-commons-sa' },
+    { code: 'inactive', font: 'fa fa-creative-commons-nc' },
+    { code: 'profile', font: 'fa fa-user-md' },
+    { code: 'assigned', font: 'fa fa-address-book' },
+    { code: 'cms_item', font: 'fa fa-newspaper' },
+
+    // For Frontend
+    { code: 'admin', font: 'fa fa-universal-access' },
+    { code: 'support_manager', font: 'fa fa-user-edit' },
+    { code: 'content_editor', font: 'fa fa-credit-card' },
+
+    // fa fa-user-edit::<i class="fa fa-user-edit"></i><br>
+    //     fa fa-credit-card::<i class="fa fa-credit-card"></i><br>
 
     // ABOVE VALID
 
@@ -90,7 +110,6 @@ export const settingsAwesomeFontLabels = [   // https://fontawesome.com/v5.15/ic
     { code: 'key', font: 'fa fa-key' },
     { code: 'login', font: 'fa fa-sign-in' },
     { code: 'register', font: 'fa fa-registered' },
-    { code: 'profile', font: 'fa fa-user-md' },
     { code: 'participants', font: 'fa fa-users' },
     { code: 'needs_reports', font: 'fa fa-flag' },
     { code: 'leader', font: 'fa fa-magnet' },
@@ -100,16 +119,13 @@ export const settingsAwesomeFontLabels = [   // https://fontawesome.com/v5.15/ic
     { code: 'event', font: 'fa fa-calendar' },
     { code: 'events', font: 'fa fa-calendar' },
     { code: 'tag', font: 'fa fa-tag' },
-    { code: 'description', font: 'fa fa-info-circle' },
     { code: 'past_date', font: 'fa fa-podcast' },
-    { code: 'view', font: 'fa fa-eye' },
     { code: 'view_crossed_out', font: 'fa fa-eye-slash' },
     { code: 'tools', font: 'fa fa-wrench' },
     { code: 'check', font: 'fa fa-check' },
     { code: 'check-circle', font: 'fa fa-check-circle' },
     { code: 'check-square', font: 'fa fa-check-square' },
-    { code: 'admin', font: 'fa fa-snapchat-ghost' },
-    { code: 'manager', font: 'fa fa-graduation-cap' },
+    // { code: 'manager', font: 'fa fa-graduation-cap' },
     { code: 'developer', font: 'fa fa-wheelchair-alt' },
     { code: 'has_no_access', font: 'fa fa-key' },
     { code: 'has_access', font: 'fa fa-unlock-alt' },
@@ -130,7 +146,6 @@ export const settingsAwesomeFontLabels = [   // https://fontawesome.com/v5.15/ic
 
     { code: 'toggle_off', font: 'fa fa-arrow-up' },
     { code: 'search', font: 'fa fa-search' },
-    { code: 'activity_log', font: 'fa fa-table' },
 
     {code: 'export', font: 'fa fa-cubes'},
     {code: 'import', font: 'fa fa-database'},

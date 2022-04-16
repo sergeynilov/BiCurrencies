@@ -13,13 +13,13 @@ class CreateCurrencyHistoryTable extends Migration
      */
     public function up()
     {
-        Schema::create('currency_history', function (Blueprint $table) {
+        Schema::create('currency_histories', function (Blueprint $table) {
             $table->bigIncrements('id')->unsigned();
 
             $table->date('day')->nullable();
 
             $table->tinyInteger('currency_id')->unsigned();
-            $table->foreign('currency_id')->references('id')->on('currency')->onDelete('CASCADE');
+            $table->foreign('currency_id')->references('id')->on('currencies')->onDelete('CASCADE');
             $table->smallInteger('nominal')->unsigned();
             $table->decimal('value', 18, 10);
 
@@ -41,6 +41,6 @@ class CreateCurrencyHistoryTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('currency_history');
+        Schema::dropIfExists('currency_histories');
     }
 }

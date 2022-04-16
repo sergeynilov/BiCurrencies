@@ -7,32 +7,41 @@
 <!--                         <div class="preloader flex-column justify-content-center align-items-center">-->
 <!--                             <img class="animation__wobble" src="/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">-->
 <!--                         </div>-->
-            <Navbar></Navbar>
+            <AdminNavbar></AdminNavbar>
 
-            <Sidebar/>
+            <AdminSidebar/>
             <div :style="{ 'margin-left': sidebarWidth }" style="  height:100%;">
 
                 <!-- Main content -->
-                <slot></slot>
+                <section class="content">
+
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-12">
+                                <slot></slot>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
                 <!-- /.content -->
 
+                <AdminFooter />
 
             </div>
 
-            <Footer />
 
         </div>
     </div>
 </template>
 
 <script>
-import Footer from '@/components/Footer'
-import Navbar from '@/components/Navbar'
+import AdminFooter from '@/components/AdminFooter'
+import AdminNavbar from '@/components/AdminNavbar'
 
-import Sidebar from '@/components/sidebar/Sidebar'
+import AdminSidebar from '@/components/sidebar/AdminSidebar'
 import {sidebarWidth} from '@/components/sidebar/state'
 
-// import Sidebar from '@/components/Sidebar'
 export default {
 
     setup() {
@@ -41,7 +50,7 @@ export default {
 
     name: 'AdminLayout',
     components: {
-        Footer, Navbar, Sidebar // , Sidebar
+        AdminFooter, AdminNavbar, AdminSidebar
         // AdminLayout,
     },
 }

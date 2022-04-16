@@ -8,6 +8,10 @@ use App\Actions\Fortify\UpdateUserPassword;
 use App\Actions\Fortify\UpdateUserProfileInformation;
 use App\Models\User;
 use Carbon\Carbon;
+// app/Providers/Responses/LoginResponse.php
+use App\Http\Responses\LoginResponse;
+use Laravel\Fortify\Contracts\LoginResponse as LoginResponseContract;
+
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -35,6 +39,10 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+//        Fortify::ignoreRoutes();
+
+        $this->app->singleton(LoginResponseContract::class, LoginResponse::class);
+
         Fortify::createUsersUsing(CreateNewUser::class);
         Fortify::updateUserProfileInformationUsing(UpdateUserProfileInformation::class);
         Fortify::updateUserPasswordsUsing(UpdateUserPassword::class);

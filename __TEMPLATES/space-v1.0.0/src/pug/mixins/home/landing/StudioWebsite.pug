@@ -1,0 +1,22 @@
+append variables
+  -
+    var studio = [
+      {
+        order: 'order-1 order-md-0',
+        image:'studio-website-1.png',
+        title:'The best design for your studio website',
+        text:' The impression your website makes directly reflects the competency of your business. A well-designed page is important for building trust and communicating value to potential customers.A good balance in web design encourages a good experience for your customers.'
+      },
+      {
+        order: 'order-0 order-md-1',
+        image:'studio-website-2.png',
+        title:'Communicating your brand identity',
+        text:'Your website plays a key part in building a consistent brand identity. Your logo, tagline, branded imagery and values should be obvious through the messaging of every page of the website.Accumulatively, your site should clearly answer “who” and “what” your brand is/does so that visitors get it within seconds!'
+      },
+    ]
+mixin StudioWebsite
+  section.pt-9.bg-soft-info
+    .container(style="padding-top:400px;")
+      +Feature(studio[0])
+  +Section.bg-soft-info.pt-0
+    +Feature(studio[1])

@@ -1,34 +1,44 @@
 <template>
 
 
-    <h3 class="card-title flex-nowrap">
+    <h3 class="card-title flex-nowrap admin_content_text">
 <!--        show_filters_button::{{ show_filters_button }}<br>-->
 <!--        page_rows_count::{{ page_rows_count }}<br>-->
-<!--        rightIconTitle::{{ rightIconTitle }}<br>-->
-        <button type="button" class="btn btn-info mb-1 mr-1" @click="triggerShowFiltersModal" v-show="show_filters_button">
+<!--        right_icon::{{ right_icon }}<br>-->
+<!--        right_icon_title::{{ right_icon_title }}<br>-->
+<!--&lt;!&ndash;        headerTitle::{{ headerTitle}}<br>&ndash;&gt;-->
+<!--        left_header_icon::{{ left_header_icon}}<br>-->
+<!--        filtered_rows_count::{{ filtered_rows_count}}<br>-->
+        <button type="button" class="btn btn-info mb-1 mr-1" @click="triggerShowFiltersModal" v-if="show_filters_button">
             <i :class="getHeaderIcon('filter')" class="m-0" :title="filters_count_text"
-               v-show="filters_count_text"></i>
+               v-if="filters_count_text"></i>
             Filters
         </button>
 
-        <i :class="headerIcon+' m-0 p-0 ml-2 mt-2'" :title="headerTitle" v-if="headerIcon && filtered_rows_count > 0"></i>
-
-        <span v-html="( !isEmpty(filtered_rows_count) ?  page_rows_count + ' of '+filtered_rows_count : '' )+ ' ' + itemTitle"  v-if="filtered_rows_count > 0 && itemTitle && !showLoadingImage" class="m-0 mt-2 ml-1 p-0">
+        <span v-if="filtered_rows_count > 0">
+            <i :class="left_header_icon+' m-0 p-0 ml-2 mt-2'" :title="headerTitle" v-if="left_header_icon"></i>
         </span>
 
-        <i :class="getHeaderIcon('refresh')" class="ml-2 mt-2 i_action" :title="'Refresh page'"
-           @click.prevent="triggerListingHeaderRightButtonClickedEvent"></i>
+        <span v-html="( !isEmpty(filtered_rows_count) ?  page_rows_count + ' of '+filtered_rows_count : '' )+ ' ' + itemTitle"  v-if="filtered_rows_count > 0 && itemTitle" class="m-0 mt-2 ml-1 p-0">
+        </span>
+
+<!--        <button type="button" class="" @click.prevent="triggerListingHeaderRightButtonClickedEvent">-->
+<!--            <i :class="getHeaderIcon('refresh')" class="ml-2 mt-2 i_action" :title="'Refresh page'"></i>-->
+<!--        </button>-->
 
     </h3>
 
-    <div class="card-tools" v-if="!showLoadingImage && (rightAddButtonLinkTitle || rightIcon) ">
-        <inertia-link :href="route(rightAddButtonLink)" class="nav-link btn btn-sm btn-success" v-show="rightAddButtonLink">
+    <div class="card-tools" v-if="rightAddButtonLinkTitle || right_icon" style="display: flex; flex-wrap: nowrap;" >
+        <inertia-link :href="route(rightAddButtonLink)" class="nav-link btn btn-sm btn-success" v-if="rightAddButtonLink">
             {{ rightAddButtonLinkTitle }}
         </inertia-link>
 
-        <div v-if="rightIcon">
-            <i :class="'ml-4 mb-2 mr-2 p-1 a_link_reversed ' + rightIcon" :title="rightIconTitle"
-               @click.prevent="triggerListingHeaderRightButtonClickedEvent"></i>
+        <div v-if="right_icon">
+<!--            ml-4 mb-2 mr-2 p-1-->
+            <button type="button" class="btn btn-sm btn-secondary ml-2" @click.prevent="triggerListingHeaderRightButtonClickedEvent">
+                <i :class="' action_icon icon_right_text_margin ' + getHeaderIcon(right_icon)" :title="right_icon_title"
+               ></i>
+            </button>
         </div>
 
     </div>
@@ -42,7 +52,7 @@ import {computed, onMounted, ref} from 'vue'
 
 export default {
     props: {
-        parentComponentKey: {
+        parent_component_key: {
             type: String,
             default: () => {
             }
@@ -52,7 +62,7 @@ export default {
             default: () => {
             }
         },
-        headerIcon: {
+        left_header_icon: {
             type: String,
             default: () => {
             }
@@ -67,7 +77,7 @@ export default {
             default: () => {
             }
         },
-        rightIcon: {
+        right_icon: {
             type: String,
             default: () => {
             }
@@ -76,11 +86,6 @@ export default {
             type: String,
             default: () => {
             }
-        },
-        showLoadingImage: {
-            type: Boolean,
-            default: false,
-            required: false
         },
         show_filters_button: {
             type: Boolean,
@@ -96,77 +101,74 @@ export default {
         },
 
 
-        rightIconTitle: {
+        right_icon_title: {
             type: String,
             default: 'Refresh'
         },
     }, // props: {
 
     setup(props) {
-        const parentComponentKey = computed({
-            get: () => props.parentComponentKey
+        let parent_component_key = computed({
+            get: () => props.parent_component_key
         })
 
 
-        const headerIcon = computed({
-            get: () => props.headerIcon
+        let left_header_icon = computed({
+            get: () => props.left_header_icon
         })
-        const page_rows_count = computed({
+        let page_rows_count = computed({
             get: () => props.page_rows_count
         })
-        const filtered_rows_count = computed({
+        let filtered_rows_count = computed({
             get: () => props.filtered_rows_count
         })
-        const rightIcon = computed({
-            get: () => props.rightIcon
+        let right_icon = computed({
+            get: () => props.right_icon
         })
-        const itemTitle = computed({
+        let itemTitle = computed({
             get: () => props.itemTitle
         })
-        const noDataFoundLabel = computed({
+        let noDataFoundLabel = computed({
             get: () => props.noDataFoundLabel
         })
-        const showLoadingImage = computed({
-            get: () => props.showLoadingImage
-        })
-        const show_filters_button = computed({
+        let show_filters_button = computed({
             get: () => props.show_filters_button
         })
-        const rightAddButtonLink = computed({
+        let rightAddButtonLink = computed({
             get: () => props.rightAddButtonLink
         })
-        const rightAddButtonLinkTitle = computed({
+        let rightAddButtonLinkTitle = computed({
             get: () => props.rightAddButtonLinkTitle
         })
-        const rightIconTitle = computed({
-            get: () => props.rightIconTitle
+        let right_icon_title = computed({
+            get: () => props.right_icon_title
         })
-        const filters_count_text = ref('')
+        let filters_count_text = ref('')
 
         function triggerListingHeaderRightButtonClickedEvent() {
-            console.log('SOURCE triggerListingHeaderRightButtonClickedEvent parentComponentKey::')
-            console.log(parentComponentKey)
-            window.emitter.emit('listingHeaderRightButtonClickedEvent', {parentComponentKey: parentComponentKey.value})
+            // console.log('SOURCE triggerListingHeaderRightButtonClickedEvent parent_component_key::')
+            // console.log(parent_component_key)
+            window.emitter.emit('listingHeaderRightButtonClickedEvent', {parent_component_key: parent_component_key.value})
         }
 
         function triggerShowFiltersModal() {
-            console.log('SOURCE triggerShowFiltersModal parentComponentKey::')
-            console.log(parentComponentKey)
-            console.log(parentComponentKey.value)
-            window.emitter.emit('showFiltersModalEvent', {parentComponentKey: parentComponentKey.value})
+            console.log('SOURCE triggerShowFiltersModal parent_component_key::')
+            console.log(parent_component_key)
+            console.log(parent_component_key.value)
+            window.emitter.emit('showFiltersModalEvent', {parent_component_key: parent_component_key.value})
         }
 
 
-        const listingHeaderOnMounted = async () => {
+        function listingHeaderOnMounted() {
             // triggerShowFiltersModal() // DEBUGGING
             window.emitter.on('listingFilterModifiedEvent', params => {
                 // console.log('TARGET listingFilterModifiedEvent params::')
                 // console.log(params)
-                if (params.parentComponentKey === parentComponentKey.value ) {
+                if (params.parent_component_key === parent_component_key.value ) {
                     filters_count_text.value = params.filters_count_text
                 }
             })
-        } // const listingHeaderOnMounted = async () => {
+        } // function listingHeaderOnMounted() {
 
         onMounted(listingHeaderOnMounted)
 

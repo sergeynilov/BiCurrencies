@@ -6,7 +6,8 @@
             content-class="admin_listing_modal_content"
         >
             <h5 class="admin_listing_modal_header m-0 m-0">
-                <i :class="getHeaderIcon('filter')" class="mr-2"></i>Currency history filter
+                <i :class="getHeaderIcon('filter')" class="action_icon icon_right_text_margin"></i>Currency history
+                filter
             </h5>
 
             <div class="content admin_listing_modal_content_editor_form ">
@@ -55,242 +56,191 @@
             </button>
 
             <div class="admin_listing_modal_footer">
-                <button type="button" class="btn btn-secondary btn-xs mt-1"
+                <button type="button" class="btn btn-secondary btn-sm"
                         @click="hideCurrencyHistoryFiltersModal">
-                    <i :class="getHeaderIcon('cancel')" class="mr-1"></i>Cancel
+                    <i :class="getHeaderIcon('cancel')" class="action_icon icon_right_text_margin"></i>Cancel
                 </button>
-                <button type="button" class="btn btn-success btn-sm text-uppercase ml-4"
+                <button type="button" class="btn btn-success btn-sm text-uppercase right_btn_from_left_margin"
                         @click="applyCurrencyHistoryFilters">
-                    <i :class="getHeaderIcon('save')" class="mr-1"></i>Apply
+                    <i :class="getHeaderIcon('save')" class="action_icon icon_right_text_margin"></i>Apply
                 </button>
             </div>
 
         </vue-final-modal>
 
 
-        <section class="content">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-12">
+        <div class="card card-primary card-tabs">
+            <div class="card-header p-2">
+                <ul class="nav nav-tabs" id="custom-tabs-one-tab" role="tablist">
+                    <li class="nav-item">
+                        <!--                                                    active-->
+                        <a class="nav-link active" id="currency-details-tab" data-toggle="pill"
+                           href="#custom-tabs-one-home" role="tab"
+                           aria-controls="custom-tabs-one-home" aria-selected="true">Details</a>
+                    </li>
+                    <li class="nav-item">
+                        <!--                                            active-->
+                        <a class="nav-link" id="currency-tab" data-toggle="pill"
+                           href="#currency" role="tab"
+                           aria-controls="currency"
+                           aria-selected="false">Image</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link " id="custom-tabs-one-description-tab"
+                           data-toggle="pill"
+                           href="#custom-tabs-one-description" role="tab"
+                           aria-controls="custom-tabs-one-description"
+                           aria-selected="false">Description</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="currency-history-tab" data-toggle="pill"
+                           href="#custom-tabs-one-profile" role="tab"
+                           aria-controls="custom-tabs-one-profile"
+                           aria-selected="false">History</a>
+                    </li>
+                </ul>
+            </div>
 
-                            <div class="card card-primary card-tabs">
-                                <div class="card-header p-2">
-                                    <ul class="nav nav-tabs" id="custom-tabs-one-tab" role="tablist">
-                                        <li class="nav-item">
-                                            <!--                                                    active-->
-                                            <a class="nav-link " id="currency-details-tab" data-toggle="pill"
-                                               href="#custom-tabs-one-home" role="tab"
-                                               aria-controls="custom-tabs-one-home" aria-selected="true">Details</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link active" id="currency-history-tab" data-toggle="pill"
-                                               href="#custom-tabs-one-profile" role="tab"
-                                               aria-controls="custom-tabs-one-profile"
-                                               aria-selected="false">History</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <!--                                            active-->
-                                            <a class="nav-link" id="currency-tab" data-toggle="pill"
-                                               href="#currency" role="tab"
-                                               aria-controls="currency"
-                                               aria-selected="false">Image</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" id="custom-tabs-one-settings-tab" data-toggle="pill"
-                                               href="#custom-tabs-one-settings" role="tab"
-                                               aria-controls="custom-tabs-one-settings"
-                                               aria-selected="false">Settings</a>
-                                        </li>
-                                    </ul>
-                                </div>
-
-                                <div class="card-body">
-                                    <div class="tab-content" id="custom-tabs-one-tabContent">
-                                        <!--                                                show active-->
-                                        <div class="tab-pane fade" id="custom-tabs-one-home" role="tabpanel"
-                                             aria-labelledby="currency-details-tab">
-
-<!--                                            editor::{{ editor }} <br>-->
-<!--                                            editorData::{{ editorData }} <br>-->
-<!--                                            editorConfig::{{ editorConfig }} <br>-->
-<!--                                            <ckeditor-->
-<!--                                                :editor="editor"-->
-<!--                                                v-model="editorData"-->
-<!--                                                      :config="editorConfig"-->
-<!--                                            ></ckeditor>-->
-
-
-                                            <form-editor :is_insert="false" :currency="currency"></form-editor>
-                                        </div>
-
-                                        <!--                                        fade show active -->
-                                        <div class="tab-pane show active" id="custom-tabs-one-profile"
-                                             role="tabpanel" aria-labelledby="currency-history-tab">
-
-                                            currencies_history_filtered_count::{{ currencies_history_filtered_count }}
-                                            <ListingHeader :showLoadingImage="false"
-                                                           :show_filters_button="true"
-                                                           :parentComponentKey="'currencies_history'"
-                                                           :filtered_rows_count="currencies_history_filtered_count"
-                                                           :page_rows_count="currencyHistoryRows.length"
-                                                           :headerIcon="getHeaderIcon('currencies_history')"
-                                                           :headerTitle="'History'"
-                                                           :rightAddButtonLink="''"
-                                                           :itemTitle="pluralize(currencyHistoryRows.length, 'histories', 'histories')"
-                                                           :rightAddButtonLinkTitle="''"
-                                                           :rightIcon="''"
-                                            >
-                                            </ListingHeader>
-
-                                            <div class="card-body p-0" v-show="currencyHistoryRows.length == 0">
-                                                <p class="text-sm text-warning p-2 pl-4">
-                                                    <i :class="getHeaderIcon('info')" class="mr-1"></i>
-                                                    No data found. Try to change filter options.
-                                                </p>
-                                            </div>
-
-                                            <div class="card-body table-responsive p-0"
-                                                 v-show="currencyHistoryRows.length > 0">
-
-                                                <table class="table table-striped table-hover text-nowrap">
-                                                    <thead>
-                                                    <tr>
-                                                        <th class="text-capitalize">Id</th>
-                                                        <th class="text-capitalize text-right"></th>
-                                                        <th class="text-capitalize">Day</th>
-                                                        <th class="text-capitalize">Value</th>
-                                                    </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                    <tr v-for="(currencyHistory, index) in currencyHistoryRows"
-                                                        :key="index">
-                                                        <td>{{ currencyHistory.id }}</td>
-                                                        <td class="text-right d-flex flex-nowrap">
-                                                            <button class="btn btn-danger p-0 px-1  m-0  ml-1 "
-                                                                    @click="deleteCurrencyHistory(currencyHistory)">
-                                                                <i :class="getHeaderIcon('remove')" class="mr-1"
-                                                                   title="Delete"></i>
-                                                            </button>
-                                                        </td>
-                                                        <td>{{ currencyHistory.day_label }}</td>
-                                                        <td>{{ currencyHistory.value }}</td>
-                                                    </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-
-                                            <div class="card-footer clearfix" v-if="currencyHistoryRows.length > 0">
-                                                ListingPagination::currencies_history_filtered_count::{{ currencies_history_filtered_count }}
-                                                <ListingPagination
-                                                    parentComponentKey="currency_history"
-                                                    :currentPage="currencies_history_current_page"
-                                                    :filtered_rows_count="currencies_history_filtered_count"
-                                                    :page_rows_count="currencyHistoryRows.length"
-                                                    :itemsPerPage="currencies_history_per_page"
-                                                    :showNextPriorButtons=false
-                                                    :showPageNumberLabel="false"
-                                                    :showRowsLabel="false"
-                                                    :itemTitle="pluralize(currencyHistoryRows.length, 'history', 'histories')"
-                                                >
-                                                </ListingPagination>
-                                            </div>
-
-                                        </div>
-                                        <!--                                        show active-->
-
-                                        <div class="tab-pane fade" id="currency" role="tabpanel"
-                                             aria-labelledby="currency-tab">
-                                            <file-upload
-                                                ref="upload"
-                                                v-model="imageFiles"
-                                                post-action="/post.method"
-                                                put-action="/put.method"
-                                                @input-file="inputFile"
-                                                @input-filter="inputFilter"
-                                                class="btn btn-outline-primary btn-block"
-                                                v-show="imageFiles.length === 0"
-                                            >
-                                                <i :class="getHeaderIcon('upload')" class="mr-1"></i>
-                                                Upload file
-                                            </file-upload>
-
-                                            <div v-show="currency_image_url && imageFiles.length === 0" class="p-2">
-                                                <img :src="currency_image_url" class="admin_img_preview_wrapper ">
-                                                <p class="text-sm text-info p-2" v-show="currency_image_info">
-                                                    <i :class="getHeaderIcon('info')"></i>
-                                                    {{ currency_image_info }}
-                                                </p>
-                                            </div>
-
-                                            <div v-show="imageFiles.length > 0" class="p-2">
-                                                <table class="m-2 p-0">
-                                                    <tr v-for="nextFile in imageFiles" :key="nextFile.name">
-                                                        <img :src="nextFile.blob"
-                                                             class="admin_img_preview_wrapper"
-                                                             id="uploaded_image_file"/>
-                                                        <div class="row_content_centered p-3">
-                                                            <div class="p-2">
-                                                                Name : <strong>{{ nextFile.name }}</strong>
-                                                            </div>
-                                                            <div class="p-2">
-                                                                Size : <strong>{{
-                                                                    getFileSizeAsString(nextFile.size)
-                                                                }}</strong>
-                                                            </div>
-
-                                                            <div v-show="uploaded_image_width" class="p-2">
-                                                                Width : <strong>{{
-                                                                    uploaded_image_width
-                                                                }}px</strong>
-                                                            </div>
-
-                                                            <div v-show="uploaded_image_height" class="p-2">
-                                                                Height : <strong>{{
-                                                                    uploaded_image_height
-                                                                }}</strong>
-                                                            </div>
-                                                        </div>
-                                                    </tr>
-                                                </table>
-                                            </div>
-
-                                            <div class="row_content_right_aligned" v-show="imageFiles.length">
-                                                <button type="reset" class="btn btn-secondary btn-xs mt-1"
-                                                        @click.prevent="cancelCurrencyImageUpload()">
-                                                    <i :class="'i_link '+getHeaderIcon('cancel')"></i>Cancel
-                                                </button>
-                                                <button type="button"
-                                                        class="btn btn-success btn-sm text-uppercase ml-4"
-                                                        @click.prevent="uploadCancelCurrencyImage()">
-                                                    <i :class="'i_link '+getHeaderIcon('save')"></i>Upload
-                                                </button>
-                                            </div>
-                                        </div>
-
-                                        <div class="tab-pane fade" id="custom-tabs-one-settings" role="tabpanel"
-                                             aria-labelledby="custom-tabs-one-settings-tab">
-                                            Pellentesque vestibulum commodo nibh nec blandit. Maecenas neque magna,
-                                            iaculis tempus turpis ac, ornare sodales tellus. Mauris eget blandit
-                                            dolor.
-                                            Quisque tincidunt venenatis vulputate. Morbi euismod molestie tristique.
-                                            Vestibulum consectetur dolor a vestibulum pharetra. Donec interdum
-                                            placerat
-                                            urna nec pharetra. Etiam eget dapibus orci, eget aliquet urna. Nunc at
-                                            consequat diam. Nunc et felis ut nisl commodo dignissim. In hac
-                                            habitasse
-                                            platea dictumst. Praesent imperdiet accumsan ex sit amet facilisis.
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- /.card -->
-
-                            </div>
-
+            <div class="card-body">
+                <div class="tab-content h-100" id="custom-tabs-one-tabContent">
+                    <!--                                                show active-->
+                    <div class="tab-pane show active" id="custom-tabs-one-home" role="tabpanel"
+                         aria-labelledby="currency-details-tab">
+                        <currency-form-editor :is_insert="false"
+                                              :currency="currency"></currency-form-editor>
                     </div>
+
+                    <!--                                        show active-->
+                    <div class="tab-pane fade" id="currency" role="tabpanel"
+                         aria-labelledby="currency-tab">
+                        <FileUploaderPreviewer
+                            :imageUploader="currencyImageUploader"
+                            :image_url="currency_image_url"
+                            :image_info="currency_image_info"
+                            :parent_component_key="'currency_editor'"
+                            :layout="'admin'"
+
+                        ></FileUploaderPreviewer>
+                    </div>
+
+                    <div class="tab-pane fade" id="custom-tabs-one-description" role="tabpanel"
+                         aria-labelledby="custom-tabs-one-description-tab">
+
+                        <quill-editor
+                            :options="editorOptions"
+                            theme="snow"
+                            v-model:content="descriptionFormEditor.description"
+                            text-change="textChangeDescription"
+                            editorChange="editorChangeDescription"
+                            contentType="html"
+                            @blur="onEditorBlur($event)"
+                            @focus="onEditorFocus($event)"
+                            @ready="onEditorReady($event)"
+                            @textChange="onTextChange($event)"
+
+                        >{{ descriptionFormEditor.description }}
+                        </quill-editor>
+                        <div class="invalid-feedback mb-3" v-if="descriptionFormEditor.errors"
+                             :class="{ 'd-block' : descriptionFormEditor.errors && descriptionFormEditor.errors.description}">
+                        </div>
+
+                        <div class="admin_listing_modal_footer">
+                            <button type="button" class="btn btn-secondary btn-sm"
+                                    @click="cancelDescriptionFormEditor">
+                                <i :class="getHeaderIcon('cancel')"
+                                   class="action_icon icon_right_text_margin"></i>Cancel
+                            </button>
+                            <button type="button"
+                                    class="btn btn-success btn-sm text-uppercase right_btn_from_left_margin"
+                                    @click="saveDescriptionFormEditor">
+                                <i :class="getHeaderIcon('save')"
+                                   class="action_icon icon_right_text_margin"></i>Save
+                            </button>
+                        </div>
+                    </div>
+
+                    <!--                                        fade show active -->
+                    <div class="tab-pane fade" id="custom-tabs-one-profile"
+                         role="tabpanel" aria-labelledby="currency-history-tab">
+                        <ListingHeader
+                            :show_filters_button="true"
+                            :parent_component_key="'currencies_history'"
+                            :filtered_rows_count="currencies_history_filtered_count"
+                            :page_rows_count="currencyHistoryRows.length"
+                            :left_header_icon="getHeaderIcon('currencies_history')"
+                            :headerTitle="'History'"
+                            :rightAddButtonLink="''"
+                            :itemTitle="pluralize(currencyHistoryRows.length, 'histories', 'histories')"
+                            :rightAddButtonLinkTitle="''"
+                            :right_icon="''"
+                        >
+                        </ListingHeader>
+
+                        <div class="card-body p-0" v-show="currencyHistoryRows.length == 0">
+                            <p class="text-sm text-warning p-2 pl-4">
+                                <i :class="getHeaderIcon('info')"
+                                   class="action_icon icon_right_text_margin"></i>
+                                No data found. Try to change filter options.
+                            </p>
+                        </div>
+
+                        <div class="card-body table-responsive p-0"
+                             v-show="currencyHistoryRows.length > 0">
+
+                            <table class="table table-striped table-hover text-nowrap">
+                                <thead>
+                                <tr class="admin_listing_header">
+                                    <th class="text-capitalize">Id</th>
+                                    <th class="text-capitalize text-right"></th>
+                                    <th class="text-capitalize">Day</th>
+                                    <th class="text-capitalize">Value</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr v-for="(currencyHistory, index) in currencyHistoryRows"
+                                    :key="index" class="admin_listing_tr">
+                                    <td>{{ currencyHistory.id }}</td>
+                                    <td class="text-right d-flex flex-nowrap">
+                                        <button class="btn btn-danger p-0 px-1  m-0  ml-1 "
+                                                @click="deleteCurrencyHistory(currencyHistory)">
+                                            <i :class="getHeaderIcon('remove')"
+                                               class="action_icon icon_right_text_margin"
+                                               title="Delete"></i>
+                                        </button>
+                                    </td>
+                                    <td>{{ currencyHistory.day_label }}</td>
+                                    <td>{{
+                                            formatValue(currencyHistory.value, rate_decimal_numbers)
+                                        }}
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="card-footer clearfix" v-if="currencyHistoryRows.length > 0">
+                            <paginate
+                                v-show="currencies_history_pages_count > 1"
+                                v-model="currencies_history_current_page"
+                                :page-count="currencies_history_pages_count"
+                                :click-handler="currencyHistoryPaginationPageClicked"
+                                :first-last-button="false"
+                                :page-range="2"
+                                :margin-pages="3"
+                                :prev-text="'<'"
+                                :next-text="'>'"
+                                :container-class="'admin_pagination'"
+                            >
+                            </paginate>
+                        </div>
+                    </div>
+
                 </div>
             </div>
-        </section>
+
+            <!-- /.card -->
+
+        </div>
 
     </admin-layout>
 </template>
@@ -304,187 +254,217 @@ import {
     pluralize,
     pluralize3,
     isEmpty,
+    formatValue,
     momentDatetime,
     getErrorMessage,
     showFlashMessage,
     getDictionaryLabel,
     dateIntoDbFormat,
-    getFileSizeAsString
+    getFileSizeAsString,
 } from '@/commonFuncs'
 import {settingsJsMomentDatetimeFormat, settingsAppColors} from '@/app.settings.js'
-import CKEditor from '@ckeditor/ckeditor5-vue';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
-// resources/js/Pages/Admins/Currencies/Form.vue
-// import { page } from '@inertiajs/inertia-vue3';
-
-import formEditor from '@/Pages/Admins/Currencies/Form'
+import CurrencyFormEditor from '@/Pages/Admins/Currencies/Form'
 import {onMounted, ref, watchEffect} from "vue";
 import axios from "axios";
-import ListingPagination from '@/components/ListingPagination.vue'
 import ListingHeader from '@/components/ListingHeader.vue'
-// import {usePage} from '@inertiajs/inertia-vue3';
+import FileUploaderPreviewer from '@/components/FileUploaderPreviewer.vue'
+
+
+// Vue.component('QuillEditor', VueQuill.QuillEditor);
+import {QuillEditor} from '@vueup/vue-quill'
+import '@vueup/vue-quill/dist/vue-quill.snow.css';
+import QuillBetterTable from 'quill-better-table' // https://github.com/soccerloway/quill-better-table
 
 import Datepicker from 'vue3-date-time-picker';
 import 'vue3-date-time-picker/dist/main.css';
 import {ModalsContainer, VueFinalModal} from "vue-final-modal";
+import {useForm} from "@inertiajs/inertia-vue3";
+import {Inertia} from '@inertiajs/inertia'
 
 export default {
-    props: ['currency', 'minCurrencyHistoryDay'],
+
+    props: {
+        currency: {
+            type: Object,
+            required: true,
+        },
+        minCurrencyHistoryDay: {
+            type: String,
+            required: true,
+        },
+        currencyImage: {
+            type: Object,
+            required: true,
+        }
+    },
 
     name: 'adminCurrenciesEdit',
     components: {
         AdminLayout,
-        ListingPagination,
         ListingHeader,
+        FileUploaderPreviewer,
         Datepicker,
         VueFinalModal,
         ModalsContainer,
-        CKEditor,
-        formEditor
+        // CKEditor,
+        CurrencyFormEditor,
+        QuillEditor,
     },
     setup(props) {
         console.log('resources/js/Pages/Admins/Currencies/Edit.vue setup props::')
         console.log(props)
-        const currency_history_filter_date_from = ref(props.minCurrencyHistoryDay)
+        let currency_history_filter_date_from = ref(props.minCurrencyHistoryDay)
         var d = new Date();
-        const show_currency_history_filters_modal = ref(false)
+        let show_currency_history_filters_modal = ref(false)
         var today_date = dateIntoDbFormat(d)
-        const currency_history_filter_date_till = ref(today_date)
+        let currency_history_filter_date_till = ref(today_date)
         // console.log('currency_history_filter_date_till::')
         if (isEmpty(currency_history_filter_date_from.value)) {
             currency_history_filter_date_from.value = today_date
         }
         let currency = ref(props.currency)
         let currencyHistoryRows = ref([])
+        let rate_decimal_numbers = ref(2)
         let currencies_history_filtered_count = ref(0)
+        let currencies_history_pages_count = ref(0)
         let currencies_history_per_page = ref(0)
         let currencies_history_current_page = ref(1)
-        let imageFiles = ref([])
-        let uploaded_image_width = ref(null)
-        let uploaded_image_height = ref(null)
-        let currencyImageFile = null
-        let currency_image_url = ref(null)
-        let currency_image_info = ref('')
+        // let currencies_pages_count = ref(0)
 
-        let editorData = ref(' editorData init text')
-        let editor = ref(ClassicEditor)
-        let editorConfig = ref({})
+        // console.log('props.currency.id::')
+        // console.log(props.currency.id)
 
-        watchEffect(() => {
-            if (imageFiles.value) {
-                console.log('imageFiles.value::')
-                console.log(imageFiles.value)
-                if (typeof imageFiles.value[0] === 'undefined') return
-                var image = new Image()
-                image.src = imageFiles.value[0].blob
-                // image.onload = function () {
-                // bus.$emit('imageUploadedEvent', this.width, this.height)
-                // }
-            }
-        })
+        console.log('props.currencyImage::')
+        console.log(props.currencyImage)
+        // debugger
 
+        let currency_image_url = ref(props.currencyImage.url)
+        let currency_image_info = ref(props.currencyImage.file_name + ', ' + getFileSizeAsString(props.currencyImage.size) + ', ' + props.currencyImage.width + '*' + props.currencyImage.height)
+        let currencyImageUploader = ref(useForm({
+            image: '',
+            currency_id: props.currency.id,
+            image_filename: '',
+        }))
 
-        // let files=ref([])
-        /**
-         * Has changed
-         * @param  Object|undefined   newFile   Read only
-         * @param  Object|undefined   oldFile   Read only
-         * @return undefined
-         */
-        function inputFile(newFile, oldFile) {
-            console.log('00 inputFile currencyImageFile  newFile::')
-            console.log(newFile)
+        let descriptionFormEditor = ref(useForm({
+            id: props.currency.id,
+            description: props.currency.description,
+        }))
 
-            if (newFile /* && oldFile && !newFile.active && oldFile.active */) {
-                // Get response data
-                currencyImageFile = newFile
-                console.log('123 INSIDE inputFile currencyImageFile  newFile::')
-                console.log(newFile)
+        let editorOptions = ref(
+            [['better-table', 'bold', 'italic'], ['link', 'image']]
+        )
 
-
-                console.log('response', newFile.response)
-                if (newFile.xhr) {
-                    //  Get the response status code
-                    console.log('status', newFile.xhr.status)
-                }
-            }
-        }
-
-        /**
-         * Pretreatment
-         * @param  Object|undefined   newFile   Read and write
-         * @param  Object|undefined   oldFile   Read only
-         * @param  Function           prevent   Prevent changing
-         * @return undefined
-         */
-        function inputFilter(newFile, oldFile, prevent) {
-            if (newFile && !oldFile) {
-                // Filter non-image file
-                if (!/\.(jpeg|jpe|jpg|gif|png|webp)$/i.test(newFile.name)) {
-                    return prevent()
-                }
-            }
-            // Create a blob field
-            newFile.blob = ''
-            let URL = window.URL || window.webkitURL
-            if (URL && URL.createObjectURL) {
-                newFile.blob = URL.createObjectURL(newFile.file)
-            }
-        }
-
-        function cancelCurrencyImageUpload() {
-            console.log('cancelCurrencyImageUpload::')
-            imageFiles.value = []
-            uploaded_image_width.value = null
-            uploaded_image_height.value = null
-        }
-
-        function loadCurrencyImage() {
-            // console.log('loadCurrencyImage currency.value.id::')
-            // console.log(currency.value.id)
-            axios.get(route('admin.currencies.get_image', currency.value.id))
-                .then(({data}) => {
-                    // console.log('loadCurrencyImage data::')
-                    // console.log(data)
-                    if (!isEmpty(data.image)) {
-                        currency_image_url.value = data.image.url
-                        currency_image_info.value = data.image.file_name + ', ' + getFileSizeAsString(data.image.size) + ', ' + data.image.width + '*' + data.image.height
+        let modules = ref({
+                table: false,  // disable table module
+                'better-table': {
+                    operationMenu: {
+                        items: {
+                            unmergeCells: {
+                                text: 'Another unmerge cells name'
+                            }
+                        },
+                        color: {
+                            colors: ['#fff', 'red', 'rgb(0, 0, 0)'],  // colors in operationMenu
+                            text: 'Background Colors'  // subtitle
+                        }
                     }
-                })
-                .catch(error => {
-                    console.error(error)
-                })
-        } // loadCurrencyImage() {
+                },
+                keyboard: {
+                    bindings: QuillBetterTable.keyboardBindings
+                }
+            }
+        )
 
-        function uploadCancelCurrencyImage() {
-            console.log('uploadCancelCurrencyImage currencyImageFile::')
+
+        function textChangeDescription() {
+            console.log('textChangeDescription::')
+        }
+
+        function editorChangeDescription() {
+            console.log('editorChangeDescription::')
+        }
+
+        function cancelDescriptionFormEditor() {
+            console.log('cancelDescriptionFormEditor::')
+
+        }
+
+        function saveDescriptionFormEditor() {
+            descriptionFormEditor.value.put(route('admin.currencies.description_save', descriptionFormEditor.value.id), {
+                preserveScroll: false,
+                onSuccess: (resp) => {
+                    Swal.fire(
+                        'Saved!',
+                        'Description successfully saved !',
+                        'success'
+                    )
+                },
+                onError: (e) => {
+                    console.log('e::')
+                    console.log(e)
+                    Toast.fire({
+                        icon: 'error',
+                        title: 'Description saving error!'
+                    })
+                }
+
+            })
+        }
+
+        function onEditorBlur(quill) {
+            console.log('editor blur!', quill)
+        }
+
+        function onEditorFocus(quill) {
+            console.log('editor focus', quill)
+        }
+
+        function onEditorReady(quill) {
+            console.log('editor ready!', quill)
+        }
+
+        // Arguments: { delta: Delta, oldContents: Delta, source: Sources }
+        function onTextChange({delta, oldContents, text}) {
+            // console.log('onTextChange text::')
+            // console.log(text)
+        }
+
+        function fetchCurrencyImage(currencyImageFile) {
+            console.log('fetchCurrencyImage currencyImageFile::')
             console.log(currencyImageFile)
-            // var self = this
             fetch(currencyImageFile.blob).then(function (response) {
                 if (response.ok) {
                     return response.blob().then(function (imageBlob) {
-                        let imageUploadData = new FormData()
-                        imageUploadData.append('id', currency.value.id)
-                        imageUploadData.append('image', imageBlob)
-                        imageUploadData.append('image_filename', currencyImageFile.name)
+                        console.log('currencyImageUploader::')
+                        console.log(currencyImageUploader)
+                        console.log('currencyImageUploader.currency_id::')
+                        console.log(currencyImageUploader.value.currency_id)
 
-                        axios.post(route('admin.currencies.upload_image'), imageUploadData).then(({data}) => {
-                            // ('Image upload', 'Image uploaded successfully !', 'success')
-                            Toast.fire({
-                                icon: 'success',
-                                title: 'Image uploaded successfully !'
-                            })
-                            loadCurrencyImage()
-                            cancelCurrencyImageUpload()
-                        }).catch((error) => {
-                            console.error(error)
-                            Toast.fire({
-                                icon: 'error',
-                                title: 'Image uploading error : ' /*+ error.response.data.message */ + ' !'
-                            })
 
-                            // ('Image upload', 'Image uploading error : ' + error.response.data.message + ' !', 'warn')
+                        currencyImageUploader.value.image = imageBlob
+                        currencyImageUploader.value.image_filename = currencyImageFile.name
+
+                        currencyImageUploader.value.post(route('admin.currencies.upload_image'), {
+                            preserveScroll: true,
+                            onSuccess: (resp) => {
+                                console.log(' resp::')
+                                console.log(resp)
+                                Toast.fire({
+                                    icon: 'success',
+                                    title: 'You have uploaded image successfully'
+                                })
+                                window.emitter.emit('imageBlobFetchedEvent', {
+                                    parent_component_key: 'currency_editor',
+                                    resp: resp,
+                                })
+                                Inertia.visit(route('admin.currencies.edit', currencyImageUploader.value.currency_id), {only: ['currencyImage'],})
+                                // loadCurrencyImage()
+                            },
+                            onError: (e) => {
+                                console.log(e)
+                            }
                         })
                     })
                 } else {
@@ -492,9 +472,9 @@ export default {
                         console.error(jsonError)
                     })
                 }
-            }).catch(function (error) {
-                console.error(error)
-                console.log('There has been a problem with your fetch operation: ', error.message)
+            }).catch(function (e) {
+                console.error(e)
+                console.log('There has been a problem with your fetch operation: ', e.message)
             }) // fetch(currencyImageFile.blob).then(function (response) {
 
         }
@@ -525,9 +505,10 @@ export default {
                     currencyHistoryRows.value = data.data
                     currencies_history_filtered_count.value = data.meta.total
                     currencies_history_per_page.value = parseInt(data.meta.per_page)
+                    currencies_history_pages_count.value = data.meta.last_page
                 })
-                .catch(error => {
-                    console.error(error)
+                .catch(e => {
+                    console.error(e)
                 })
         } // loadCurrencyHistory() {
 
@@ -557,8 +538,8 @@ export default {
                                 'success'
                             )
                         })
-                        .catch(error => {
-                            console.error(error)
+                        .catch(e => {
+                            console.error(e)
                         })
                 }
             })
@@ -566,6 +547,9 @@ export default {
 
 
         function currencyHistoryPaginationPageClicked(page) {
+            console.log('currencyHistoryPaginationPageClicked page::')
+            console.log(page)
+
             currencies_history_current_page.value = page
             loadCurrencyHistory()
         }
@@ -589,7 +573,7 @@ export default {
             let filters_count_text = getCurrencyHistoryFiltersCountText()
             let filters = {filter_name: 'filter_name'}
             window.emitter.emit('listingFilterModifiedEvent', {
-                parentComponentKey: 'currencies_history',
+                parent_component_key: 'currencies_history',
                 filters: filters,
                 filters_count_text: filters_count_text
             })
@@ -611,55 +595,64 @@ export default {
         } // getCurrencyHistoryFiltersCountText
 
 
-        const adminCurrencyEditOnMounted = async () => {
+        function adminCurrencyEditOnMounted() {
+            showFlashMessage()
             console.log('adminCurrencyEditOnMounted::')
             // console.log('Edit.vue mounted 1 this.currency')
             // console.log(currency)
             // console.log(formEditor)
 
+            axios.get(route('get_settings_value', {key: 'rate_decimal_numbers'}))
+                .then(({data}) => {
+                    rate_decimal_numbers.value = data.value
+                })
+                .catch(e => {
+                    console.error(e)
+                })
+
             loadCurrencyHistory()
-            loadCurrencyImage()
-            window.emitter.on('paginationPageChangedEvent', params => {
-                console.log('TARGET paginationPageChangedEvent params::')
+            window.emitter.on('FileUploaderPreviewerUploadImageEvent', params => {
+                console.log('TARGET FileUploaderPreviewerUploadImageEvent params::')
                 console.log(params)
-                if (params.parentComponentKey === 'currency_history') {
-                    currencyHistoryPaginationPageClicked(params.page)
+                if (params.parent_component_key === 'currency_editor') {
+                    fetchCurrencyImage(params.uploadedImageFile)
                 }
             })
+
+            // window.emitter.on('paginationPageChangedEvent', params => {
+            //     console.log('TARGET paginationPageChangedEvent params::')
+            //     console.log(params)
+            //     if (params.parent_component_key === 'currency_history') {
+            //         currencyHistoryPaginationPageClicked(params.page)
+            //     }
+            // })
 
             window.emitter.on('showFiltersModalEvent', params => {
                 console.log('TARGET showFiltersModalEvent params::')
                 console.log(params)
-                if (params.parentComponentKey === 'currencies_history') {
+                if (params.parent_component_key === 'currencies_history') {
                     showCurrencyHistoryFiltersModal()
                 }
             })
 
 
             window.emitter.on('listingHeaderRightButtonClickedEvent', params => {
-                console.log('TARGET listingHeaderRightButtonClickedEvent params::')
-                console.log(params)
-                if (params.parentComponentKey === 'currencies_history') {
+                // console.log('TARGET listingHeaderRightButtonClickedEvent params::')
+                // console.log(params)
+                if (params.parent_component_key === 'currencies_history') {
                     console.log('!!!!!loadCurrencyHistory::')
                     loadCurrencyHistory()
                 }
             })
 
-            window.emitter.on('imageUploadedEvent', params => {
-                console.log('TARGET imageUploadedEvent params::')
-                console.log(params)
-                uploaded_image_width.value = uploaded_image_width
-                uploaded_image_height.value = uploaded_image_height
-
-            })
+            // window.emitter.on('imageUploadedEvent', params => {
+            //     // console.log('TARGET imageUploadedEvent params::')
+            //     // console.log( params)
+            //     uploaded_image_width.value = params.width
+            //     uploaded_image_height.value = params.height
             //
-            // console.log('Edit.vue  usePage().props.value.flash::')
-            // console.log( usePage().props.value.flash)
-
-            // showFlashMessage()
-
+            // })
         }
-        console.log('BEFORE onMounted::')
         onMounted(adminCurrencyEditOnMounted)
 
         return { // setup return
@@ -671,11 +664,18 @@ export default {
             currency_image_info,
             currencyHistoryRows,
             currencies_history_filtered_count,
+            currencies_history_pages_count,
             currencies_history_per_page,
             currencies_history_current_page,
-            editorData,
-            editor,
-            editorConfig,
+            descriptionFormEditor,
+            cancelDescriptionFormEditor,
+            saveDescriptionFormEditor,
+            editorOptions,
+            modules,
+            onEditorBlur,
+            onEditorFocus,
+            onEditorReady,
+            onTextChange,
 
             // Listing filtering
             show_currency_history_filters_modal,
@@ -693,16 +693,18 @@ export default {
             deleteCurrencyHistory,
 
             // Currency Image
-            inputFilter,
-            inputFile,
-            imageFiles,
-            uploaded_image_width,
-            uploaded_image_height,
-            cancelCurrencyImageUpload,
-            uploadCancelCurrencyImage,
+            // inputFilter,
+            // inputFile,
+            // imageFiles,
+            // uploaded_image_width,
+            // uploaded_image_height,
+            // cancelCurrencyImageUpload,
+            // fetchCurrencyImage,
+            currencyImageUploader,
 
 
             // Common methods
+            rate_decimal_numbers,
             getHeaderIcon,
             pluralize,
             pluralize3,
@@ -712,6 +714,7 @@ export default {
             showFlashMessage,
             getDictionaryLabel,
             dateIntoDbFormat,
+            formatValue,
             getFileSizeAsString
         }
     }, // setup() {

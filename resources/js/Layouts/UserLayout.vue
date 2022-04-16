@@ -1,6 +1,6 @@
 <template>
 
-    <div class="">
+    <div>
         <div class="wrapper">
 
             <!-- Preloader -->
@@ -23,7 +23,7 @@
 import UserFooter from '@/components/UserFooter'
 import UserNavbar from '@/components/UserNavbar'
 
-import Sidebar from '@/components/sidebar/Sidebar'
+// import Sidebar from '@/components/sidebar/AdminSidebar'
 
 // import Sidebar from '@/components/Sidebar'
 export default {
@@ -40,3 +40,24 @@ export default {
     },
 }
 </script>
+
+<style>
+.user_color {
+    /*background-color: maroon !important;*/
+}
+.user_editable_label {
+    /*background-color: yellowgreen !important;*/
+}
+.user_listing_header {
+    /*color: red !important;*/
+}
+
+.user_listing_tr {
+    /*color: blue !important;*/
+}
+
+.user_content_text {
+
+}
+
+</style>

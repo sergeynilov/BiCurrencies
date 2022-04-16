@@ -12,7 +12,7 @@ class Currency extends Model implements HasMedia
 {
     use InteractsWithMedia;
 
-    protected $table = 'currency';
+    protected $table = 'currencies';
     protected $primaryKey = 'id';
     public $timestamps = false;
     public $media_image_url = '';
@@ -22,13 +22,13 @@ class Currency extends Model implements HasMedia
         = [
             'name',
             'num_code',
+            'description',
             'char_code',
             'color',
             'bgcolor',
             'is_top',
             'active',
             'ordering',
-            'updated_at'
         ];
 
 
@@ -93,7 +93,7 @@ class Currency extends Model implements HasMedia
         return $this->hasMany('App\Models\CurrencyHistory', 'currency_id', 'id');
     }
 
-    public function scopeGetById($query, int $id = null)
+    public function scopeGetById($query, $id)
     {
         if ( ! empty($id)) {
             if (is_array($id)) {
@@ -127,6 +127,7 @@ class Currency extends Model implements HasMedia
 
     public function scopeGetByActive($query, $active = null)
     {
+//        \Log::info(  varDump($active, ' $active scopeGetByActive ::') );
         if ( ! isset($active) or strlen($active) == 0) {
             return $query;
         }
@@ -180,13 +181,17 @@ class Currency extends Model implements HasMedia
                 'max:999',
                 Rule::unique(with(new Currency)->getTable())->ignore($currency_id),
             ],
+            'description'  => [
+                'string',
+                'nullable'
+            ],
             'char_code' => [
                 'required',
                 'string',
                 'min:3',
                 'max:3',
                 Rule::unique(with(new Currency)->getTable())->ignore($currency_id),
-            ], //             $table->string('color', 7)->nullable();
+            ],
             'color'     => [
                 'required',
                 'string',
@@ -200,7 +205,7 @@ class Currency extends Model implements HasMedia
                 'max:7',
             ],
             'is_top'    => 'nullable',
-            'active'    => 'nullable',
+            'active'    => 'boolean',
             'ordering'  => 'required|integer|max:2000',
 
         ];

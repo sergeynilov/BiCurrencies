@@ -110,7 +110,7 @@
                     <span class="dropdown-item dropdown-header" v-show="$page.props.auth.unread_notifications_count > 0">
                         <inertia-link :href="route('user.notifications.index')" class=" m-1 p-1">
 <!--                            <i :class="getHeaderIcon('edit')" class="mr-1" title="Edit"></i>-->
-                            <i :class="getHeaderIcon('notification')" class="mr-1"></i>
+                            <i :class="getHeaderIcon('notification')" class="action_icon icon_right_text_margin"></i>
                             {{ $page.props.auth.unread_notifications_count }}
                             {{ pluralize($page.props.auth.unread_notifications_count, 'Notification', 'Notifications') }}
                         </inertia-link>
@@ -159,8 +159,6 @@ import {
     getHeaderIcon,
     pluralize,
 } from '@/commonFuncs'
-// import {ref, computed, onMounted} from 'vue'
-
 
 import {
     // settingsJsMomentDatetimeFormat,
@@ -174,9 +172,9 @@ export default {
     components: {
     },
     setup() {
-        const app_version= ref('D')
+        let app_version= ref('D')
 
-        const adminNavbarOnMounted = async () => {
+        function adminNavbarOnMounted() {
             console.log('adminNavbarOnMounted::')
         }
         onMounted(adminNavbarOnMounted)

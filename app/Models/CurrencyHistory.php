@@ -7,11 +7,11 @@ use Illuminate\Validation\Rule;
 
 class CurrencyHistory extends Model
 {
-    protected $table = 'currency_history';
+    protected $table = 'currency_histories';
     protected $primaryKey = 'id';
     public $timestamps = false;
 
-    protected $fillable = ['currency_id', 'event_id' ];
+    protected $fillable = ['currency_id', 'day', 'nominal', 'value' ];
 
     public function scopeGetByCurrencyId($query, int $currencyId= null)
     {
@@ -35,7 +35,7 @@ class CurrencyHistory extends Model
 
 
     public function currency(){
-        return $this->belongsTo('App\Currency', 'currency_id','id');
+        return $this->belongsTo('App\Models\Currency', 'currency_id','id');
     }
 
     public static function getValidationRulesArray() : array

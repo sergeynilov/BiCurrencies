@@ -8,9 +8,6 @@ use Inertia\Middleware;
 use App\Models\Settings;
 use App\Library\CheckValueType;
 
-use Jenssegers\Agent\Agent;
-use Laravel\Fortify\Fortify;
-//use Illuminate\Support\Facades\Auth;
 use Auth;
 
 
@@ -22,7 +19,7 @@ class HandleInertiaRequests extends Middleware
      * @see https://inertiajs.com/server-side-setup#root-template
      * @var string
      */
-    protected $rootView = 'app';
+    protected $rootView = 'adminlte';
 
     /**
      * Determines the current asset version.
@@ -46,7 +43,7 @@ class HandleInertiaRequests extends Middleware
             return 'layouts/user';
         }
         if ($request->segment(1) == 'admin') {
-            return 'layouts/app'; // TODO
+            return 'layouts/adminlte'; // TODO
         }
 
         return 'layouts/frontend'; // Current request is front-end
@@ -64,68 +61,35 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
-        \Log::info(varDump($request->session()->get('message'),
-            ' -1 HandleInertiaRequests $request->session()->get(message)::'));
-//        \Log::info(  varDump($request->session()->get('flash_type'), ' -1 HandleInertiaRequests $request->session()->get(flash_type)::') );
-
-
-/*        \Log::info(varDump(auth()->user(), ' -1 $authUser::'));
-        if (auth()->user()->status !== 'A') {
-
-//            Inertia.post(route('logout'));
-
-//            auth()->user()->logout();
-            Auth::logout();
-//            $this->guard()->logout();
-//            auth()->logout();
-            throw ValidationException::withMessages([
-                Fortify::username() => "Account is not active",
-            ]);
-            return redirect('/login');
-
-
-        }*/
+        $site_name    = Settings::getValue('site_name', CheckValueType::cvtString, 'Admin demo');
+        $site_heading = Settings::getValue('site_heading', CheckValueType::cvtString, 'Admin demo heading');
 
         return array_merge(parent::share($request), [
 
-            'flash' => [
+            'site_name'    => fn() => $site_name,
+            'site_heading' => fn() => $site_heading,
+            'flash'        => [
                 'message' => fn() => $request->session()->get('message')
             ],
 
-            //            'flash' => [
-            //                'message' => fn () => 'Some testing message here 987'
-            //            ],
-            //            'flash_type' => [
-            //                'message' => fn () => 'Testing if it will show'
-            //            ],
-            //'flash' => [
-            //    'message' => fn () => $request->session()->get('message')
-            //],
 
+            'flash_type' => [
+                'message' => fn() => $request->session()->get('flash_type')
+            ],
 
             'auth' => function () {
-                $user      = auth()->user();
-                $site_name = Settings::getValue('site_name', CheckValueType::cvtString, 'Admin demo');
+                $user = auth()->user();
 
-                $agent        = new Agent();
-                $agent_device = '';
-                if ($agent->isMobile()) {
-                    $agent_device = 'mobile';
-                }
-                if ($agent->isTablet()) {
-                    $agent_device = 'tablet';
-                }
+                $is_logged_user_admin           = isUserLogged() ? auth()->user()->can(ACCESS_APP_ADMIN_LABEL) : false;
+                $is_logged_user_support_manager = isUserLogged() ? auth()->user()->can(ACCESS_APP_SUPPORT_MANAGER_LABEL) : false;
+                $is_logged_user_content_editor  = isUserLogged() ? auth()->user()->can(ACCESS_APP_CONTENT_EDITOR_LABEL) : false;
 
-//                \Log::info(  varDump($agent, ' -1 $agent::') );
-//                \Log::info(  varDump($agent_device, ' -1 $agent_device::') );
-//                \Log::info(  varDump($user->unreadNotifications()->count(), ' -1 $user->unreadNotifications()->count()::') );
                 return $user ? [
-                    'profile'                    => $user,
-                    'site_name'                  => $site_name,
-                    'agent_device'               => $agent_device,
-                    //                    'notifications' => [],// $user->notifications,
-                    //                    'readNotifications' => [],// $user->readNotifications,
-                    'unread_notifications_count' => $user->unreadNotifications()->count(),
+                    'profile'                        => $user,
+                    'is_logged_user_admin'           => $is_logged_user_admin,
+                    'is_logged_user_support_manager' => $is_logged_user_support_manager,
+                    'is_logged_user_content_editor'  => $is_logged_user_content_editor,
+                    'unread_notifications_count'     => $user->unreadNotifications()->count(),
                 ] : null;
             }
         ]);
