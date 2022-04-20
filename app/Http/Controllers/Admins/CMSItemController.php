@@ -171,10 +171,10 @@ class CMSItemController extends Controller  //    http://127.0.0.1:8000/admin/CM
             }
         }
 
-        \Log::info(  varDump((new CMSItemResource($CMSItem, $CMSItemImage)), ' -11 EDIRT::') );
+        \Log::info(  varDump($CMSItemImage, ' -1 $CMSItemImage::') );
         return Inertia::render('Admins/CMSItems/Edit', [
-//            'CMSItem' => $CMSItem,
-            'CMSItem' => new CMSItemResource($CMSItem),
+            'CMSItem' => $CMSItem,
+//            'CMSItem' => new CMSItemResource($CMSItem),
             'CMSItemImage' => $CMSItemImage,
         ]);
     }
@@ -243,7 +243,7 @@ class CMSItemController extends Controller  //    http://127.0.0.1:8000/admin/CM
         }
 
         return redirect(route('admin.cms_items.index'))
-            ->with('flash', 'You have deleted CMSItem successfully')
+            ->with('flash', 'You have deleted CMS item successfully')
             ->with('flash_type', 'success');
     }
 
@@ -364,7 +364,7 @@ class CMSItemController extends Controller  //    http://127.0.0.1:8000/admin/CM
         }
         return response()->json([
             'CMSItem' => $CMSItem,
-            'message' => 'CMS item was successfully publishedd',
+            'message' => 'CMS item was successfully published',
         ], HTTP_RESPONSE_OK);
     } // public function publish(Request $request, int $cms_item_id)
 

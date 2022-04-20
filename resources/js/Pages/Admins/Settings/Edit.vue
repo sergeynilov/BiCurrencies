@@ -2,7 +2,7 @@
     <admin-layout>
         <!--                        settingsData::{{ settingsData }}-->
 
-        $settingsSmallIcon::{{ settingsSmallIcon}}
+        settingsSmallIconImage::{{ settingsSmallIconImage}}
         <div class="card card-primary card-tabs">
             <div class="card-header p-2">
                 <ul class="nav nav-tabs" id="custom-tabs-one-tab" role="tablist">
@@ -13,12 +13,12 @@
                            aria-controls="settings-details" aria-selected="true">Settings</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" id="settings-app-images-tab" data-toggle="pill"
+                        <a class="nav-link" id="settings-app-images-tab" data-toggle="pill"
                            href="#settings-app-images" role="tab"
                            aria-controls="settings-app-images" aria-selected="true">App images</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="settings-operations-tab" data-toggle="pill"
+                        <a class="nav-link active" id="settings-operations-tab" data-toggle="pill"
                            href="#settings-operations" role="tab"
                            aria-controls="settings-operations"
                            aria-selected="false">Operations</a>
@@ -35,7 +35,7 @@
                                      :currenciesSelectionArray="currenciesSelectionArray"></form-editor>
                     </div>
 
-                    <div class="tab-pane show active" id="settings-app-images" role="tabpanel"
+                    <div class="tab-pane fade" id="settings-app-images" role="tabpanel"
                          aria-labelledby="settings-app-images-tab">
                         small_icon
                         <FileUploaderPreviewer
@@ -49,8 +49,29 @@
                         ></FileUploaderPreviewer>
                     </div>
 
-                    <div class="tab-pane  fade" id="settings-operations" role="tabpanel"
+                    <div class="tab-pane show active" id="settings-operations" role="tabpanel"
                          aria-labelledby="settings-operations-tab">
+
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title admin_color">
+                                    <i :class="getHeaderIcon('cache')" class="action_icon icon_right_text_margin"></i>
+                                    Clear Cache
+                                </h3>
+                            </div> <!-- card-header -->
+
+                            <div class="card-body">
+                                <div class="form-group row">
+                                    <div class="col-6">
+                                        <jet-button :button_type="'admin_action'"  @click.prevent="makeClearCache()">
+                                            <i :class="getHeaderIcon('view')" class="action_icon icon_right_text_margin"></i>Clear Cache
+                                        </jet-button>
+                                        <div v-show="clear_cache_action_processing" class="form_processing"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>  <!-- Clear Cache -->
+
 
                         <div class="card">
                             <div class="card-header">
@@ -58,21 +79,17 @@
                                     <i :class="getHeaderIcon('log')" class="action_icon icon_right_text_margin"></i>
                                     Laravel log
                                 </h3>
-
                             </div> <!-- card-header -->
+
+
                             <div class="card-body">
-                                action_processing::{{ action_processing}}
+<!--                                action_processing::{{ action_processing}}-->
                                 <div class="form-group row">
                                     <div class="col-6">
-<!--                                        <button type="button" class="btn btn-primary btn-block"-->
-<!--                                                @click.prevent="viewLaravelLog()">-->
-<!--                                            <i :class="getHeaderIcon('view')" class="action_icon icon_right_text_margin"></i> View-->
-<!--                                        </button>-->
                                         <jet-button :button_type="'admin_action'"  @click.prevent="uploadImage()">
                                             <i :class="getHeaderIcon('view')" class="action_icon icon_right_text_margin"></i>View 14
                                         </jet-button>
                                         <div v-show="action_processing" class="form_processing"></div>
-
                                     </div>
                                     <div class="col-6">
 <!--                                        <button type="button" class="btn btn-primary btn-block"-->
@@ -86,7 +103,6 @@
                                         Current Laravel log</label>
                                 </div>
                             </div>
-
                             <div class="card-footer" v-show="sql_tracing_log_text">
                                 <div class="admin_editable_label"
                                      style="border:2px dotted red !important;  overflow-y: scroll; max-height: 600px;">
@@ -94,14 +110,12 @@
                                     {{ sanitizeHtml(laravel_log_text) }}
                                 </div>
                             </div>
-                        </div>
+                        </div>      <!-- Laravel log -->
 
 
-                        <!--
-Route::get('view_sql_tracing_log', [ SettingsController::class, 'view_sql_tracing_log' ] )->name('settings.view_sql_tracing_log');
-Route::get('delete_sql_tracing_log', [ SettingsController::class, 'delete_sql_tracing_log' ] )->name('settings.delete_sql_tracing_log');
 
-                                                           -->
+
+
                         <div class="card">
                             <div class="card-header">
                                 <h3 class="card-title admin_color">
@@ -207,6 +221,7 @@ import {
     getErrorMessage,
     showFlashMessage,
     getDictionaryLabel,
+    getFileSizeAsString,
 } from '@/commonFuncs'
 import {settingsJsMomentDatetimeFormat} from '@/app.settings.js'
 import * as sanitizeHtml from 'sanitize-html'
@@ -233,7 +248,7 @@ export default {
             type: Object,
             required: true,
         },
-        settingsSmallIcon: {
+        settingsSmallIconImage: {
             type: Object,
             required: true,
         },
@@ -259,16 +274,17 @@ export default {
     },
     setup(props) {
         let settingsData = ref([props.settingsData])
-        let settingsSmallIcon = ref([props.settingsSmallIcon])
+        let settingsSmallIconImage = ref([props.settingsSmallIconImage])
         let currency_rates_import_new_currency_rates_added_count = ref(0)
         let currency_rates_import_base_currency_code = ref('')
         let currency_rates_import_operation_date = ref('')
 
         // settings_app_image_small_icon
-        let settings_app_image_small_icon_url = ref('')
-        let settings_app_image_small_icon_info = ref('')
-        // let settings_app_image_small_icon_url = ref(props.currencyImage.url)
-        // let settings_app_image_small_icon_info= ref(props.currencyImage.file_name + ', ' + getFileSizeAsString(props.currencyImage.size) + ', ' + props.currencyImage.width + '*' + props.currencyImage.height)
+        // let settings_app_image_small_icon_url = ref('')
+        // let settings_app_image_small_icon_info = ref('')
+        /* settingsSmallIconImage::[ { "url": "http://local-bi-currencies.com/storage/currency_app/30/me128r128.png", "width": 128, "height": 128, "size": 25209, "file_name": "me128r128.png" } ] */
+        let settings_app_image_small_icon_url = ref(props.settingsSmallIconImage.url)
+        let settings_app_image_small_icon_info= ref(props.settingsSmallIconImage.file_name + ', ' + getFileSizeAsString(props.settingsSmallIconImage.size) + ', ' + props.settingsSmallIconImage.width + '*' + props.settingsSmallIconImage.height)
         let settingsAppImageSmallIconUploader = ref(useForm({
             image: '',
             image_filename: '',
@@ -278,6 +294,7 @@ export default {
         let laravel_log_text = ref('')
         let sql_tracing_log_text = ref('')
         let action_processing = ref(false)
+        let clear_cache_action_processing = ref(false)
 
         //                     fetchSettingsAppImageSmallIcon(params.uploadedImageFile, 'small_icon')
         function fetchSettingsAppImageSmallIcon(settingsAppImageSmallIcon, image_type) {
@@ -328,6 +345,24 @@ export default {
             }) // fetch(settingsAppImageSmallIcon.blob).then(function (response) {
 
         }
+
+        function makeClearCache() {
+            clear_cache_action_processing.value = true
+            axios.get(route('admin.settings.clear_cache'))
+                .then(({data}) => {
+                    // laravel_log_text.value = data.text
+                    clear_cache_action_processing.value = false
+                    Swal.fire(
+                        'COMPLETED!',
+                        'Laravel cache was successfully cleared !',
+                        'success'
+                    )
+                })
+                .catch(e => {
+                    clear_cache_action_processing.value = false
+                    console.error(e)
+                })
+        } // makeClearCache
 
         function viewLaravelLog() {
             action_processing.value = true
@@ -408,8 +443,8 @@ export default {
                 text: "You what to run currency rates import !",
                 icon: 'warning',
                 showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
+                confirmButtonColor: settingsAppColors.confirmButtonColor,
+                cancelButtonColor: settingsAppColors.cancelButtonColor,
                 confirmButtonText: 'Yes, run!'
             }).then((result) => {
                 if (result.isConfirmed) {
@@ -455,7 +490,7 @@ export default {
         return { // setup return
             // Listing Page state
             settingsData,
-            settingsSmallIcon,
+            settingsSmallIconImage,
             runCurrencyRatesImport,
             currency_rates_import_new_currency_rates_added_count,
             currency_rates_import_base_currency_code,
@@ -465,6 +500,8 @@ export default {
             laravel_log_text,
             sql_tracing_log_text,
             action_processing,
+            clear_cache_action_processing,
+            makeClearCache,
             viewSQLTracingLog,
             deleteSQLTracingLog,
 
@@ -481,6 +518,7 @@ export default {
             showFlashMessage,
             getDictionaryLabel,
             sanitizeHtml,
+            getFileSizeAsString
         }
     }, // setup() {
 

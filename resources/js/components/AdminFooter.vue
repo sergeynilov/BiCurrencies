@@ -5,7 +5,7 @@
             <jet-application-logo :icon_type="'small'" :layout="'admin'" additive_class="mr-1 ml-1 mb-1"/>
             <strong>
                 Copyright &copy; 2020-{{ currentDate.getFullYear() }}
-                <inertia-link :href="route('home')">{{ $page.props.site_name }}</inertia-link>
+                <inertia-link :href="route('home')">{{ settings_site_name }}</inertia-link>
             </strong>
             {{ copyright_text }}.
         </div>
@@ -28,6 +28,7 @@ export default {
     setup(props) {
         let currentDate = ref(new Date)
         let copyright_text = ref('')
+        let settings_site_name = ref('')
 
         function adminFooterOnMounted() {
             axios.get(route('get_settings_value', {key: 'copyright_text'}))
@@ -37,13 +38,22 @@ export default {
                 .catch(e => {
                     console.error(e)
                 })
+            axios.get(route('get_settings_value', {key: 'site_name'}))
+                .then(({data}) => {
+                    settings_site_name.value = data.value
+                })
+                .catch(e => {
+                    console.error(e)
+                })
+
         }
 
         onMounted(adminFooterOnMounted)
 
         return { // setup return
             currentDate,
-            copyright_text
+            copyright_text,
+            settings_site_name
         }
     } // setup(props) {
 

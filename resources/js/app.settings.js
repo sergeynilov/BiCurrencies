@@ -73,6 +73,7 @@ export const settingsAwesomeFontLabels = [   // https://fontawesome.com/v5.15/ic
     { code: 'unmark', font: 'fa fa-broom' },
     { code: 'logout', font: 'fa fa-sign-out-alt' },
     { code: 'log', font: 'fa fa-table' },
+    { code: 'cache', font: 'fa fa-wallet' },
     { code: 'view', font: 'fa fa-eye' },
     { code: 'active', font: 'fa fa-creative-commons-sa' },
     { code: 'inactive', font: 'fa fa-creative-commons-nc' },

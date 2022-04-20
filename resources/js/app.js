@@ -22,20 +22,12 @@ import { InertiaProgress } from '@inertiajs/progress';
 import mitt from 'mitt';
 window.emitter = mitt();
 
-// import Vue3ColorPicker from "vue3-colorpicker";
-// import "vue3-colorpicker/style.css";
 
 const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'Laravel';
 
-// Import components...
-// import Multiselect from '@suadelabs/vue3-multiselect'
-
 import Multiselect from '@vueform/multiselect'
 
-
-
 import VueUploadComponent from 'vue-upload-component'
-// app.component('file-upload', VueUploadComponent)
 import Paginate from "vuejs-paginate-next";
 
 
@@ -49,25 +41,10 @@ const app =  createInertiaApp({
             .component('Paginate', Paginate)
             .component('file-upload', VueUploadComponent)
 
-
             .mixin({ methods: { route } })
-            // .use(Vue3ColorPicker)
-
-            // resources/js/appMixin.js
-            // .mixin( '@/appMixin' )
-            // import appMixin from '@/appMixin'
-
-
             .component('multiselect', Multiselect)
             .mount(el);
     },
 });
-
-// app.component('file-upload', VueUploadComponent)
-
-// https://stackoverflow.com/questions/69112278/how-to-create-and-use-common-mixin-in-laravel-8-inertia-js-vuejs3-application
-// app.mixin(
-//     '@/appMixin'
-// )
 
 InertiaProgress.init({ color: '#4B5563' });

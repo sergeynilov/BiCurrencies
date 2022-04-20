@@ -10,6 +10,8 @@ use App;
 
 class CurrencyResource extends JsonResource
 {
+    public static $wrap = 'currencies';
+
     /**
      * Transform the resource into an array.
      *
@@ -33,7 +35,9 @@ class CurrencyResource extends JsonResource
             'ordering'  => $this->ordering,
             'currency_histories_count' => $this->when(isset($this->currency_histories_count),
                 $this->currency_histories_count),
-            'latest_currency_history'  => new LatestCurrencyHistoryResource($this->whenLoaded('latestCurrencyHistory')),
+            'latest_currency_history_value' => $this->when(isset($this->latest_currency_history_value),
+                $this->latest_currency_history_value),
+            'latestCurrencyHistory'  => new LatestCurrencyHistoryResource($this->whenLoaded('latestCurrencyHistory')),
             'media_image_url'      => $this->media_image_url,
             'created_at'           => $this->created_at,
             'created_at_formatted' => $dateFunctionality->getFormattedDateTime($this->created_at),
@@ -42,14 +46,14 @@ class CurrencyResource extends JsonResource
         ];
     }
 
-    public function with($request)
-    {
-        return [
-            'meta' => [
-                'version' => getAppVersion()
-            ]
-        ];
-    }
+//    public function with($request)
+//    {
+//        return [
+//            'meta' => [
+//                'version' => getAppVersion()
+//            ]
+//        ];
+//    }
 
 }
 

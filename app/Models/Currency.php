@@ -83,9 +83,15 @@ class Currency extends Model implements HasMedia
         return '';
     }
 
+    public function myMediaRelation()
+    {
+        return $this->media()->where('collection_name', config('app.media_app_name'));
+    }
+
     public function latestCurrencyHistory()
     {
-        return $this->hasOne('App\Models\CurrencyHistory')->latest();
+        return $this->hasMany('App\Models\CurrencyHistory')->latest();//->first();//->limit(1);
+//        return $this->hasOne('App\Models\CurrencyHistory')->latest();//->limit(1);
     }
 
     public function currencyHistories()

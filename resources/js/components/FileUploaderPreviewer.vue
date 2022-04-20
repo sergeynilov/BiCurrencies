@@ -139,9 +139,6 @@ export default {
         JetButton
     },
     setup(props, attrs) {
-        console.log('props::')
-        console.log(props)
-
         let imageUploader = ref(props.imageUploader)
         let image_url = ref(props.image_url)
         let image_info = ref(props.image_info)
@@ -155,8 +152,6 @@ export default {
 
         watchEffect(() => {
             if (imageFiles.value) {
-                // console.log('imageFiles.value::')
-                // console.log(imageFiles.value)
                 if (typeof imageFiles.value[0] === 'undefined') return
                 var image = new Image()
                 image.src = imageFiles.value[0].blob
@@ -174,15 +169,9 @@ export default {
          * @return undefined
          */
         function inputFile(newFile, oldFile) {
-            // console.log('00 inputFile uploadedImageFile  newFile::')
-            // console.log(newFile)
-
-            if (newFile /* && oldFile && !newFile.active && oldFile.active */) {
+            if (newFile) {
                 // Get response data
                 uploadedImageFile = newFile
-                // console.log('123 INSIDE inputFile uploadedImageFile  newFile::')
-                // console.log(newFile)
-                // console.log('response', newFile.response)
                 if (newFile.xhr) {
                     //  Get the response status code
                     console.log('status', newFile.xhr.status)
@@ -213,7 +202,6 @@ export default {
         }
 
         function uploadImage() {
-            console.log('uploadImage::')
             window.emitter.emit('FileUploaderPreviewerUploadImageEvent', {
                 parent_component_key: parent_component_key.value,
                 uploadedImageFile: uploadedImageFile,
@@ -221,7 +209,6 @@ export default {
         }
 
         function cancelImageUpload() {
-            console.log('cancelImageUpload::')
             imageFiles.value = []
             uploaded_image_width.value = null
             uploaded_image_height.value = null
@@ -232,16 +219,11 @@ export default {
 
 
         function fileUploaderPreviewerOnMounted() {
-            console.log('fileUploaderPreviewerOnMounted::')
             window.emitter.on('imageUploadedEvent', params => {
-                console.log('TARGET imageUploadedEvent params::')
-                console.log(params)
                 uploaded_image_width.value = params.width
                 uploaded_image_height.value = params.height
             })
             window.emitter.on('imageBlobFetchedEvent', params => {
-                console.log('TARGET imageBlobFetchedEvent params::')
-                console.log(params)
                 if (params.parent_component_key === parent_component_key.value) {
                     cancelImageUpload()
                 }

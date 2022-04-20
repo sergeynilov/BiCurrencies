@@ -9,6 +9,7 @@ use App;
 
 class CMSItemResource extends JsonResource
 {
+    public static $wrap = 'cms_items';
     /**
      * Transform the resource into an array.
      *
@@ -16,6 +17,7 @@ class CMSItemResource extends JsonResource
      *
      * @return array
      */
+
     public function toArray($request)
     {
         $dateFunctionality = App::make(DateFunctionality::class);

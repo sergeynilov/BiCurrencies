@@ -260,28 +260,14 @@ export default {
         }
 
         function loadCurrencies() {
-            console.log('loadCurrencies::')
-            // console.log(currentLoggedCurrencyToken)
-
-            // let filterPublished = ''
-            // forumPublishedLabels.map((nextForumPublishedLabel) => {
-            //     if (nextForumPublishedLabel.label === filterSelectionPublished.value) {
-            //         filterPublished = nextForumPublishedLabel.code
-            //     }
-            // })
-
             let filters = {
                 page: current_page.value,
                 order_by: order_by.value,
                 order_direction: order_direction.value,
                 filter_name: filter_name.value,
             }
-            console.log('filters::')
-            console.log(filters)
             axios.post(route('admin.currencies.filter'), filters)
                 .then(({data}) => {
-                    console.log('loadCurrencies data::')
-                    console.log(data)
                     currencyRows.value = data.data
                     currencies_filtered_count.value = data.meta.total
                     currencies_pages_count.value = data.meta.last_page
@@ -294,8 +280,6 @@ export default {
         } // loadCurrencies() {
 
         function paginateClick(page) {
-            // console.log('paginateClick page::')
-            // console.log(page)
             current_page.value = page
             loadCurrencies()
         }
@@ -317,10 +301,8 @@ export default {
         }
 
         function applyFilters() {
-            console.log('applyFilters::')
             current_page.value = 1
             loadCurrencies(true)
-
             show_filters_modal.value = false
             let filters_count_text = getFiltersCountText()
             let filters = {filter_name: filter_name}
@@ -337,20 +319,9 @@ export default {
             if (filter_name.value != '') {
                 ret++
             }
-            // console.log('ret::')
-            // console.log(ret)
             if (!ret) return ''
             return (ret > 0 ? ret + ' ' : '') + pluralize3(ret, ' no filters set', ' filter is set', ' filters are set')
         } // getFiltersCountText
-
-
-        function updateHandler(p1, p2) {
-            console.log('updateHandler p1::')
-            console.log(p1)
-            console.log('updateHandler p2::')
-            console.log(p2)
-
-        }
 
         function currencyRowsPaginationPageClicked(page) {
             current_page.value = page
@@ -361,10 +332,7 @@ export default {
         function adminCurrenciesListOnMounted() {
             showFlashMessage()
             window.emitter.on('listingHeaderRightButtonClickedEvent', params => {
-            //     console.log('TARGET listingHeaderRightButtonClickedEvent params::')
-            //     console.log(params)
                 if (params.parent_component_key === 'currency') {
-                    // console.log('!!!!!loadCurrencies::')
                     loadCurrencies()
                 }
             })
@@ -383,8 +351,6 @@ export default {
                 }
             })
             loadCurrencies()
-
-            // showFiltersModal()// DEBUGGING
         } // function adminCurrenciesListOnMounted() {
 
         onMounted(adminCurrenciesListOnMounted)
@@ -398,10 +364,7 @@ export default {
             currencies_pages_count,
 
             // Page actions
-            loadCurrencies,
-            currencyRowsPaginationPageClicked,
             currenciesFilterApplied,
-            // updateHandler,
             paginateClick,
 
             // Settings vars

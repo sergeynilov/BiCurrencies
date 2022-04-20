@@ -65,23 +65,15 @@ export function dateIntoDbFormat(d) {
     return ret;
 }
 export function showFlashMessage() {
-
-    // console.log('showFlashMessage  usePage().props.value.flash::')
-    // console.log( usePage().props.value.jetstream.flash)
-    // console.log('showFlashMessage  usePage().props.value.flash_type.message::')
-    // console.log( usePage().props.value.flash_type.message)
-    //
     let icon = 'success'
 
-
     let flash_message = usePage().props.value.jetstream.flash
-    console.log('showFlashMessage flash_message::')
-    console.log(flash_message)
-
+    // console.log('showFlashMessage flash_message::')
+    // console.log(flash_message)
 
     let flash_type = usePage().props.value.flash_type.message
-    console.log('showFlashMessage flash_type::')
-    console.log(flash_type)
+    // console.log('showFlashMessage flash_type::')
+    // console.log(flash_type)
 
     if ( !isEmpty(flash_message)  ) {
         // console.log('INSIDE flash_message::')
@@ -96,11 +88,10 @@ export function showFlashMessage() {
             icon = 'error'
         }
 
-        console.log('icon::')
-        console.log(icon)
-        console.log('flash_message::')
-        console.log(flash_message)
-
+        // console.log('icon::')
+        // console.log(icon)
+        // console.log('flash_message::')
+        // console.log(flash_message)
         Toast.fire({
             icon: icon,
             title: flash_message

@@ -247,21 +247,13 @@ export default {
         let cms_items_pages_count = ref(0)
         let CMSItemRows = ref([])
 
-        function cms_itemsFilterApplied() { // TODO
-            loadCMSItems()
-        }
-
         function loadCMSItems() {
-            console.log('loadCMSItems::')
-
             let filters = {
                 page: current_page.value,
                 order_by: order_by.value,
                 order_direction: order_direction.value,
                 filter_title: filter_title.value,
             }
-            console.log('filters::')
-            console.log(filters)
             axios.post(route('admin.cms_items.filter'), filters)
                 .then(({data}) => {
                     console.log('loadCMSItems data::')
@@ -300,15 +292,10 @@ export default {
         }
 
         function applyFilters() {
-            console.log('applyFilters::')
             current_page.value = 1
             loadCMSItems(true)
-
             show_filters_modal.value = false
             let filters_count_text = getFiltersCountText()
-            console.log('filters_count_text::')
-            console.log(filters_count_text)
-
             let filters = {filter_title: filter_title}
             window.emitter.emit('listingFilterModifiedEvent', {
                 parent_component_key: 'cms_item',
@@ -329,14 +316,6 @@ export default {
             return (ret > 0 ? ret + ' ' : '') + pluralize3(ret, ' no filters set', ' filter is set', ' filters are set')
         } // getFiltersCountText
 
-
-        function updateHandler(p1, p2) {
-            console.log('updateHandler p1::')
-            console.log(p1)
-            console.log('updateHandler p2::')
-            console.log(p2)
-
-        }
 
         function CMSItemRowsPaginationPageClicked(page) {
             current_page.value = page
@@ -383,10 +362,6 @@ export default {
             cms_items_pages_count,
 
             // Page actions
-            loadCMSItems,
-            CMSItemRowsPaginationPageClicked,
-            cms_itemsFilterApplied,
-            // updateHandler,
             paginateClick,
 
             // Settings vars

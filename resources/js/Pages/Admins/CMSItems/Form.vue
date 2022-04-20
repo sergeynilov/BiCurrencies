@@ -1,9 +1,5 @@
 <template>
     <div class="card">
-        <!--        is_insert::{{ is_insert }}<br>-->
-        <!--        formEditor.errors::{{ formEditor.errors }}<br>-->
-        <!--        formEditor::{{ formEditor }}<br>-->
-
         <div class="card-header">
             <h3 class="card-title admin_color">
                 <i :class="getHeaderIcon('CMSItem')" class="action_icon icon_right_text_margin"></i>
@@ -70,11 +66,10 @@
                 <div class="block_2columns_md p-2" v-if="!is_insert"> <!-- author -->
                     <div class="horiz_divider_left_13">
                         <jet-label for="author" value="Author:" class="admin_editable_label"/>
-                        formEditor.author::{{ formEditor.author}}
+<!--                        formEditor::{{ formEditor}}-->
                     </div>
                     <div class="horiz_divider_right_23">
-                        <jet-input id="author" type="text" class="form-control"
-                                   vVVVV-model="formEditor.author.name" disabled/>
+                        <jet-input id="author" type="text" class="form-control" v-model="author_nameLabel" disabled/>
                     </div>
                 </div> <!-- class="block_2columns_md" author -->
 
@@ -209,6 +204,7 @@ export default {
             title: is_insert.value ? 'title ' + new Date() : props.CMSItem.title,
             key: is_insert.value ? '9' + (new Date().getSeconds()) : props.CMSItem.key,
             published: is_insert.value ? false : (props.CMSItem.published === 1 ? true : false),
+            author_name: is_insert.value ? '' : props.CMSItem.author.name+'',
             created_at: is_insert.value ? '' : props.CMSItem.created_at,
             updated_at: is_insert.value ? '' : props.CMSItem.updated_at,
         }))
@@ -227,11 +223,11 @@ export default {
         let updatedAtLabel = computed(() => {
             return momentDatetime(formEditor.value.updated_at, settingsJsMomentDatetimeFormat)
         });
+        let author_nameLabel = computed(() => {
+            return formEditor.value.author_name
+        });
 
         let publishedLabel = computed(() => {
-            console.log('publishedLabel formEditor.value.published::')
-            console.log(formEditor.value.published)
-
             return getDictionaryLabel(formEditor.value.published ? 1 : 0, settingsCMSItemPublishedLabels)
         });
 
@@ -245,19 +241,9 @@ export default {
 
 
         function saveCMSItem() {
-            console.log('saveCMSItem is_insert.value::')
-            console.log(is_insert.value)
-
-            console.log('formEditor::')
-            console.log(formEditor)
-
             if (is_insert.value) {
                 formEditor.value.post(route('admin.cms_items.store'), {
                     preserveScroll: true,
-                    // onSuccess: (resp) => {
-                    //     console.log('POSTED resp::')
-                    //     console.log(resp)
-                    // },
                     onError: (e) => {
                         console.log(e)
                         Toast.fire({
@@ -267,15 +253,8 @@ export default {
                     }
                 })
             } else {
-                console.log('formEditor::')
-                console.log(formEditor)
-
                 formEditor.value.patch(route('admin.cms_items.update', formEditor.value.id/*, formEditor*/), {
                     preserveScroll: true,
-                    // onSuccess: (resp) => {
-                    //     console.log('UPDATED resp::')
-                    //     console.log(resp)
-                    // },
                     onError: (e) => {
                         Toast.fire({
                             icon: 'error',
@@ -288,8 +267,6 @@ export default {
         } // saveCMSItem() {
 
         function deleteCMSItem() {
-            // console.log('deleteCMSItem ::')
-
             Swal.fire({
                 title: 'Are you sure?',
                 text: "You what to delete this CMS item with all related data",
@@ -300,13 +277,9 @@ export default {
                 confirmButtonText: 'Yes, delete it'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // console.log('deleteCMSItem formEditor.value.id::')
-                    // console.log(formEditor.value.id)
                     formEditor.value.delete(route('admin.cms_items.destroy', formEditor.value.id), {
                         preserveScroll: true,
                         onSuccess: () => {
-                            console.log('onSuccess data::')
-                            console.log(data)
                         }
                     })
                 }
@@ -315,7 +288,6 @@ export default {
 
 
         function publishCMSItem() {
-            console.log('publishCMSItem::')
             Swal.fire({
                 title: 'Are you sure?',
                 text: "You what to publish this CMS item",
@@ -326,16 +298,8 @@ export default {
                 confirmButtonText: 'Yes, publish it'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    console.log('publishCMSItem formEditor.value.id::')
-                    console.log(formEditor.value.id)
-                    console.log('publishCMSItem formEditor.value::')
-                    console.log(formEditor.value)
-
-
                     axios.post(route('admin.cms_items.publish', formEditor.value.id))
                         .then(({data}) => {
-                            // console.log('runCMSItemRatesImport data::')
-                            // console.log(data)
                             formEditor.value.published = data.CMSItem.published
                             formEditor.value.updated_at = data.CMSItem.updated_at
                             Swal.fire(
@@ -365,8 +329,6 @@ export default {
                 if (result.isConfirmed) {
                     axios.post(route('admin.cms_items.unpublish', formEditor.value.id))
                         .then(({data}) => {
-                            // console.log('runCMSItemRatesImport data::')
-                            // console.log(data)
                             formEditor.value.published = data.CMSItem.published
                             formEditor.value.updated_at = data.CMSItem.updated_at
                             Swal.fire(
@@ -383,8 +345,6 @@ export default {
         } // function unpublishCMSItem() {
 
         function adminCMSItemFormOnMounted() {
-            console.log('Form.vue adminCMSItemFormOnMounted 1 is_insert.value')
-            console.log(is_insert.value)
         }
 
         onMounted(adminCMSItemFormOnMounted)
@@ -399,6 +359,7 @@ export default {
             unpublishCMSItem,
             saveCMSItem,
             publishedLabel,
+            author_nameLabel,
 
             getFormEditorTitle,
             getSubmitBtnTitle,

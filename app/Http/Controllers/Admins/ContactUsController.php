@@ -364,7 +364,7 @@ class ContactUsController extends Controller  //    http://127.0.0.1:8000/admin/
         }
         return response()->json([
             'CMSItem' => $CMSItem,
-            'message' => 'CMS item was successfully publishedd',
+            'message' => 'CMS item was successfully published',
         ], HTTP_RESPONSE_OK);
     } // public function publish(Request $request, int $cms_item_id)
 

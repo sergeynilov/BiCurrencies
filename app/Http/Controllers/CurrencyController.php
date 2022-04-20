@@ -87,7 +87,7 @@ class CurrencyController extends Controller  //    http://127.0.0.1:8000/current
 
     }
 
-    public function filter()
+    public function filter() // triggered at frontend.currencies_rates.filter
     {
         $request        = request();
 
@@ -100,15 +100,15 @@ class CurrencyController extends Controller  //    http://127.0.0.1:8000/current
 //        \Log::info(varDump($baseCurrency, ' -1 $baseCurrency::'));
         $show_only_top_currencies = $request->show_only_top_currencies ?? false;
 
-        \Log::info(  varDump($show_only_top_currencies, ' -1 show_only_top_currencies::') );
+        \Log::info(  varDump($show_only_top_currencies, ' -1 filter show_only_top_currencies::') );
         $currencies = Currency
             ::getByActive(true)
-//            ->getById(2) // DEBUGGING
+//            ->getById(27) // DEBUGGING
 //            ->whereIn(with(new Currency)->getTable() . '.id', [1 ,2, 3])
             ->getByIsTop($show_only_top_currencies)
             ->excludeCharCode($baseCurrency->char_code ?? '')
             ->withCount('currencyHistories')
-            ->with('latestCurrencyHistory')
+//            ->with('latestCurrencyHistory')
             ->orderBy('ordering', 'asc')
             ->get();
         foreach ($currencies as $next_key => $nextCurrency) {
@@ -118,7 +118,7 @@ class CurrencyController extends Controller  //    http://127.0.0.1:8000/current
                 if (File::exists($mediaImage->getPath())) {
 //                    \Log::info(varDump($mediaImage->getUrl(), ' -1 EXISTS $mediaImage->getUrl()::'));
                     $currencies[$next_key]->media_image_url = $mediaImage->getUrl();
-                    $currencies[$next_key]->latest_currency_history = $nextCurrency->latest_currency_history;
+//                    $currencies[$next_key]->latest_currency_history = $nextCurrency->latest_currency_history;
                     $has_image= true;
                     break;
                 }
@@ -126,9 +126,15 @@ class CurrencyController extends Controller  //    http://127.0.0.1:8000/current
             if(!$has_image) {
                 $currencies[$next_key]->media_image_url = '/images/default-currency.jpg';
             }
+            $latestCurrencyHistory= $nextCurrency->currencyHistories()->latest()->first();
+            \Log::info(  varDump($latestCurrencyHistory, ' -1 $latestCurrencyHistory::') );
+             $currencies[$next_key]->latest_currency_history_value = $latestCurrencyHistory->value ?? null;
+
         }
-//        \Log::info(varDump($currencies, ' -1 filter $currencies::'));
-        return (CurrencyResource::collection($currencies));
+        \Log::info(varDump($currencies, ' -1 filter $currencies::'));
+//        return response()->json(CurrencyResource::collection($currencies));
+//        return CurrencyResource::collection($currencies)->collection;
+        return CurrencyResource::collection($currencies);
     } // public function filter()
 
     // Route::get('currency_history/{id}/{page?}', [FrontendCurrencyController::class, 'get_currency_history'])->name('frontend.get_currency_history');

@@ -61,13 +61,12 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
-        $site_name    = Settings::getValue('site_name', CheckValueType::cvtString, 'Admin demo');
-        $site_heading = Settings::getValue('site_heading', CheckValueType::cvtString, 'Admin demo heading');
 
+//        \Log::info(  varDump(auth()->user()->id, ' -1 SHARE auth()->user()->id::') );
         return array_merge(parent::share($request), [
 
-            'site_name'    => fn() => $site_name,
-            'site_heading' => fn() => $site_heading,
+//            'site_name'    => fn() => $site_name,
+//            'site_heading' => fn() => $site_heading,
             'flash'        => [
                 'message' => fn() => $request->session()->get('message')
             ],
@@ -78,6 +77,7 @@ class HandleInertiaRequests extends Middleware
             ],
 
             'auth' => function () {
+
                 $user = auth()->user();
 
                 $is_logged_user_admin           = isUserLogged() ? auth()->user()->can(ACCESS_APP_ADMIN_LABEL) : false;

@@ -9,7 +9,7 @@
                 <jet-application-logo :icon_type="'small'" :layout="'frontend'" additive_class="mr-1 ml-1 mb-1"/>
 
                 <p class="text-light mt-4">
-                        {{ $page.props.site_heading }}
+                        {{ settings_site_name }}
                     </p>
                 </div>
                 <div class="col-6 col-md-4 col-xl-2 mb-3">
@@ -85,8 +85,16 @@ export default {
     setup(props) {
         let currentDate = ref(new Date)
         let copyright_text = ref('')
+        let settings_site_name = ref('')
 
         function frontendFooterOnMounted() {
+            axios.get(route('get_settings_value', {key: 'site_name'}))
+                .then(({data}) => {
+                    settings_site_name.value = data.value
+                })
+                .catch(e => {
+                    console.error(e)
+                })
             axios.get(route('get_settings_value', {key: 'copyright_text'}))
                 .then(({data}) => {
                     copyright_text.value = data.value
@@ -103,7 +111,8 @@ export default {
 
         return { // setup return
             currentDate,
-            copyright_text
+            copyright_text,
+            settings_site_name
         }
     } // setup(props) {
 

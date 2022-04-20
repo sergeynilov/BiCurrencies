@@ -1,8 +1,5 @@
 <template>
     <div>
-<!--        formEditor.errors::{{ formEditor.errors }}<br>-->
-<!--        formEditor::{{ formEditor }}<br>-->
-
         <div class="card-header">
             <h3 class="card-title admin_color">
                 <i :class="getHeaderIcon('settings')" class="action_icon icon_right_text_margin"></i>
@@ -14,6 +11,7 @@
 
             <div class="card-body p-0">
 
+                formEditor:;{{ formEditor}}
                 <div class="block_2columns_md p-2"> <!-- site_name -->
                     <div class="horiz_divider_left_13">
                         <jet-label for="site_name" value="Site Name:" class="admin_editable_label"/>
@@ -204,6 +202,9 @@ export default {
         JetLabel,
     },
     setup(props) {
+        console.log('props.settingsData::')
+        console.log(props.settingsData)
+
         let formEditor = ref(useForm({
             site_name: props.settingsData.site_name,
             site_heading: props.settingsData.site_heading,
@@ -224,8 +225,6 @@ export default {
 
 
         function saveSettings() {
-            // console.log('formEditor::')
-            // console.log(formEditor)
             formEditor.value.put(route('admin.settings.update'), {
                 preserveScroll: true,
                 onSuccess: (resp) => {

@@ -1,9 +1,5 @@
 <template>
     <div class="card">
-        <!--        is_insert::{{ is_insert }}<br>-->
-        <!--        formEditor.errors::{{ formEditor.errors }}<br>-->
-        <!--        formEditor::{{ formEditor }}<br>-->
-
         <div class="card-header">
             <h3 class="card-title admin_color">
                 <i :class="getHeaderIcon('currency')" class="action_icon icon_right_text_margin"></i>
@@ -11,8 +7,6 @@
             </h3>
         </div> <!-- card-header -->
 
-        <!--        show_color_picker_modal::{{ show_color_picker_modal }}<br>-->
-        <!--        modal_picker_color_selected_value::{{ modal_picker_color_selected_value }}<br>-->
         <form @submit.prevent="saveCurrency">
 
             <div class="card-body p-0">
@@ -42,7 +36,6 @@
                     </div>
                 </div> <!-- class="block_2columns_md" name -->
 
-
                 <div class="block_2columns_md p-2"> <!-- num_code -->
                     <div class="horiz_divider_left_13">
                         <jet-label for="num_code" value="Number code:" class="admin_editable_label"/>
@@ -59,7 +52,6 @@
                     </div>
                 </div> <!-- class="block_2columns_md" num_code -->
 
-
                 <div class="block_2columns_md p-2"> <!-- char_code -->
                     <div class="horiz_divider_left_13">
                         <jet-label for="char_code" value="Char code:" class="admin_editable_label"/>
@@ -75,7 +67,6 @@
                         </div>
                     </div>
                 </div> <!-- class="block_2columns_md" char_code -->
-
 
                 <div class="block_2columns_md p-2"> <!-- color -->
                     <div class="horiz_divider_left_13">
@@ -103,7 +94,6 @@
                     </div>
                 </div> <!-- class="block_2columns_md" color -->
 
-
                 <div class="block_2columns_md p-2"> <!-- bgcolor -->
                     <div class="horiz_divider_left_13">
                         <jet-label for="btn_bgcolor" value="Background color:" class="admin_editable_label"/>
@@ -125,7 +115,6 @@
                         </div>
                     </div>
                 </div> <!-- class="block_2columns_md" bgcolor -->
-
 
                 <div class="block_2columns_md p-2"> <!-- is_top -->
                     <div class="horiz_divider_left_13">
@@ -229,7 +218,6 @@
                     </div>
                 </div>
 
-
             </div>
 
         </form>
@@ -294,7 +282,6 @@ import {
     getErrorMessage,
     showFlashMessage,
     getDictionaryLabel,
-
 } from '@/commonFuncs'
 import {settingsJsMomentDatetimeFormat, settingsCurrencyActiveLabels, settingsAppColors} from '@/app.settings.js'
 import {ref, onMounted, computed} from "vue";
@@ -359,7 +346,6 @@ export default {
             updated_at: is_insert.value ? '' : props.currency.updated_at,
         }))
 
-
         let getFormEditorTitle = computed(() => {
             return is_insert.value ? 'Create new currency' : 'Edit currency'
         });
@@ -375,15 +361,10 @@ export default {
         });
 
         let activeLabel = computed(() => {
-            console.log('activeLabel formEditor.value.active::')
-            console.log(formEditor.value.active)
-
             return getDictionaryLabel(formEditor.value.active ? 1 : 0, settingsCurrencyActiveLabels)
         });
 
         function cancelCurrencyEditor() {
-            console.log('cancelCurrencyEditor::')
-
             Inertia.visit(route('admin.currencies.index'), {method: 'get'});
         }
 
@@ -398,15 +379,12 @@ export default {
         }
 
         function hideColorPickerModal() {
-            // console.log('hideColorPickerModal::')
             modal_picker_color_selected_value.value = ''
             modal_picker_color_selected_type.value = ''
             show_color_picker_modal.value = false
         }
 
         function applyColorPickerModal() {
-            // console.log('applyColorPickerModal modal_picker_color_selected_type.value::')
-            // console.log(modal_picker_color_selected_type.value)
             if (modal_picker_color_selected_type.value === 'color') {
                 formEditor.value.color = modal_picker_color_selected_value.value
             } else {
@@ -415,21 +393,11 @@ export default {
             show_color_picker_modal.value = false
         }
 
-        function changeBgColor(color) {
-            // console.log('changeBgColor color::')
-            // console.log(color)
-            formEditor.value.bgcolor = color.hex
-        }
-
         function changeColor(color) {
-            // console.log('changeColor color::')
-            // console.log(color)
             modal_picker_color_selected_value.value = color.hex
         }
 
         function openSucker(isOpen) {
-            // console.log('openSucker  isOpen::')
-            // console.log(isOpen)
             if (isOpen) {
                 // ... canvas be created
                 // this.suckerCanvas = canvas
@@ -445,19 +413,9 @@ export default {
 
 
         function saveCurrency() {
-            console.log('saveCurrency is_insert.value::')
-            console.log(is_insert.value)
-
-            console.log('formEditor::')
-            console.log(formEditor)
-
             if (is_insert.value) {
                 formEditor.value.post(route('admin.currencies.store'), {
                     preserveScroll: true,
-                    // onSuccess: (resp) => {
-                    //     console.log('POSTED resp::')
-                    //     console.log(resp)
-                    // },
                     onError: (e) => {
                         console.log(e)
                         Toast.fire({
@@ -467,29 +425,19 @@ export default {
                     }
                 })
             } else {
-                console.log('formEditor::')
-                console.log(formEditor)
-
                 formEditor.value.patch(route('admin.currencies.update', formEditor.value.id/*, formEditor*/), {
                     preserveScroll: true,
-                    // onSuccess: (resp) => {
-                    //     console.log('UPDATED resp::')
-                    //     console.log(resp)
-                    // },
                     onError: (e) => {
                         Toast.fire({
                             icon: 'error',
-                            // title: 'Currency updating error : ' + getErrorMessage(e)
                             title: 'Updating currency error!'
                         })
                     }
-
                 })
             }
         } // saveCurrency() {
 
         function deleteCurrency() {
-            // console.log('deleteCurrency ::')
             Swal.fire({
                 title: 'Are you sure?',
                 text: "You what to delete this currency with all related data!",
@@ -500,13 +448,9 @@ export default {
                 confirmButtonText: 'Yes, delete it!'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // console.log('deleteCurrency formEditor.value.id::')
-                    // console.log(formEditor.value.id)
                     formEditor.value.delete(route('admin.currencies.destroy', formEditor.value.id), {
                         preserveScroll: true,
                         onSuccess: (data) => {
-                            console.log('onSuccess data::')
-                            console.log(data)
                         }
                     })
                 }
@@ -515,7 +459,6 @@ export default {
 
 
         function activateCurrency() {
-            // console.log('activateCurrency::')
             Swal.fire({
                 title: 'Are you sure?',
                 text: "You what to activate this currency !",
@@ -526,16 +469,8 @@ export default {
                 confirmButtonText: 'Yes, activate it!'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // console.log('activateCurrency formEditor.value.id::')
-                    // console.log(formEditor.value.id)
-                    // console.log('activateCurrency formEditor.value::')
-                    // console.log(formEditor.value)
-                    //
-
                     axios.post(route('admin.currencies.activate', formEditor.value.id))
                         .then(({data}) => {
-                            // console.log('runCurrencyRatesImport data::')
-                            // console.log(data)
                             formEditor.value.active = data.currency.active
                             formEditor.value.updated_at = data.currency.updated_at
                             Swal.fire(
@@ -565,8 +500,6 @@ export default {
                 if (result.isConfirmed) {
                     axios.post(route('admin.currencies.deactivate', formEditor.value.id))
                         .then(({data}) => {
-                            // console.log('runCurrencyRatesImport data::')
-                            // console.log(data)
                             formEditor.value.active = data.currency.active
                             formEditor.value.updated_at = data.currency.updated_at
                             Swal.fire(
@@ -583,8 +516,6 @@ export default {
         } // function deactivateCurrency() {
 
         function adminCurrencyFormOnMounted() {
-            console.log('Form.vue adminCurrencyFormOnMounted 1 is_insert.value')
-            console.log(is_insert.value)
         }
 
         onMounted(adminCurrencyFormOnMounted)
@@ -599,14 +530,12 @@ export default {
             deactivateCurrency,
             saveCurrency,
             activeLabel,
-            // pureColor, gradientColor,
 
             // Color Picker
             bgcolor_picker,
             suckerCanvas,
             suckerArea,
             changeColor,
-            changeBgColor,
             openSucker,
             showColorPickerModal,
 

@@ -13,15 +13,8 @@ import AdminLayout from '@/Layouts/AdminLayout'
 
 import formEditor from '@/Pages/Admins/Currencies/Form'
 import {
-    getHeaderIcon,
-    getErrorMessage,
-    pluralize,
-    pluralize3,
-    momentDatetime,
     showFlashMessage,
-    getDictionaryLabel,
 } from '@/commonFuncs'
-import axios from "axios";
 import {onMounted, ref} from "vue";
 
 export default {
@@ -39,17 +32,12 @@ export default {
     },
 
     setup(props) {
-        console.log('resources/js/Pages/Admins/Currencies/Create.vue setup props::')
-        console.log(props)
-
         let currency= ref(props.currency)
 
-
         function adminCurrencyCreateOnMounted() {
-            console.log('adminCurrencyCreateOnMounted::')
             showFlashMessage()
-
         }
+
         onMounted(adminCurrencyCreateOnMounted)
 
         return { // setup return

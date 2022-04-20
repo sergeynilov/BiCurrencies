@@ -152,6 +152,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth:sanctum', 'verified' /
     Route::post('settings/image/upload', [SettingsController::class, 'upload_image'])->name('settings.upload_image');
 
     Route::get('view_laravel_log', [ SettingsController::class, 'view_laravel_log' ] )->name('settings.view_laravel_log');
+    Route::get('clear_cache', [ SettingsController::class, 'clear_cache' ] )->name('settings.clear_cache');
     Route::get('delete_laravel_log', [ SettingsController::class, 'delete_laravel_log' ])->name('settings.delete_laravel_log');
 
     Route::get('view_sql_tracing_log', [ SettingsController::class, 'view_sql_tracing_log' ] )->name('settings.view_sql_tracing_log');

@@ -10,7 +10,10 @@
                 <div class="row" v-show="register_information_title && register_information_title">
                     <div class="col-md-6 p-7 px-lg-7">
                         <div class="col-12 py-3">
-                            <h5 class="fw-bold fs-3 fs-lg-4 lh-sm mb-5">Register at {{ $page.props.site_name }}</h5>
+                            <h5 class="fw-bold fs-3 fs-lg-4 lh-sm mb-5">
+                                Register at {{ settings_site_name }}<br>
+                                <small>{{ settings_site_heading}}</small>
+                            </h5>
                         </div>
                         <h5 class="fw-bold fs-3 fs-xxl-7">{{ sanitizeHtml(register_information_title) }}</h5>
                         <p class="pe-xl-9" >
@@ -319,6 +322,11 @@ export default {
         console.log('RegisterWizard attrs::')
         console.log(attrs)
         // debugger
+        let settings_site_name = ref('')
+        let settings_site_heading = ref('')
+        /*                                 Register at {{ settings_site_name }}<br>
+                                <small>{{ settings_site_heading}}</small>
+ */
         let register_information_title = ref('')
         let register_information_text = ref('')
 
@@ -584,6 +592,21 @@ export default {
         function registerWizardPageOnMounted() {
             console.log('registerWizardPageOnMounted::')
 
+            axios.get(route('get_settings_value', {key: 'site_name'}))
+                .then(({data}) => {
+                    settings_site_name.value = data.value
+                })
+                .catch(e => {
+                    console.error(e)
+                })
+            axios.get(route('get_settings_value', {key: 'site_heading'}))
+                .then(({data}) => {
+                    settings_site_heading.value = data.value
+                })
+                .catch(e => {
+                    console.error(e)
+                })
+
             loadMainRegisterInformationData()
             window.emitter.on('FileUploaderPreviewerUploadImageEvent', params => {
                 console.log('TARGET FileUploaderPreviewerUploadImageEvent params::')
@@ -616,6 +639,8 @@ export default {
             userRegisterAvatarUploader,
             nextUserRegisterStep,
             readyUserRegister,
+            settings_site_name,
+            settings_site_heading,
             currencies_for_subscription_is_saving,
             currenciesForSubscription,
             loadCurrencySubscriptionSelection,

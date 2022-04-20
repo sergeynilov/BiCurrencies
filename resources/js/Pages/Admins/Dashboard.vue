@@ -233,20 +233,6 @@ export default {
 
         function adminDashboardEditOnMounted() {
             showFlashMessage()
-/*
-
-            console.log('adminDashboardEditOnMounted usePage().props.value.site_name::')
-            console.log( usePage().props.value.site_name )
-            console.log('Edit.vue  usePage().props.value::')
-            console.log( usePage().props.value)
-*/
-
-
-            // console.log('Edit.vue  usePage().props.value.flash::')
-            // console.log( usePage().props.value.jetstream.flash)
-            // console.log('Edit.vue  usePage().props.value.flash_type.message::')
-            // console.log( usePage().props.value.flash_type.message)
-            // jetstream:Object
             LoadDashboardCurrencyInfo()
             LoadDashboardUsersInfo()
             // get_user_currency_subscriptions_info

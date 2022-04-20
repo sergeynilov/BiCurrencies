@@ -10,6 +10,8 @@ use App;
 
 class LatestCurrencyHistoryResource extends JsonResource
 {
+    public static $wrap = 'currency_histories';
+
     /**
      * Transform the resource into an array.
      *

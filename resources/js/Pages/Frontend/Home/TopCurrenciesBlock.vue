@@ -18,6 +18,11 @@
                              v-for="(nextActiveCurrencyRow, index) in activeCurrencyRows" :key="index">
 
                             <div style="height: 320px !important; border: 0px dotted maroon !important;">
+
+<!--                                nextActiveCurrencyRow::{{ nextActiveCurrencyRow}}<br>-->
+<!--                                rate_decimal_numbers::{{ rate_decimal_numbers}}<br>-->
+<!--                                nextActiveCurrencyRow.latest_currency_history_value::{{ nextActiveCurrencyRow.latest_currency_history_value}}<br>-->
+
                                 <img class="currency_big_image" :src="nextActiveCurrencyRow.media_image_url"/>
 
                                 <div class="flex-center p-0 m-0 "
@@ -42,13 +47,17 @@
 
                                     <div class="p-1 m-0" style="height:40px !important;">
                                         <div class="p-0 m-0 float-start">
+                                            {{ nextActiveCurrencyRow.id }}::
                                             {{ nextActiveCurrencyRow.char_code }}/{{ nextActiveCurrencyRow.name }}
                                         </div>
                                         <div class=" p-1 m-0 text-end">
-                                       <span v-if="nextActiveCurrencyRow.latest_currency_history"
+<!--                                            rate_decimal_numbers::{{ rate_decimal_numbers}}<br>-->
+<!--                                            nextActiveCurrencyRow.latest_currency_history_value::{{ nextActiveCurrencyRow.latest_currency_history_value}}<br>-->
+
+                                            <span v-if="nextActiveCurrencyRow"
                                              class="align-content-end text-end">
                                             {{
-                                               formatValue(nextActiveCurrencyRow.latest_currency_history.value, rate_decimal_numbers)
+                                               formatValue(nextActiveCurrencyRow.latest_currency_history_value, rate_decimal_numbers)
                                            }}
                                         </span>
                                         </div>
@@ -297,7 +306,7 @@ export default {
                 .then(({data}) => {
                     console.log('loadCurrencyHistory data::')
                     console.log(data)
-                    currencyHistoryRows.value = data.data
+                    currencyHistoryRows.value = data
                     show_currency_history_modal.value = true
                     currencies_history_pages_count.value = data.meta.last_page
                 })
@@ -317,14 +326,10 @@ export default {
 
         function loadActiveCurrencies() {
             let filters = {show_only_top_currencies: show_only_top_currencies.value}
-            console.log('loadActiveCurrencies filters::')
-            console.log(filters)
-
             axios.post(route('frontend.currencies_rates.filter'), filters)
                 .then(({data}) => {
                     console.log('loadActiveCurrencies data::')
                     console.log(data)
-
                     activeCurrencyRows.value = data.data
                 })
                 .catch(e => {
@@ -343,6 +348,14 @@ export default {
                 }
             })
             //Route::get('/get_base_currency', [HomeController::class, 'get_base_currency'])->name('get_base_currency');
+
+            axios.get(route('get_settings_value', {key: 'rate_decimal_numbers'}))
+                .then(({data}) => {
+                    rate_decimal_numbers.value = data.value
+                })
+                .catch(e => {
+                    console.error(e)
+                })
 
             axios.get(route('get_base_currency'))
                 .then(({data}) => {

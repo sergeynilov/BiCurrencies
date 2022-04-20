@@ -26,7 +26,7 @@ class SettingsWithInitData extends Seeder
         ]);
         \DB::table('settings')->insert([
             'name' => 'site_name',
-            'value' =>  'Currencies',
+            'value' =>  'Currency rates v1.1',
         ]);
 
         \DB::table('settings')->insert([

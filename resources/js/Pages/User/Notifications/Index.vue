@@ -313,8 +313,8 @@ export default {
                 text: "You what to mark this notification as read!",
                 icon: 'warning',
                 showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
+                confirmButtonColor: settingsAppColors.confirmButtonColor,
+                cancelButtonColor: settingsAppColors.cancelButtonColor,
                 confirmButtonText: 'Yes, mark!'
             }).then((result) => {
                 if (result.isConfirmed) {
@@ -340,8 +340,8 @@ export default {
                 text: "You what to delete this notification !",
                 icon: 'warning',
                 showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
+                confirmButtonColor: settingsAppColors.confirmButtonColor,
+                cancelButtonColor: settingsAppColors.cancelButtonColor,
                 confirmButtonText: 'Yes, delete!'
             }).then((result) => {
                 if (result.isConfirmed) {
@@ -426,7 +426,6 @@ export default {
 
             // Page actions
             loadNotifications,
-            notificationRowsPaginationPageClicked,
             markAsReadUserNotification,
             destroyUserNotification,
             viewUserNotification,

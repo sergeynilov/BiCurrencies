@@ -2,7 +2,12 @@
 
 namespace App\Providers;
 
-use App\Models\Hostel;
+//use App\Models\Hostel;
+//use Illuminate\Http\Resources\Json\Resource;
+
+use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Http\Resources\Json\ResourceCollection;
+
 use App\Models\User;
 use Illuminate\Database\Events\TransactionBeginning;
 use Illuminate\Database\Events\TransactionCommitted;
@@ -36,6 +41,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+//        JsonResource::withoutWrapping();
         JetstrapFacade::useAdminLte3();
 //        \Illuminate\Pagination\Paginator::useBootstrap(); //this line will be in boot method*
 //        Paginator::useBootstrapFour();

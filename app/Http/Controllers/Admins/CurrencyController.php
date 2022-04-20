@@ -166,7 +166,7 @@ class CurrencyController extends Controller  //    http://127.0.0.1:8000/admin/c
         $minCurrencyHistoryDay = CurrencyHistory
             ::getByCurrencyId($currency_id)
             ->min('day');
-//        \Log::info(  varDump($minCurrencyHistoryDay, ' -1 $minCurrencyHistoryDay::') );
+        \Log::info(  varDump($minCurrencyHistoryDay, ' -1 $minCurrencyHistoryDay::') );
 //        \Log::info(varDump($currency, ' -12 edit $currency::'));
 
         $currencyImage = [];
@@ -314,6 +314,7 @@ class CurrencyController extends Controller  //    http://127.0.0.1:8000/admin/c
             return response()->json(['message' => $e->getMessage(), 'category' => null],
                 HTTP_RESPONSE_INTERNAL_SERVER_ERROR);
         }
+
         return Inertia::render('Admins/Currencies/Edit', [
             'currency' => $currency,
         ]);

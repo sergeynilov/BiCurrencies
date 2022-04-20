@@ -9,6 +9,8 @@ use App;
 
 class UserResource extends JsonResource
 {
+    public static $wrap = 'users';
+
     /**
      * Transform the resource into an array.
      *

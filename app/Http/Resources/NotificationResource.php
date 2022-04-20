@@ -10,6 +10,7 @@ use Illuminate\Http\Resources\Json\JsonResource as UserResource;
 
 class NotificationResource extends JsonResource
 {
+    public static $wrap = 'notifications';
     /**
      * Transform the resource into an array.
      *

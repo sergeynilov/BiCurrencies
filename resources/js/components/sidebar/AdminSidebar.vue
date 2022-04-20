@@ -4,13 +4,13 @@
             <div>
                 <jet-application-logo :icon_type="'small'" :layout="'admin'" additive_class="ml-1"/>
             </div>
-            <div class="ml-2"><strong>{{ getInitialLetter($page.props.site_name, true) }}</strong></div>
-            <div class="ml-2"><strong>{{ getInitialLetter($page.props.site_name, false) }}</strong></div>
+            <div class="ml-2"><strong>{{ getInitialLetter(settings_site_name, true) }}</strong></div>
+            <div class="ml-2"><strong>{{ getInitialLetter(settings_site_name, false) }}</strong></div>
         </div>
 
         <div v-if="!collapsed" class="d-flex flex-nowrap">
              <jet-application-logo :icon_type="'small'" :layout="'admin'" additive_class="mr-1" />
-            <strong>{{ $page.props.site_name }}</strong>
+            <strong>{{ settings_site_name }}</strong>
         </div>
 
         <SidebarLink link_to="home" link_icon="home">Home</SidebarLink>
@@ -52,6 +52,7 @@ import {
 import {Inertia} from "@inertiajs/inertia";
 import {usePage} from "@inertiajs/inertia-vue3";
 import JetApplicationLogo from '@/Jetstream/ApplicationLogo.vue'
+import axios from "axios";
 
 export default {
     name: 'Sidebar',
@@ -61,6 +62,7 @@ export default {
         JetApplicationLogo
     },
     setup() {
+        let settings_site_name = ref('')
 
         //
         collapsed.value = false
@@ -96,6 +98,14 @@ export default {
 
         function adminSidebarOnMounted() {
 
+            axios.get(route('get_settings_value', {key: 'site_name'}))
+                .then(({data}) => {
+                    settings_site_name.value = data.value
+                })
+                .catch(e => {
+                    console.error(e)
+                })
+
             window.emitter.on('AdminTopNavbarSwitchEvent', params => {
                 console.log('TARGET AdminTopNavbarSwitchEvent params::')
                 console.log(params)
@@ -115,6 +125,7 @@ export default {
             // Common methods
             getErrorMessage,
             getHeaderIcon,
+            settings_site_name
             // is_left_sidebar_visible
         }
     }, // setup() {---

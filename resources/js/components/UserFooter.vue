@@ -1,26 +1,61 @@
 <template>
-    <footer class="main-footer">
+    <footer class="user-main-footer">
 
-        <strong>Copyright &copy; 2014-{{ currentDate.getFullYear() }} <inertia-link href="#">{{ $page.props.site_name }}</inertia-link>.</strong>
-        All rights reserved.
-        <div class="float-right d-none d-sm-inline-block">
-            <b>Version</b> 1.0
+        <div class="d-flex text-nowrap">
+            <jet-application-logo :icon_type="'small'" :layout="'user'" additive_class="mr-1 ml-1 mb-1"/>
+            <strong>
+                Copyright &copy; 2020-{{ currentDate.getFullYear() }}
+                <inertia-link :href="route('home')">{{ settings_site_name }}</inertia-link>
+            </strong>
+            {{ copyright_text }}.
         </div>
+
     </footer>
 </template>
 
 <script>
+
+import JetApplicationLogo from '@/Jetstream/ApplicationLogo.vue'
+import {onMounted, ref} from "vue";
+import axios from "axios";
+
 export default {
-    // copyright_text
-    mounted() {
-        // console.log('Footer mounted 1 this.role')
-        // console.log(this.role)
+    name: 'userFooter',
+    components: {
+        JetApplicationLogo
     },
 
-    data() {
-        return {
-            currentDate: new Date,
+    setup(props) {
+        let currentDate = ref(new Date)
+        let copyright_text = ref('')
+        let settings_site_name = ref('')
+
+        function userFooterOnMounted() {
+            axios.get(route('get_settings_value', {key: 'copyright_text'}))
+                .then(({data}) => {
+                    copyright_text.value = data.value
+                })
+                .catch(e => {
+                    console.error(e)
+                })
+            axios.get(route('get_settings_value', {key: 'site_name'}))
+                .then(({data}) => {
+                    settings_site_name.value = data.value
+                })
+                .catch(e => {
+                    console.error(e)
+                })
+
         }
-    }
+
+        onMounted(userFooterOnMounted)
+
+        return { // setup return
+            currentDate,
+            copyright_text,
+            settings_site_name
+        }
+    } // setup(props) {
+
 }
 </script>

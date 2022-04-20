@@ -6,8 +6,8 @@
             content-class="admin_listing_modal_content"
         >
             <h5 class="admin_listing_modal_header m-0 m-0">
-                <i :class="getHeaderIcon('filter')" class="action_icon icon_right_text_margin"></i>Currency history
-                filter
+                <i :class="getHeaderIcon('filter')" class="action_icon icon_right_text_margin"></i>
+                Currency history filter
             </h5>
 
             <div class="content admin_listing_modal_content_editor_form ">
@@ -130,13 +130,7 @@
                             :options="editorOptions"
                             theme="snow"
                             v-model:content="descriptionFormEditor.description"
-                            text-change="textChangeDescription"
-                            editorChange="editorChangeDescription"
                             contentType="html"
-                            @blur="onEditorBlur($event)"
-                            @focus="onEditorFocus($event)"
-                            @ready="onEditorReady($event)"
-                            @textChange="onTextChange($event)"
 
                         >{{ descriptionFormEditor.description }}
                         </quill-editor>
@@ -145,11 +139,6 @@
                         </div>
 
                         <div class="admin_listing_modal_footer">
-                            <button type="button" class="btn btn-secondary btn-sm"
-                                    @click="cancelDescriptionFormEditor">
-                                <i :class="getHeaderIcon('cancel')"
-                                   class="action_icon icon_right_text_margin"></i>Cancel
-                            </button>
                             <button type="button"
                                     class="btn btn-success btn-sm text-uppercase right_btn_from_left_margin"
                                     @click="saveDescriptionFormEditor">
@@ -209,9 +198,7 @@
                                         </button>
                                     </td>
                                     <td>{{ currencyHistory.day_label }}</td>
-                                    <td>{{
-                                            formatValue(currencyHistory.value, rate_decimal_numbers)
-                                        }}
+                                    <td>{{ formatValue(currencyHistory.value, rate_decimal_numbers) }}
                                     </td>
                                 </tr>
                                 </tbody>
@@ -276,8 +263,9 @@ import {QuillEditor} from '@vueup/vue-quill'
 import '@vueup/vue-quill/dist/vue-quill.snow.css';
 import QuillBetterTable from 'quill-better-table' // https://github.com/soccerloway/quill-better-table
 
-import Datepicker from 'vue3-date-time-picker';
-import 'vue3-date-time-picker/dist/main.css';
+import Datepicker from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/dist/main.css';
+
 import {ModalsContainer, VueFinalModal} from "vue-final-modal";
 import {useForm} from "@inertiajs/inertia-vue3";
 import {Inertia} from '@inertiajs/inertia'
@@ -291,7 +279,7 @@ export default {
         },
         minCurrencyHistoryDay: {
             type: String,
-            required: true,
+            required: false,
         },
         currencyImage: {
             type: Object,
@@ -312,14 +300,12 @@ export default {
         QuillEditor,
     },
     setup(props) {
-        console.log('resources/js/Pages/Admins/Currencies/Edit.vue setup props::')
-        console.log(props)
-        let currency_history_filter_date_from = ref(props.minCurrencyHistoryDay)
+        let currency_history_filter_date_from = ref( props.minCurrencyHistoryDay)
+
         var d = new Date();
         let show_currency_history_filters_modal = ref(false)
         var today_date = dateIntoDbFormat(d)
         let currency_history_filter_date_till = ref(today_date)
-        // console.log('currency_history_filter_date_till::')
         if (isEmpty(currency_history_filter_date_from.value)) {
             currency_history_filter_date_from.value = today_date
         }
@@ -330,14 +316,6 @@ export default {
         let currencies_history_pages_count = ref(0)
         let currencies_history_per_page = ref(0)
         let currencies_history_current_page = ref(1)
-        // let currencies_pages_count = ref(0)
-
-        // console.log('props.currency.id::')
-        // console.log(props.currency.id)
-
-        console.log('props.currencyImage::')
-        console.log(props.currencyImage)
-        // debugger
 
         let currency_image_url = ref(props.currencyImage.url)
         let currency_image_info = ref(props.currencyImage.file_name + ', ' + getFileSizeAsString(props.currencyImage.size) + ', ' + props.currencyImage.width + '*' + props.currencyImage.height)
@@ -356,41 +334,6 @@ export default {
             [['better-table', 'bold', 'italic'], ['link', 'image']]
         )
 
-        let modules = ref({
-                table: false,  // disable table module
-                'better-table': {
-                    operationMenu: {
-                        items: {
-                            unmergeCells: {
-                                text: 'Another unmerge cells name'
-                            }
-                        },
-                        color: {
-                            colors: ['#fff', 'red', 'rgb(0, 0, 0)'],  // colors in operationMenu
-                            text: 'Background Colors'  // subtitle
-                        }
-                    }
-                },
-                keyboard: {
-                    bindings: QuillBetterTable.keyboardBindings
-                }
-            }
-        )
-
-
-        function textChangeDescription() {
-            console.log('textChangeDescription::')
-        }
-
-        function editorChangeDescription() {
-            console.log('editorChangeDescription::')
-        }
-
-        function cancelDescriptionFormEditor() {
-            console.log('cancelDescriptionFormEditor::')
-
-        }
-
         function saveDescriptionFormEditor() {
             descriptionFormEditor.value.put(route('admin.currencies.description_save', descriptionFormEditor.value.id), {
                 preserveScroll: false,
@@ -402,55 +345,25 @@ export default {
                     )
                 },
                 onError: (e) => {
-                    console.log('e::')
                     console.log(e)
                     Toast.fire({
                         icon: 'error',
                         title: 'Description saving error!'
                     })
                 }
-
             })
         }
 
-        function onEditorBlur(quill) {
-            console.log('editor blur!', quill)
-        }
-
-        function onEditorFocus(quill) {
-            console.log('editor focus', quill)
-        }
-
-        function onEditorReady(quill) {
-            console.log('editor ready!', quill)
-        }
-
-        // Arguments: { delta: Delta, oldContents: Delta, source: Sources }
-        function onTextChange({delta, oldContents, text}) {
-            // console.log('onTextChange text::')
-            // console.log(text)
-        }
-
         function fetchCurrencyImage(currencyImageFile) {
-            console.log('fetchCurrencyImage currencyImageFile::')
-            console.log(currencyImageFile)
             fetch(currencyImageFile.blob).then(function (response) {
                 if (response.ok) {
                     return response.blob().then(function (imageBlob) {
-                        console.log('currencyImageUploader::')
-                        console.log(currencyImageUploader)
-                        console.log('currencyImageUploader.currency_id::')
-                        console.log(currencyImageUploader.value.currency_id)
-
-
                         currencyImageUploader.value.image = imageBlob
                         currencyImageUploader.value.image_filename = currencyImageFile.name
 
                         currencyImageUploader.value.post(route('admin.currencies.upload_image'), {
                             preserveScroll: true,
                             onSuccess: (resp) => {
-                                console.log(' resp::')
-                                console.log(resp)
                                 Toast.fire({
                                     icon: 'success',
                                     title: 'You have uploaded image successfully'
@@ -474,34 +387,28 @@ export default {
                 }
             }).catch(function (e) {
                 console.error(e)
-                console.log('There has been a problem with your fetch operation: ', e.message)
             }) // fetch(currencyImageFile.blob).then(function (response) {
 
         }
 
 
         function loadCurrencyHistory() {
-            console.log('loadCurrencyHistory currency_history_filter_date_from.value::')
-            console.log(currency_history_filter_date_from.value)
-            console.log(typeof currency_history_filter_date_from.value)
             if (!isEmpty(currency_history_filter_date_from.value) && typeof currency_history_filter_date_from.value.getMonth === 'function') {
                 currency_history_filter_date_from.value = dateIntoDbFormat(currency_history_filter_date_from.value)
-                console.log('CHANGED currency_history_filter_date_from.value::')
-                console.log(currency_history_filter_date_from.value)
+                // console.log('CHANGED currency_history_filter_date_from.value::')
+                // console.log(currency_history_filter_date_from.value)
             }
-            // console.log('loadCurrencyHistory currency_history_filter_date_till.value::')
-            // console.log(currency_history_filter_date_till.value)
             if (!isEmpty(currency_history_filter_date_till.value) && typeof currency_history_filter_date_till.value.getMonth === 'function') {
                 currency_history_filter_date_till.value = dateIntoDbFormat(currency_history_filter_date_till.value)
-                console.log('CHANGED currency_history_filter_date_till.value::')
-                console.log(currency_history_filter_date_till.value)
+                // console.log('CHANGED currency_history_filter_date_till.value::')
+                // console.log(currency_history_filter_date_till.value)
             }
 
             let url = route('admin.currency_histories.index', [currency.value.id, currencies_history_current_page.value, currency_history_filter_date_from.value, currency_history_filter_date_till.value])
             axios.get(url)
                 .then(({data}) => {
-                    console.log('loadCurrencyHistory data::')
-                    console.log(data)
+                    // console.log('loadCurrencyHistory data::')
+                    // console.log(data)
                     currencyHistoryRows.value = data.data
                     currencies_history_filtered_count.value = data.meta.total
                     currencies_history_per_page.value = parseInt(data.meta.per_page)
@@ -524,13 +431,10 @@ export default {
                 confirmButtonText: 'Yes, delete it!'
             }).then((result) => {
                 if (result.isConfirmed) {
-
                     // console.log('deleteCurrencyHistory currencyHistory::')
                     // console.log(currencyHistory)
                     axios.delete(route('admin.currency_histories.destroy', currencyHistory.id))
                         .then(({data}) => {
-                            console.log('deleteCurrencyHistory data::')
-                            console.log(data)
                             loadCurrencyHistory()
                             Swal.fire(
                                 'Deleted!',
@@ -547,25 +451,19 @@ export default {
 
 
         function currencyHistoryPaginationPageClicked(page) {
-            console.log('currencyHistoryPaginationPageClicked page::')
-            console.log(page)
-
             currencies_history_current_page.value = page
             loadCurrencyHistory()
         }
 
         function showCurrencyHistoryFiltersModal() {
-            console.log('showCurrencyHistoryFiltersModal::')
             show_currency_history_filters_modal.value = true
         }
 
         function hideCurrencyHistoryFiltersModal() {
-            console.log('hideCurrencyHistoryFiltersModal::')
             show_currency_history_filters_modal.value = false
         }
 
         function applyCurrencyHistoryFilters() {
-            console.log('applyCurrencyHistoryFilters::')
             currencies_history_current_page.value = 1
             loadCurrencyHistory(true)
 
@@ -588,8 +486,6 @@ export default {
             if (currency_history_filter_date_till.value != '') {
                 ret++
             }
-            console.log('getCurrencyHistoryFiltersCountText ret::')
-            console.log(ret)
             if (!ret) return ''
             return (ret > 0 ? ret + ' ' : '') + pluralize3(ret, ' no filters set', ' filter is set', ' filters are set')
         } // getCurrencyHistoryFiltersCountText
@@ -597,11 +493,6 @@ export default {
 
         function adminCurrencyEditOnMounted() {
             showFlashMessage()
-            console.log('adminCurrencyEditOnMounted::')
-            // console.log('Edit.vue mounted 1 this.currency')
-            // console.log(currency)
-            // console.log(formEditor)
-
             axios.get(route('get_settings_value', {key: 'rate_decimal_numbers'}))
                 .then(({data}) => {
                     rate_decimal_numbers.value = data.value
@@ -612,46 +503,23 @@ export default {
 
             loadCurrencyHistory()
             window.emitter.on('FileUploaderPreviewerUploadImageEvent', params => {
-                console.log('TARGET FileUploaderPreviewerUploadImageEvent params::')
-                console.log(params)
                 if (params.parent_component_key === 'currency_editor') {
                     fetchCurrencyImage(params.uploadedImageFile)
                 }
             })
 
-            // window.emitter.on('paginationPageChangedEvent', params => {
-            //     console.log('TARGET paginationPageChangedEvent params::')
-            //     console.log(params)
-            //     if (params.parent_component_key === 'currency_history') {
-            //         currencyHistoryPaginationPageClicked(params.page)
-            //     }
-            // })
-
             window.emitter.on('showFiltersModalEvent', params => {
-                console.log('TARGET showFiltersModalEvent params::')
-                console.log(params)
                 if (params.parent_component_key === 'currencies_history') {
                     showCurrencyHistoryFiltersModal()
                 }
             })
 
-
             window.emitter.on('listingHeaderRightButtonClickedEvent', params => {
-                // console.log('TARGET listingHeaderRightButtonClickedEvent params::')
-                // console.log(params)
                 if (params.parent_component_key === 'currencies_history') {
-                    console.log('!!!!!loadCurrencyHistory::')
                     loadCurrencyHistory()
                 }
             })
 
-            // window.emitter.on('imageUploadedEvent', params => {
-            //     // console.log('TARGET imageUploadedEvent params::')
-            //     // console.log( params)
-            //     uploaded_image_width.value = params.width
-            //     uploaded_image_height.value = params.height
-            //
-            // })
         }
         onMounted(adminCurrencyEditOnMounted)
 
@@ -659,7 +527,6 @@ export default {
 
             // Listing Page state
             currency,
-            // minCurrencyHistoryDay,
             currency_image_url,
             currency_image_info,
             currencyHistoryRows,
@@ -668,18 +535,11 @@ export default {
             currencies_history_per_page,
             currencies_history_current_page,
             descriptionFormEditor,
-            cancelDescriptionFormEditor,
             saveDescriptionFormEditor,
             editorOptions,
-            modules,
-            onEditorBlur,
-            onEditorFocus,
-            onEditorReady,
-            onTextChange,
 
             // Listing filtering
             show_currency_history_filters_modal,
-            showCurrencyHistoryFiltersModal,
             hideCurrencyHistoryFiltersModal,
             applyCurrencyHistoryFilters,
 
@@ -688,20 +548,9 @@ export default {
             currency_history_filter_date_till,
 
             // format,
-            loadCurrencyHistory,
             currencyHistoryPaginationPageClicked,
             deleteCurrencyHistory,
-
-            // Currency Image
-            // inputFilter,
-            // inputFile,
-            // imageFiles,
-            // uploaded_image_width,
-            // uploaded_image_height,
-            // cancelCurrencyImageUpload,
-            // fetchCurrencyImage,
             currencyImageUploader,
-
 
             // Common methods
             rate_decimal_numbers,

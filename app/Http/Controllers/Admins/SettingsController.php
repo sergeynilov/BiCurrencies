@@ -47,28 +47,29 @@ class SettingsController extends Controller  //    http://127.0.0.1:8000/admin/c
         $smallIcon= null;
         \Log::info(varDump($settings, ' -12 edit $settings::'));
 
-        $settingsSmallIcon = [];
+        $settingsSmallIconImage = [];
 //        $smallIconSettings= null;
-        $settings = Settings::getSettingsList('small_icon');
+        $settingsSmallIcon = Settings::getSettingsList('small_icon');
 
-        if(!empty($settings[0])) {
-            foreach ($settings[0]->getMedia(config('app.media_app_name')) as $mediaImage) {
+        if(!empty($settingsSmallIcon[0])) {
+            foreach ($settingsSmallIcon[0]->getMedia(config('app.media_app_name')) as $mediaImage) {
                 if (File::exists($mediaImage->getPath())) {
-                    $settingsSmallIcon['url']       = $mediaImage->getUrl();
+                    $settingsSmallIconImage['url']       = $mediaImage->getUrl();
                     $imageInstance                  = Image::load($mediaImage->getUrl());
-                    $settingsSmallIcon['width']     = $imageInstance->getWidth();
-                    $settingsSmallIcon['height']    = $imageInstance->getHeight();
-                    $settingsSmallIcon['size']      = $mediaImage->size;
-                    $settingsSmallIcon['file_name'] = $mediaImage->file_name;
+                    $settingsSmallIconImage['width']     = $imageInstance->getWidth();
+                    $settingsSmallIconImage['height']    = $imageInstance->getHeight();
+                    $settingsSmallIconImage['size']      = $mediaImage->size;
+                    $settingsSmallIconImage['file_name'] = $mediaImage->file_name;
                     break;
                 }
             }
         }
 
+        \Log::info(  varDump($settings, ' -1 $settings::') );
         return Inertia::render('Admins/Settings/Edit', [
             'settingsData' => $settings,
             'currenciesSelectionArray' => Currency::getCurrenciesSelectionArray(),
-            'settingsSmallIcon' => $settingsSmallIcon,
+            'settingsSmallIconImage' => $settingsSmallIconImage,
         ]);
 
     }
@@ -148,6 +149,45 @@ class SettingsController extends Controller  //    http://127.0.0.1:8000/admin/c
         return response()->json([ 'retArray' => $retArray], HTTP_RESPONSE_OK);
 
     }
+
+
+    public function clear_cache()
+    {
+        \Log::info(  varDump(-1, ' -1 clear_cache::') );
+        if ( ! auth()->user()->can(ACCESS_APP_ADMIN_LABEL)) {
+            return redirect(route('admin.dashboard.index'))
+                ->with( 'flash', 'You have no access to view laravel log in settings page')
+                ->with('flash_type', 'error');
+        }
+
+        /*
+
+php artisan route:clear
+php artisan view:clear
+php artisan clear-compiled
+
+composer dump-autoload
+ */
+        \Artisan::call('config:cache');
+        \Artisan::call('route:cache');
+        \Artisan::call('cache:clear');
+        \Artisan::call('route:cache');
+        \Artisan::call('route:clear');
+        \Artisan::call('view:clear');
+        \Artisan::call('clear-compiled');
+        return response()->json(['error_code' => 0, 'message' => 'Cache cleared successfully', ], HTTP_RESPONSE_OK);
+//        \Artisan::call('cache:clear');
+
+
+/*        $laravel_log= base_path('storage/logs/laravel.log');
+        if ( file_exists($laravel_log) ) {
+            $laravel_log_content= File::get($laravel_log);
+            $laravel_log_content= preg_replace('/\r\n?/', "<br>", $laravel_log_content);
+            return response()->json(['error_code' => 0, 'message' => '', 'text' => $laravel_log_content], HTTP_RESPONSE_OK);
+        } else {
+            return response()->json(['error_code' => 0, 'message' => 'laravel log file not found', 'text' => ''], HTTP_RESPONSE_INTERNAL_SERVER_ERROR);
+        }*/
+    } // public function clear_cache
 
 
     // LOGS BLOCK END

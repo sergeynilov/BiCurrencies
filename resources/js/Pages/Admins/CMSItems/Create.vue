@@ -39,11 +39,7 @@ export default {
     },
 
     setup(props) {
-        console.log('resources/js/Pages/Admins/CMSItems/Create.vue setup props::')
-        console.log(props)
-
         let CMSItem= ref(props.CMSItem)
-
 
         function adminCMSItemCreateOnMounted() {
             console.log('adminCMSItemCreateOnMounted::')

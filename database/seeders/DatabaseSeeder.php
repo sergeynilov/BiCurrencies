@@ -19,5 +19,6 @@ class DatabaseSeeder extends Seeder
 //            UserTableSeeder::class,
         ]);
 //        $this->call(CurrencyHistoryTableSeeder::class);
+        $this->call(CurrencyHistoriesTableSeeder::class);
     }
 }

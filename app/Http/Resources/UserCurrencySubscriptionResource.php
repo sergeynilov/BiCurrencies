@@ -11,6 +11,7 @@ use App;
 
 class UserCurrencySubscriptionResource extends JsonResource
 {
+    public static $wrap = 'user_currency_subscriptions';
     /**
      * Transform the resource into an array.
      *
