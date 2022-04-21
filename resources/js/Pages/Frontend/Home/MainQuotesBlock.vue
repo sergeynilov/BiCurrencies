@@ -46,10 +46,6 @@ export default {
     name: 'MainQuotesBlockBlock',
     components: {},
     setup(props) {
-        console.log('MainQuotesBlockBlock props::')
-        console.log(props)
-
-
         let quotes = ref([])
         // let main_page_top_quote_author_name = ref('')
         // let main_page_top_quote_text = ref('')
@@ -59,9 +55,6 @@ export default {
 
             axios.post(route('frontend.get_block_quote', { keys: [ 'ernest_hemingway_panacea_quote', 'kevin_o_leary_quote' ]}))
                 .then(({data}) => {
-                    // console.log('loadMainQuotesBlockData data::')
-                    // console.log(data)
-
                     quotes.value = data.quotes
                 })
                 .catch(e => {

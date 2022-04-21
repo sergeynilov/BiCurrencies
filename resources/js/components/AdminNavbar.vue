@@ -197,31 +197,11 @@ export default {
 
 
         function adminNavbarOnMounted() {
-            // console.log('adminNavbarOnMounted::')
-            // console.log('usePage().props::')
-            // console.log(usePage().props)
-            // console.log('usePage().props.value::')
-            // console.log(usePage().props.value)
-            // console.log('usePage().props.value::')
-            // console.log(usePage().props.value)
-            // console.log('usePage().props.value.user::')
-            // console.log(usePage().props.value.user)
-
-
-
             window.emitter.on('AdminSidebarCollapseSwitcherEvent', params => {
-                console.log('TARGET AdminSidebarCollapseSwitcherEvent params::')
-                console.log(params)
+                // console.log('TARGET AdminSidebarCollapseSwitcherEvent params::')
+                // console.log(params)
                 main_header_collapsed.value = !main_header_collapsed.value
-                // if (params.parent_component_key === 'user') {
-                //     userRowsPaginationPageClicked(params.page)
-                // }
             })
-
-            // console.log(document.getElementById("nav_main_header").style.marginLeft)
-            // document.getElementById("nav_main_header").style.marginLeft = "5px";
-            // //        margin-left: 2px;
-            // main-header
         }  // function adminNavbarOnMounted() {
         onMounted(adminNavbarOnMounted)
 

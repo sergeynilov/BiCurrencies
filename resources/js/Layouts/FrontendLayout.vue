@@ -48,11 +48,7 @@ export default {
 
         let app_version = ref('D')
 
-        console.log('FrontendLayout::')
-
-
         function FrontendLayoutMounted() {
-            console.log('FrontendLayoutMounted::')
         }
 
         onMounted(FrontendLayoutMounted)

@@ -77,9 +77,6 @@ export default {
     name: 'MainTopHeaderBlock',
     components: {},
     setup(props) {
-        console.log('MainTopHeaderBlock props::')
-        console.log(props)
-
         let main_page_top_header_title = ref('')
         let main_page_top_header_text = ref('')
         let main_page_top_header_image_url = ref('')

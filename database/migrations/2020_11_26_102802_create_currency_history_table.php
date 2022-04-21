@@ -29,7 +29,7 @@ class CreateCurrencyHistoryTable extends Migration
             $table->unique(['day', 'currency_id'], 'currency_history_day_currency_id_unique');
             $table->index(['currency_id', 'day'], 'currency_history_currency_id_day_index');
         });
-        Artisan::call('db:seed', array('--class' => 'CurrencyHistoryTableSeeder'));
+        Artisan::call('db:seed', array('--class' => 'CurrencyHistoriesTableSeeder'));
 
 
     }

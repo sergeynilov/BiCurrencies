@@ -2,7 +2,7 @@
     <admin-layout>
         <!--                        settingsData::{{ settingsData }}-->
 
-        settingsSmallIconImage::{{ settingsSmallIconImage}}
+<!--        settingsSmallIconImage::{{ settingsSmallIconImage}}-->
         <div class="card card-primary card-tabs">
             <div class="card-header p-2">
                 <ul class="nav nav-tabs" id="custom-tabs-one-tab" role="tablist">

@@ -98,9 +98,6 @@ export default {
             axios.get(route('get_settings_value', {key: 'copyright_text'}))
                 .then(({data}) => {
                     copyright_text.value = data.value
-                    console.log('copyright_text.value::')
-                    console.log(copyright_text.value)
-
                 })
                 .catch(e => {
                     console.error(e)

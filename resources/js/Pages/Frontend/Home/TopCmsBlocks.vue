@@ -223,10 +223,6 @@ export default {
     name: 'FrontendMainTopHeaderBlock',
     components: {},
     setup(props) {
-        console.log('FrontendMainTopHeaderBlock props::')
-        console.log(props)
-
-        // trusted_sources_block_header
         let trusted_sources_block_header_title = ref('')
         let trusted_sources_block_header_text = ref('')
         let trusted_sources_block_header_image_url = ref('')
@@ -279,7 +275,6 @@ export default {
 
 
         function frontendMainTopHeaderBlockOnMounted() {
-            console.log('frontendMainTopHeaderBlockOnMounted::')
             loadMainPageArticlesData()
         }
 

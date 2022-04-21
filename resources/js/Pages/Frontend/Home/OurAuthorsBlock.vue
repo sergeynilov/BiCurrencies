@@ -60,19 +60,13 @@ export default {
     name: 'FrontendOurAuthorBlock',
     components: {},
     setup(props) {
-        // console.log('FrontendOurAuthorBlock props::')
-        // console.log(props)
-
         let ourAuthors = ref([])
         let main_page_our_authors_block_title = ref('')
         let main_page_our_authors_block_text = ref('')
         let main_page_our_authors_block_image_url = ref('')
         function loadOurAuthorsData() {
-            // console.log('-2 loadOurAuthorsData ::')
             axios.get(route('frontend.get_block_cms_item', 'main_page_our_authors_block'))
                 .then(({data}) => {
-                    // console.log('get_block_cms_item data::')
-                    // console.log(data)
                     main_page_our_authors_block_title.value = data.cMSItem.title
                     main_page_our_authors_block_text.value = data.cMSItem.text
                     main_page_our_authors_block_image_url.value = data.image.url
@@ -81,18 +75,13 @@ export default {
                     console.error(e)
                 })
 
-            // Route::get('/get_our_authors', [HomeController::class, 'get_our_authors'])->name('frontend.get_our_authors');
             axios.get(route('frontend.get_our_authors'))
                 .then(({data}) => {
-                    // console.log('loadOurAuthorsData data::')
-                    // console.log(data)
                     ourAuthors.value= data.authors
                 })
                 .catch(e => {
                     console.error(e)
                 })
-
-
 
         } // loadOurAuthorsData() {
 
@@ -104,7 +93,6 @@ export default {
 
 
         function frontendOurAuthorBlockOnMounted() {
-            console.log('frontendOurAuthorBlockOnMounted::')
             loadOurAuthorsData()
         } // function frontendOurAuthorBlockOnMounted() {
 
@@ -122,7 +110,6 @@ export default {
 
             // Settings vars
             settingsJsMomentDatetimeFormat,
-
 
             // Common methods
             pluralize,

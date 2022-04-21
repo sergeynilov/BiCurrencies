@@ -51,11 +51,8 @@ export default {
         FrontendLayout,
     },
     setup(props) {
-        console.log('CMSItemPage props::')
-        console.log(props)
         let cMSItem = ref(props.cMSItem)
         let image = ref(props.image)
-
 
         return { // setup return
             cMSItem,

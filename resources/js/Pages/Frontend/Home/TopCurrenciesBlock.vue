@@ -247,9 +247,6 @@ export default {
         ModalsContainer
     },
     setup(props) {
-        console.log('props::')
-        console.log(props)
-
         let show_only_top_currencies = ref(props.show_only_top_currencies)
         let show_currency_history_modal = ref(false)
         let currencyHistoryRows = ref([])
@@ -272,9 +269,6 @@ export default {
         function showCurrencyDetailsModal(currency_id) {
             axios.get(route('frontend.get_currency_details', currency_id))
                 .then(({data}) => {
-                    console.log('showCurrencyDetailsModal data::')
-                    console.log(data)
-
                     show_currency_description_modal.value = true
                     currencyDetails.value = data.currency
                     currencyDetailsImage.value = data.currencyImage
@@ -297,15 +291,8 @@ export default {
         }
 
         function loadCurrencyHistory() {
-            // console.log('loadCurrencyHistory currency_history_id::')
-            // console.log(currency_history_id.value)
-            // console.log('loadCurrencyHistory currency_history_current_page.value::')
-            // console.log(currency_history_current_page.value)
-
             axios.get(route('frontend.get_currency_history', { id:currency_history_id.value, page:currency_history_current_page.value}))
                 .then(({data}) => {
-                    console.log('loadCurrencyHistory data::')
-                    console.log(data)
                     currencyHistoryRows.value = data
                     show_currency_history_modal.value = true
                     currencies_history_pages_count.value = data.meta.last_page
@@ -328,8 +315,6 @@ export default {
             let filters = {show_only_top_currencies: show_only_top_currencies.value}
             axios.post(route('frontend.currencies_rates.filter'), filters)
                 .then(({data}) => {
-                    console.log('loadActiveCurrencies data::')
-                    console.log(data)
                     activeCurrencyRows.value = data.data
                 })
                 .catch(e => {
@@ -340,14 +325,10 @@ export default {
 
         function TopCurrenciesOnMounted() {
             window.emitter.on('listingHeaderRightButtonClickedEvent', params => {
-                // console.log('TARGET listingHeaderRightButtonClickedEvent params::')
-                // console.log(params)
                 if (params.parent_component_key === 'currency') {
-                    console.log('!!!!!loadActiveCurrencies::')
                     loadActiveCurrencies()
                 }
             })
-            //Route::get('/get_base_currency', [HomeController::class, 'get_base_currency'])->name('get_base_currency');
 
             axios.get(route('get_settings_value', {key: 'rate_decimal_numbers'}))
                 .then(({data}) => {
@@ -359,9 +340,6 @@ export default {
 
             axios.get(route('get_base_currency'))
                 .then(({data}) => {
-                    console.log('get_base_currency data::')
-                    console.log(data)
-
                     baseCurrency.value = data.baseCurrency
                 })
                 .catch(e => {
@@ -374,8 +352,6 @@ export default {
 
             axios.get(route('frontend.get_block_cms_item', 'main_page_currencies_list_block_header'))
                 .then(({data}) => {
-                    // console.log('get_block_cms_item data::')
-                    // console.log(data)
                     main_page_currencies_list_block_header_title.value = data.cMSItem.title
                     main_page_currencies_list_block_header_text.value = data.cMSItem.text
                     main_page_currencies_list_block_header_image_url.value = data.image.url

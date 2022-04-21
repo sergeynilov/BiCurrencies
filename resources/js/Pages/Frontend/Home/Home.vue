@@ -2,18 +2,17 @@
 
     <frontend-layout>
 
-<!--        <MainTopHeaderBlock></MainTopHeaderBlock>-->
+        <MainTopHeaderBlock></MainTopHeaderBlock>
 
-<!--        <TopCmsBlocks ></TopCmsBlocks>-->
+        <TopCmsBlocks ></TopCmsBlocks>
 
-<!--        <OurAuthorsBlock></OurAuthorsBlock>-->
+        <OurAuthorsBlock></OurAuthorsBlock>
 
         <TopCurrenciesBlock :show_only_top_currencies="true"></TopCurrenciesBlock>
 
+        <MainQuotesBlock></MainQuotesBlock>
 
-<!--        <MainQuotesBlock></MainQuotesBlock>-->
-
-<!--        <MainContactUsBlock></MainContactUsBlock>-->
+        <MainContactUsBlock></MainContactUsBlock>
 
     </frontend-layout>
 
@@ -22,7 +21,6 @@
 
 <script>
 import FrontendLayout from '@/Layouts/FrontendLayout'
-import axios from 'axios'
 import TopCmsBlocks from '@/Pages/Frontend/Home/TopCmsBlocks.vue'
 import TopCurrenciesBlock from '@/Pages/Frontend/Home/TopCurrenciesBlock.vue'
 import OurAuthorsBlock from '@/Pages/Frontend/Home/OurAuthorsBlock.vue'

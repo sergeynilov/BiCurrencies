@@ -8,8 +8,6 @@
 
     <div class="card-body">
 
-      <jet-validation-errors class="mb-3" />
-
       <div v-if="status" class="alert alert-success mb-3 rounded-0" role="alert">
         {{ status }}
       </div>
@@ -30,7 +28,7 @@
             <jet-checkbox id="remember_me" name="remember" v-model:checked="form.remember" />
 
             <label class="custom-control-label" for="remember_me">
-              Remember Me 123
+              Remember Me
             </label>
           </div>
         </div>
@@ -41,7 +39,7 @@
               Forgot your password?
             </Link>
 
-            <jet-button type="submit" class="ms-4" :class="{ 'text-white-50': form.processing }" :disabled="form.processing">
+            <jet-button type="submit" class="ms-4" :class="{ 'text-white-50': form.processing }"  :disabled="form.processing">
               Log in
             </jet-button>
           </div>

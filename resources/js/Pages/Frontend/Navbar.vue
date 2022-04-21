@@ -222,16 +222,6 @@ export default {
         // USER LOGIN END
 
         function frontendNavbarOnMounted() {
-            console.log('usePage().props.value.user::')
-            console.log(usePage().props.value.user)
-
-
-            // window.emitter.on('imageUploadedEvent', params => {
-            //     console.log('TARGET imageUploadedEvent params::')
-            //     console.log(params)
-            //     uploaded_image_width.value = params.width
-            //     uploaded_image_height.value = params.heightj
-            // })
         }
         onMounted(frontendNavbarOnMounted)
 

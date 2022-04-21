@@ -317,16 +317,12 @@ export default {
     },
 
     setup(props, attrs) {
-        console.log('RegisterWizard props::')
-        console.log(props)
-        console.log('RegisterWizard attrs::')
-        console.log(attrs)
-        // debugger
+        // console.log('RegisterWizard props::')
+        // console.log(props)
+        // console.log('RegisterWizard attrs::')
+        // console.log(attrs)
         let settings_site_name = ref('')
         let settings_site_heading = ref('')
-        /*                                 Register at {{ settings_site_name }}<br>
-                                <small>{{ settings_site_heading}}</small>
- */
         let register_information_title = ref('')
         let register_information_text = ref('')
 
@@ -359,7 +355,6 @@ export default {
         let currencies_for_subscription_is_saving = ref(false)
 
         function hideUserRegister() {
-            console.log('hideUserRegisterModal::')
             Swal.fire({
                 title: 'Are you sure?',
                 text: "You what to reset you registration!",
@@ -378,16 +373,11 @@ export default {
         }
 
         function submitRegisterForm() {
-            console.log('SubmitRegisterForm value::')
-
-            console.log('formUserRegisterEditorStep1::')
-            console.log(formUserRegisterEditorStep1)
-
             formUserRegisterEditorStep1.value.post(route('user_register_step_1'), {
                 preserveScroll: true,
                 onSuccess: (resp) => {
-                    console.log('submitRegisterForm resp::')
-                    console.log(resp)
+                    // console.log('submitRegisterForm resp::')
+                    // console.log(resp)
                     user_register_wizard_step.value = 2 // Open next step form
 
                     formUserRegisterEditorStep1.value.id = resp.props.new_user_id // Pass parameter next steps form
@@ -397,9 +387,8 @@ export default {
                     userRegisterAvatarUploader.value.user_email = resp.props.new_user_email
 
                     new_registered_user_id.value = resp.props.new_registered_user_id
-                    console.log('new_registered_user_id.value::')
-                    console.log(new_registered_user_id.value)
-
+                    // console.log('new_registered_user_id.value::')
+                    // console.log(new_registered_user_id.value)
                     new_registered_user_email.value = resp.props.new_registered_user_email
                 },
                 onError: (e) => {
@@ -410,23 +399,22 @@ export default {
         } // SubmitRegisterForm() {
 
         function sendUserRegisterStep2ConfirmationCode() {
-            console.log('sendUserRegisterStep2ConfirmationCode route(\'user_register_step_confirmation_code\')::')
-            console.log(route('user_register_step_confirmation_code'))
-            console.log('formUserRegisterEditorStep2::')
-            console.log(formUserRegisterEditorStep2)
-
-            console.log('formUserRegisterEditorStep2.value.user_id::')
-            console.log(formUserRegisterEditorStep2.value.user_id)
+            // console.log('sendUserRegisterStep2ConfirmationCode route(\'user_register_step_confirmation_code\')::')
+            // console.log(route('user_register_step_confirmation_code'))
+            // console.log('formUserRegisterEditorStep2::')
+            // console.log(formUserRegisterEditorStep2)
+            //
+            // console.log('formUserRegisterEditorStep2.value.user_id::')
+            // console.log(formUserRegisterEditorStep2.value.user_id)
             formUserRegisterEditorStep2.value.user_id = new_registered_user_id.value
             formUserRegisterEditorStep2.value.user_email = new_registered_user_email.value
 
             formUserRegisterEditorStep2.value.post(route('user_register_step_confirmation_code'), {
                 preserveScroll: false,
                 onSuccess: (resp) => {
-                    console.log('sendUserRegisterStep2ConfirmationCode resp::')
-                    console.log(resp)
+                    // console.log('sendUserRegisterStep2ConfirmationCode resp::')
+                    // console.log(resp)
 
-                    // hideUserRegister()
                     user_register_wizard_step.value = 3
                     loadCurrencySubscriptionSelection()
                     Toast.fire({
@@ -441,6 +429,7 @@ export default {
             })
         } // sendUserRegisterStep2ConfirmationCode
 
+/*
         function readyRegisteredUserStepSubscriptions() {
             console.log('readyRegisteredUserStepSubscriptions::')
 
@@ -453,10 +442,11 @@ export default {
             })
         }
 
+*/
 
         function fetchUserRegisterAvatarImage(userRegisterAvatarFile) {
-            console.log('fetchUserRegisterAvatarImage userRegisterAvatarFile::')
-            console.log(userRegisterAvatarFile)
+            // console.log('fetchUserRegisterAvatarImage userRegisterAvatarFile::')
+            // console.log(userRegisterAvatarFile)
 
             fetch(userRegisterAvatarFile.blob).then(function (response) {
                 if (response.ok) {
@@ -590,8 +580,6 @@ export default {
 
 
         function registerWizardPageOnMounted() {
-            console.log('registerWizardPageOnMounted::')
-
             axios.get(route('get_settings_value', {key: 'site_name'}))
                 .then(({data}) => {
                     settings_site_name.value = data.value
@@ -609,13 +597,10 @@ export default {
 
             loadMainRegisterInformationData()
             window.emitter.on('FileUploaderPreviewerUploadImageEvent', params => {
-                console.log('TARGET FileUploaderPreviewerUploadImageEvent params::')
-                console.log(params)
                 if (params.parent_component_key === 'register') {
                     fetchUserRegisterAvatarImage(params.uploadedImageFile)
                 }
             })
-
 
         }
         onMounted(registerWizardPageOnMounted)
@@ -626,16 +611,17 @@ export default {
             register_information_text,
 
             user_register_wizard_step,
-            loadMainRegisterInformationData,
             formUserRegisterEditorStep1,
             submitRegisterForm,
             sendUserRegisterStep2ConfirmationCode,
             hideUserRegister,
-            readyRegisteredUserStepSubscriptions,
+            // readyRegisteredUserStepSubscriptions,
 
             new_registered_user_id,
             new_registered_user_email,
             formUserRegisterEditorStep2,
+
+            // Page actions
             userRegisterAvatarUploader,
             nextUserRegisterStep,
             readyUserRegister,
@@ -643,10 +629,7 @@ export default {
             settings_site_heading,
             currencies_for_subscription_is_saving,
             currenciesForSubscription,
-            loadCurrencySubscriptionSelection,
             saveCurrenciesForSubscription,
-
-            // Page actions
 
             // Settings vars
             settingsJsMomentDatetimeFormat,

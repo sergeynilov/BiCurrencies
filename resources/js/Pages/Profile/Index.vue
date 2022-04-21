@@ -120,13 +120,11 @@ export default {
         // ModalsContainer
     },
     setup(props, attrs) {
-        console.log('Profile props::')
-        console.log(props)
-        console.log('Profile attrs::')
-        console.log(attrs)
-        // debugger
+        // console.log('Profile props::')
+        // console.log(props)
+        // console.log('Profile attrs::')
+        // console.log(attrs)
         let profile_user_id = ref(props.profile_user_id)
-        // let profile_user_id = ref(1) // debugging
         let profileUser = ref({})
         let profileUserPermissions = ref([])
         let profile_user_media_image_url = ref(null)

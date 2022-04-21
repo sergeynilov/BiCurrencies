@@ -25,7 +25,7 @@ mix.webpackConfig({
 
 mix.js('resources/js/app.js', 'public/js').vue()
     .sass('resources/sass/admin_custom.scss', 'public/css')
-    .sourceMaps()
+    // .sourceMaps()
     .webpackConfig(require('./webpack.config'));
 
 // Dashboard theme assets...
